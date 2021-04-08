@@ -37,7 +37,6 @@ io.on("connection", async function (socket) {
         } else {
             socket.emit('chartDataIdle', chartData);
         }
-CORRIGIR IDLE TIME
     })
 
     socket.on('getDataChartUpdate', async (data) => {

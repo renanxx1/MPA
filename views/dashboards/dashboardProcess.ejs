@@ -424,91 +424,95 @@
                 } else {
                     $('#mainDiv').show();
                     $('#divNoData').hide();
-                }
 
-                if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD') && data != null) {
-                    var d1 = data.chronometers[0].min_date.split("-");
-                    var d2 = data.chronometers[0].max_date.split("-");
+                    if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                        var d1 = data.chronometers[0].min_date.split("-");
+                        var d2 = data.chronometers[0].max_date.split("-");
 
-                    $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
-                } else {
-                    $('#smallDateInfo').html("");
-                }
-
-
-                /*-----------------------------------------------------------------------------------------------------------*/
-                //CARREGANDO DADOS NO GRAFICO DE BARRAS - 1
+                        $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                    } else {
+                        $('#smallDateInfo').html("");
+                    }
 
 
-                data.chronometers.forEach(element => {
-                    var a = convertToTimeFormat(element.total_time).split(':'); //atividades
-                    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                    myBarChart.data.labels.push(element.activity_name);
-                    myBarChart.data.datasets[0].data.push(seconds);
-                })
 
-                var a = convertToTimeFormat(data.idleTime[0].total_time_idle).split(':'); //tempo ocioso
-                var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                myBarChart.data.labels.push("Tempo Ocioso");
-                myBarChart.data.datasets[0].data.push(seconds);
 
-                //Controle de escala Y do grafico, escala se baseia no maximo valor
-                myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
-                    let max = null
-                    let min = null
-                    dataset.data.forEach((value, index) => {
-                        max = max === null ? value : Math.max(max, value)
-                        min = min === null ? value : Math.min(min, value)
+
+                    /*-----------------------------------------------------------------------------------------------------------*/
+                    //CARREGANDO DADOS NO GRAFICO DE BARRAS - 1
+
+
+                    data.chronometers.forEach(element => {
+                        var a = convertToTimeFormat(element.total_time).split(':'); //atividades
+                        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                        myBarChart.data.labels.push(element.activity_name);
+                        myBarChart.data.datasets[0].data.push(seconds);
                     })
-                    myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100;
-                })
-                myBarChart.update();
-                /*-----------------------------------------------------------------------------------------------------------*/
 
-
-                /*-----------------------------------------------------------------------------------------------------------*/
-                //CARREGANDO DADOS NO GRAFICO DE LINHAS - 2
-
-                /*       $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter.process_counter)
-                      $('#processCounterValue').html("Total " + data.process_counter.process_counter + " " + data.process_counter.counter)
-                      var date = convertDate(data.process_counter.createdAt);
-                      myLineChart.data.labels.push(date)
-                      myLineChart.data.datasets[0].data.push(data.process_counter.counter)
-      
-                      //Controle de escala Y do grafico, escala se baseia no maximo valor
-                      myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
-                          let max = null
-                          let min = null
-                          dataset.data.forEach((value, index) => {
-                              max = max === null ? value : Math.max(max, value)
-                              min = min === null ? value : Math.min(min, value)
-                          })
-                          myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
-                      })
-                      myLineChart.update(); */
-                /*-----------------------------------------------------------------------------------------------------------*/
-
-
-                /*-----------------------------------------------------------------------------------------------------------*/
-                //CARREGANDO DADOS NO GRAFICO DE PIZZA - 3
-
-                var soma = 0;
-                data.chronometers.forEach(element => {
-                    var a = convertToTimeFormat(element.total_time).split(':');
+                    var a = convertToTimeFormat(data.idleTime[0].total_time_idle).split(':'); //tempo ocioso
                     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                    soma = soma + seconds;
-                })
+                    myBarChart.data.labels.push("Tempo Ocioso");
+                    myBarChart.data.datasets[0].data.push(seconds);
 
-                var work_time = data.chronometers[0].sum_work_time * 3600;
-                var efficiency = (soma / work_time) * 100;
+                    //Controle de escala Y do grafico, escala se baseia no maximo valor
+                    myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
+                        let max = null
+                        let min = null
+                        dataset.data.forEach((value, index) => {
+                            max = max === null ? value : Math.max(max, value)
+                            min = min === null ? value : Math.min(min, value)
+                        })
+                        myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100;
+                    })
+                    myBarChart.update();
+                    /*-----------------------------------------------------------------------------------------------------------*/
 
-                myPieChart.data.labels.push('Total Tempo Executado', 'Horario de Trabalho');
-                myPieChart.data.datasets[0].data.push(soma, work_time)
 
-                myPieChart.update();
-                $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+                    /*-----------------------------------------------------------------------------------------------------------*/
+                    //CARREGANDO DADOS NO GRAFICO DE LINHAS - 2
 
-                /*-----------------------------------------------------------------------------------------------------------*/
+                    /*       $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter.process_counter)
+                          $('#processCounterValue').html("Total " + data.process_counter.process_counter + " " + data.process_counter.counter)
+                          var date = convertDate(data.process_counter.createdAt);
+                          myLineChart.data.labels.push(date)
+                          myLineChart.data.datasets[0].data.push(data.process_counter.counter)
+          
+                          //Controle de escala Y do grafico, escala se baseia no maximo valor
+                          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
+                              let max = null
+                              let min = null
+                              dataset.data.forEach((value, index) => {
+                                  max = max === null ? value : Math.max(max, value)
+                                  min = min === null ? value : Math.min(min, value)
+                              })
+                              myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
+                          })
+                          myLineChart.update(); */
+                    /*-----------------------------------------------------------------------------------------------------------*/
+
+
+                    /*-----------------------------------------------------------------------------------------------------------*/
+                    //CARREGANDO DADOS NO GRAFICO DE PIZZA - 3
+
+                    var soma = 0;
+                    data.chronometers.forEach(element => {
+                        var a = convertToTimeFormat(element.total_time).split(':');
+                        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                        soma = soma + seconds;
+                    })
+
+                    var work_time = data.chronometers[0].sum_work_time * 3600;
+                    var efficiency = (soma / work_time) * 100;
+
+                    myPieChart.data.labels.push('Total Tempo Executado', 'Horario de Trabalho');
+                    myPieChart.data.datasets[0].data.push(soma, work_time)
+
+                    myPieChart.update();
+                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+
+                    /*-----------------------------------------------------------------------------------------------------------*/
+                }
+
             })
 
 
@@ -644,19 +648,18 @@
 
                 dataChart(0);
                 socket.on("chartDataIdle", (data) => {
+                    var idle_time = convertToTimeFormat(data.idleTime[0].total_time_idle)
 
                     if (index != -1) {
                         myBarChart.data.datasets[0].data.splice(index, 1);
                         myBarChart.data.labels.splice(index, 1);
-
                     }
                     if (index == -1) {
                         myBarChart.data.labels.push("Tempo Ocioso");
-                        var hms = data.idleTime.time;
+                        var hms = idle_time;
                         var a = hms.split(':');
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                         myBarChart.data.datasets[0].data.push(seconds);
-
                     }
                     myBarChart.update()
                 })
