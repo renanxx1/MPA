@@ -8,11 +8,9 @@ class DashboardService {
 
     async getDashboardData(collaborator_id, process_id, startDate, endDate) {
         var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
-
-        var process_counter = await DashboardRepository.findProcessAndCounter(collaborator_id, process_id, startDate, endDate);
-        console.log(chronometers)
-        var all_process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate)
+        var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);
         var idleTime = await DashboardRepository.findIdleTime(collaborator_id, process_id, startDate, endDate);
+console.log(process_counter)
 
         if (chronometers[0] == null) {
             return null;

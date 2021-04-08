@@ -470,24 +470,30 @@
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE LINHAS - 2
+                    var sum_counter = 0;
+                    data.process_counter.forEach(element => {
+                        myLineChart.data.labels.push(convertDate(element.createdAt));
+                        myLineChart.data.datasets[0].data.push(element.counter)
+                        sum_counter = sum_counter + element.counter;
+                    })
 
-                    /*       $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter.process_counter)
-                          $('#processCounterValue').html("Total " + data.process_counter.process_counter + " " + data.process_counter.counter)
-                          var date = convertDate(data.process_counter.createdAt);
-                          myLineChart.data.labels.push(date)
-                          myLineChart.data.datasets[0].data.push(data.process_counter.counter)
-          
-                          //Controle de escala Y do grafico, escala se baseia no maximo valor
-                          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
-                              let max = null
-                              let min = null
-                              dataset.data.forEach((value, index) => {
-                                  max = max === null ? value : Math.max(max, value)
-                                  min = min === null ? value : Math.min(min, value)
-                              })
-                              myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
-                          })
-                          myLineChart.update(); */
+                    $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
+                    $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
+                  /*   var date = convertDate(data.process_counter.createdAt);
+                    myLineChart.data.labels.push(date)
+                    myLineChart.data.datasets[0].data.push(data.process_counter.counter)
+ */
+                    //Controle de escala Y do grafico, escala se baseia no maximo valor
+                    myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
+                        let max = null
+                        let min = null
+                        dataset.data.forEach((value, index) => {
+                            max = max === null ? value : Math.max(max, value)
+                            min = min === null ? value : Math.min(min, value)
+                        })
+                        myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
+                    })
+                    myLineChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 

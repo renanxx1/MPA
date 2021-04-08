@@ -59,7 +59,7 @@ class DashboardRepository {
 
     }
 
-    async findProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
+ /*    async findProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
         return await
             Process_Counter.findOne({
                 raw: true,
@@ -73,7 +73,7 @@ class DashboardRepository {
                     }],
                 }
             })
-    }
+    } */
 
     async findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
         return await
