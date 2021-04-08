@@ -479,10 +479,7 @@
 
                     $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
-                  /*   var date = convertDate(data.process_counter.createdAt);
-                    myLineChart.data.labels.push(date)
-                    myLineChart.data.datasets[0].data.push(data.process_counter.counter)
- */
+  
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
                     myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
                         let max = null
