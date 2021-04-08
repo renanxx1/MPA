@@ -507,7 +507,7 @@
                     var work_time = data.chronometers[0].sum_work_time * 3600;
                     var efficiency = (soma / work_time) * 100;
 
-                    myPieChart.data.labels.push('Total Tempo Executado', 'Horario de Trabalho');
+                    myPieChart.data.labels.push('Tempo Total Executado', 'Horario de Trabalho');
                     myPieChart.data.datasets[0].data.push(soma, work_time)
 
                     myPieChart.update();
