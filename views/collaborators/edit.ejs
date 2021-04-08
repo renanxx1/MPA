@@ -1,0 +1,110 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Editar Colaborador</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="/colaboradores">Colaboradores</a></li>
+                        <li class="breadcrumb-item active">Editar</li>
+                    </ol>
+                    <div class="card" id="mainDiv" style="display:none">
+                        <div class="card-body">
+                            <h5 class="card-title">Edição de Colaborador</h5>
+                            <form action="/colaboradores/editar/<%=collaborator.id%>" method="POST">
+                                <div class="form-group">
+                                    <label for="inputColaborador" class="mt-3">Nome do Colaborador <text
+                                            style="color: red;">*</text>
+                                    </label>
+                                    <input class="form-control" name="inputCollaborator"
+                                        placeholder="Insira o nome do colaborador"
+                                        value="<%=collaborator.collaborator_name%>" required>
+                                    <label for="inputLogin" class='mt-3'>Login <text style="color: red;">*</text>
+                                    </label>
+                                    <input class="form-control" name="inputLogin"
+                                        placeholder="Login de acesso do colaborador" value="<%=collaborator.login%>"
+                                        required>
+                                    <label class="mt-3" for="senha">Senha <text style="color: red;">*</text> </label>
+                                    <input type="password" class="form-control" name="inputPassword" maxlength="4"
+                                        placeholder="Digite uma senha de até 4 digitos" value="****" required>
+                                    <label class="mt-3">Processo <text style="color: red;">*</text> </label>
+                                    <select class="custom-select" name="processSelect" id="processSelectId" required>
+
+                                        <option value="" disabled>Selecione o processo...</option>
+                                        <%processes.forEach(process=> { %>
+                                            <option value="<%=process.id%>">
+                                                <%=process.process_name%>
+                                            </option>
+                                            <%})%>
+
+                                    </select>
+
+                                    <label for="inputWorkTime" class="mt-3">Horario de Trabalho <text
+                                        style="color: red;">*</text> <a type="button" class="item"
+                                        data-toggle="popover"
+                                        data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
+                                        <i class="zmdi zmdi-info"></i> </a>
+                                </label>
+                                    <input type="number" class="form-control" name="inputWorkTime" value="<%=collaborator.work_time%>"
+                                        placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4" step="0.5"
+                                        required>
+                                        
+                                </div>
+                                <button type="submit" class="btn btn-dark">Alterar</button>
+                            </form>
+                            <% if(statusCode==201){%>
+                                <div class="alert alert-success mt-3" role="alert">
+                                    Alterado com sucesso!
+                                </div>
+                                <% } %>
+                                    <% if(statusCode==406){%>
+                                        <div class="alert alert-danger mt-3" role="alert">
+                                            Erro: Login ou Colaborador ja cadastrado.
+                                        </div>
+                                        <% } %>
+                                            <% if(statusCode==409){%>
+                                                <div class="alert alert-danger mt-3" role="alert">
+                                                    Erro: Login ja cadastrado para um Administrador.
+                                                </div>
+                                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include ('../partials/footer.ejs')%>
+                <script>
+
+                    $(function () { //Ativa o formulario
+                        $('#mainDiv').show();
+                        let $select1 = $('#processSelectId'),
+                            $options = $select1.find('option');
+
+                        //CARREGA AS INFORMAÇÕES DO BANCO NOS COMPONENTES
+                        $select1.prop('value', '<%=collaborator.process_id%>').prop(
+                            'selected', //Inicia o select de processo com o valor vindo do banco
+                            true)
+
+                    })
+
+                </script>
+
+                <script>
+
+                    $(function () { //Ativa o formulario
+                        $('#mainDiv').show();
+                        let $select1 = $('#processSelectId'),
+                            $options = $select1.find('option');
+
+                        //CARREGA AS INFORMAÇÕES DO BANCO NOS COMPONENTES
+                        $select1.prop('value', '<%=collaborator.process_id%>').prop(
+                            'selected', //Inicia o select de processo com o valor vindo do banco
+                            true)
+
+                    })
+
+                </script>
+
+
+                </html>

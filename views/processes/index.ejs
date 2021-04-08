@@ -1,0 +1,118 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Gerenciar Processos</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Processos</li>
+                    </ol>
+                    <div class="card mb-4 mt-4">
+                        <div class="card-header h4">
+                            <i class="fas fa-table mr-1"></i>
+                            Processos
+                            <a href="/processos/criar" class="btn btn-dark float-right" role="button">Adicionar
+                                Processo <i class="zmdi zmdi-plus-circle-o-duplicate float-right"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="tabelaProcessos" class="table table-hover" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID PROCESSO</th>
+                                            <th>PROCESSO</th>
+                                            <th>CONTADOR</th>
+                                            <th>AÇÕES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% processes.forEach(process=> {%>
+                                            <%if (process.status == 1) {%> 
+                                            <tr>
+                                                <td>
+                                                    <%=process.id%>
+                                                </td>
+
+                                                <td>
+                                                    <%=process.process_name%>
+                                                </td>
+                                                <td>
+                                                    <%=process.process_counter%>
+                                                </td>
+                                                <td>
+                                                    <div class="table-data-feature float-left">
+                                                        <a href="/processos/editar/<%=process.id%>">
+                                                            <button class="item mr-1" data-toggle="tooltip"
+                                                                data-placement="top" title="Editar">
+                                                                <i class="zmdi zmdi-edit"></i>
+                                                            </button> </a>
+
+                                                        <form id="form" action="/processos/deletar/<%=process.id%>"
+                                                            method="POST" onsubmit="sendForm(event, this)">
+
+                                                            <button class="item mr-1" data-placement="top"
+                                                                title="Deletar" data-toggle="modal"
+                                                                data-target="#modalDelete"
+                                                                onclick="sendDataToModal('<%=process.process_name%>')"
+                                                                target="_blank">
+                                                                <i class="zmdi zmdi-delete"></i>
+                                                            </button>
+
+                                                        </form>
+
+                                                        <button class="item" data-toggle="modal" data-placement="top"
+                                                            title="Mais" data-target="#modalInfo"
+                                                            onclick="modalMore('<%=process.createdAt%>', '<%=process.updatedAt%>')">
+                                                            <i class="zmdi zmdi-more"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <%}%>
+                                            <% }) %>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include ('../partials/footer.ejs')%>
+                <%- include ('../partials/modal.ejs')%>
+
+
+                    <script>
+                        var statusCode = '<%=statusCode%>';
+                        if (statusCode == 406) {
+
+                            $('#modal-title-id3').html('Erro ao Deletar');
+                            $('#modal-body-id3').html('<h5><center>POSSUI ATIVIDADES OU COLABORADORES VINCULADOS A ESTE PROCESSO');
+                            $('#modalDeleteError').modal('show');
+                            setTimeout(function () {
+                                $('#modalDeleteError').modal('hide');
+                            }, 3000); // 3000 = 3 segundos
+
+                        }
+
+                        function sendDataToModal(process) {
+                            $('#modal-title-id1').html('Deletar Processo');
+                            $('#modal-body-id1').html('<h5><center>DELETAR O PROCESSO: <b>' + process + '</b>');
+                        }
+
+                        function sendForm(event, form) {
+                            event.preventDefault();
+                            document.getElementById("btn-confirm").addEventListener("click", function () {
+                                form.submit();
+                            });
+                        }
+
+                        function modalMore(d1, d2) {
+                            $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
+                                "<br><b>" + d2 + '</b>');
+                        }
+                    </script>
+
+                    </html>

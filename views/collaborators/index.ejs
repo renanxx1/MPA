@@ -1,0 +1,98 @@
+<%- include ('../partials/header.ejs')%>
+<%- include ('../partials/navbar.ejs')%>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Gerenciar Colaboradores</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item active">Colaboradores</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header h4">
+                    <i class="fas fa-table mr-1"></i>
+                    Colaboradores
+                    <a href="/colaboradores/criar" class="btn btn-dark float-right" role="button">Adicionar
+                        Colaborador <i class="zmdi zmdi-account-add float-right"></i></a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id='collaboratorTable' class="table table-hover" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID COLABORADOR</th>
+                                    <th>COLABORADOR</th>
+                                    <th>LOGIN</th>
+                                    <th>SENHA</th>
+                                    <th>PROCESSO</th>
+                                    <th>HORARIO DE TRABALHO</th>
+                                    <th>AÇÕES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%collaborators.forEach(collaborator => { %>
+                                    <%if(collaborator.status==1){%> 
+                                <tr>
+                                    <td><%=collaborator.id%></td>
+                                    <td><%=collaborator.collaborator_name%></td>    
+                                    <td><%=collaborator.login%></td>
+                                    <td>******</td>
+                                    <td><%=collaborator.process.process_name%></td>
+                                    <td><%=collaborator.work_time%> horas</td>
+
+                                    <td>
+                                        <div class="table-data-feature float-left">
+                                            <a href="/colaboradores/editar/<%=collaborator.id%>">
+                                                <button class="item mr-1" data-toggle="tooltip" data-placement="top"
+                                                    title="Editar">
+                                                    <i class="zmdi zmdi-edit"></i>
+                                                </button> </a>
+
+                                            <form id="form" action="/colaboradores/deletar/<%=collaborator.id%>"
+                                                method="POST" onsubmit="sendForm(event, this)">
+                                                <button class="item mr-1" data-placement="top" title="Deletar"
+                                                    data-toggle="modal" data-target="#modalDelete"
+                                                    onclick="sendDataToModal('<%=collaborator.collaborator_name%>')">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>
+                                            </form>
+                                            <button class="item" data-toggle="modal" data-placement="top" title="Mais"
+                                                data-target="#modalInfo"
+                                                onclick="modalMore('<%=collaborator.createdAt%>', '<%=collaborator.updatedAt%>')">
+                                                <i class="zmdi zmdi-more"></i>
+                                            </button>
+                                            <%}%>
+                                            <%})%>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include ('../partials/footer.ejs')%>
+    <%- include ('../partials/modal.ejs')%>
+
+    </html>
+    <script>
+        function sendDataToModal(collaborator) {
+            $('#modal-title-id1').html('Deletar Colaborador');
+            $('#modal-body-id1').html('<h5><center>DELETAR O COLABORADOR: <b>' + collaborator);
+        }
+
+        function sendForm(event, form) {
+            event.preventDefault();
+            document.getElementById("btn-confirm").addEventListener("click", function () {
+                form.submit();
+            });
+        }
+
+        function modalMore(d1, d2) {
+            $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
+                "<br><b>" + d2 + '</b>');
+        }
+    </script>

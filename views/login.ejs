@@ -1,0 +1,83 @@
+<%- include ('./partials/header.ejs')%>
+
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+
+      <!-- Icon -->
+      <div class="fadeIn first mb-1">
+        <img src="./assets/img/icon.png" id="icon" alt="User Icon" />
+      </div>
+
+      <!-- Login Form -->
+      <form id="form">
+        <input type="text" class="fadeIn second" name="login" id="loginId" placeholder="login" required>
+        <input type="password" name="password" id="passwordIdLogin" class="fadeIn third" placeholder="password" required>
+        <input type="submit" class="fadeIn fourth " value="ACESSAR" id='login-button'><br>
+        <a style="pointer-events: none; display: inline-block;" id="loading" href="" disabled> ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ
+          ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ</a>
+      </form>
+
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" id="recoverPass" href="#">Esqueceu a senha?</a>
+      </div>
+
+    </div>
+  </div>
+  <form id="formColletor" action="/collector/" method="post"></form>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/scripts.js"></script>
+ <script>
+      var url = "http://" + '<%=internalIp%>' + "/";
+        var url_atual = window.location.href;
+        if (url_atual.includes('localhost')) {
+          window.location.href = url;
+        }
+ </script>
+
+  <script>
+    $('#form').on('submit', function (e) {
+      e.preventDefault();
+      var login = $('#loginId').val();
+      var password = $('#passwordIdLogin').val();
+
+      $.ajax({
+        url: '/authenticate', //selecionando o endereço que iremos acessar no backend
+        type: 'POST', //selecionando o tipo de requesição, PUT,GET,POST,DELETE
+        data: { login: login, password: password },
+        success: function (data) {
+          if (data.result == 0) {
+            window.location.replace('/');
+          } else if (data.login_id) { //collaborator 
+            window.location.replace('/coletor/' + data.process_name);
+          } else if (data.result == 2) { //password 
+            result2();
+          } else { //login 
+            result3();
+          }
+        },
+        error: function (err) { alert("Serviço indisponivel") },
+        beforeSend: function (send) {
+          loading();
+        }
+      })
+    })
+
+    function result2() {
+      $('#passwordIdLogin').css('border', '1px solid red')
+      $('#loginId').css('border', '')
+    }
+
+    function result3() {
+      $('#loginId').css('border', '1px solid red')
+    }
+
+    function loading() {
+      $('#loading').focus();
+      timer = setTimeout(function () {
+        $('#loading').blur();
+      }, 800)
+    }
+
+  </script>
+  </html>

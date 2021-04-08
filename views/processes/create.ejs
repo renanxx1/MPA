@@ -1,0 +1,90 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Criar Processos</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href='/'>Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="/processos">Processos</a></li>
+                        <li class="breadcrumb-item active">Criar</li>
+                    </ol>
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h5 class="card-title">Cadastro de Processos</h5>
+                            <form action="/processos/criar" method="post">
+
+                                <div class="form-group mt-3">
+                                    <label>Nome do Processo <text>*</text> </label>
+                                    <input class="form-control" name="processNameInput"
+                                        placeholder="Digite o nome do processo">
+<!-- 
+                                    <label class="mt-3">Descrição do Processo </label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+
+                                    <label class="mt-3">Contador </label>
+                                    <input class="form-control" name="mainFunctionInput" id="mainFunctionInputId"
+                                        placeholder="Digite o nome para uma variavel deste processo que deseje contar" maxlength="15" disabled>
+
+
+                                    <div class="form-check mt-1">
+                                        <input name="mainFunctionCheckBox" class="form-check-input" type="checkbox"
+                                            id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            Habilitar contador
+                                        </label>
+                                        <a type="button" class="item" data-toggle="popover"
+                                            data-content="Esta opção gera um contador na pagina de coletor. Ex1: No processo de corte é possivel contar quantidade de chapas cortadas. Ex2: No processo de montagem é possivel contar a quantidade de modulos montados."><i
+                                                class="zmdi zmdi-info"></i> </a>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-dark">Cadastrar</button>
+                            </form>
+
+                            <% if(statusCode==201){%>
+                                <div class="alert alert-success mt-3" role="alert">
+                                    Cadastrado com sucesso!
+                                </div>
+                                <% } %>
+                                    <% if(statusCode==406){%>
+                                        <div class="alert alert-danger mt-3" role="alert">
+                                            Erro: Processo já cadastrado.
+                                        </div>
+                                        <% } %>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include ('../partials/footer.ejs')%>
+
+                <script>
+                    $(function () { //Ativa o popover de informações
+                        $('[data-toggle="popover"]').popover();
+                        $('body').on('click', function (e) {
+                            $('[data-toggle=popover]').each(function () {
+                                // hide any open popovers when the anywhere else in the body is clicked
+                                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                    $(this).popover('hide');
+                                }
+                            });
+                        });
+                        $('text').css("color", "red");
+                    })
+
+                    $('#defaultCheck1').change(function () { //função para ao alterar o check 1
+                        if ($('#defaultCheck1').is(":checked")) { //se estiver marcado
+                            $('#mainFunctionInputId').attr('disabled', false) //ira habilitar o check 2
+                            $('#mainFunctionInputId').attr('required', true) //ira habilitar o check 2
+
+                        } else {
+                            $('#mainFunctionInputId').attr('disabled', true) //ira desabilitar o check 2
+                        }
+                    })
+
+                </script>
+
+                </html>

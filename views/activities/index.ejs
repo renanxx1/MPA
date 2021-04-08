@@ -1,0 +1,155 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Gerenciar Atividades</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Atividades</li>
+                    </ol>
+                    <div class="card mb-4 mt-4">
+                        <div class="card-header h4">
+                            <i class="fas fa-table mr-1"></i>
+                            Atividades
+                            <a href="/atividades/criar" class="btn btn-dark float-right" role="button">Adicionar
+                                Atividades <i class="zmdi zmdi-plus-circle-o-duplicate float-right"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="activityTable" class="table table-hover" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID ATIVIDADE</th>
+                                            <th>ATIVIDADE</th>
+                                            <th>GRUPO</th>
+                                            <th>PROCESSO</th>
+                                            <th>AÇÕES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <%activities.forEach(activity=> { %>
+                                                <%if(activity.status==1){%> 
+                                                <td>
+                                                    <%=activity.id%>
+                                                </td>
+                                                <td>
+                                                    <%=activity.activity_name%>
+                                                </td>
+
+                                                <% if(activity.group==null) { %>
+                                                    <td> </td>
+
+                                                    <% } else if (activity.createdAt===activity.group.createdAt) { %>
+                                                        <td>
+                                                            <%=activity.group.group_name%> <text
+                                                                    style="color:red">*</text>
+                                                        </td>
+                                                        <% var agroup=true %>
+
+                                                            <%} else{%>
+                                                                <td>
+                                                                    <%=activity.group.group_name%>
+                                                                </td>
+                                                                <% }%>
+
+                                                                    <td>
+                                                                        <%=activity.process.process_name%>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="table-data-feature float-left">
+                                                                            <a
+                                                                                href="/atividades/editar/<%=activity.id%>">
+                                                                                <button class="item mr-1"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-placement="top" title="Editar">
+                                                                                    <i class="zmdi zmdi-edit"></i>
+                                                                                </button> </a>
+                                                                            <form id="form"
+                                                                                action="/atividades/deletar/<%=activity.id%>"
+                                                                                method="post"
+                                                                                onsubmit="sendForm(event, this)">
+
+                                                                                <%if (agroup==true) { %>
+                                                                                    <button class="item mr-1"
+                                                                                        data-placement="top"
+                                                                                        title="Deletar"
+                                                                                        data-toggle="modal"
+                                                                                        data-target="#modalDelete"
+                                                                                        onclick="sendDataToModal('<%=activity.activity_name%>', '<%=agroup%>')">
+                                                                                        <i class="zmdi zmdi-delete"></i>
+                                                                                    </button>
+
+                                                                                    <% }else{%>
+                                                                                        <button class="item mr-1"
+                                                                                            data-placement="top"
+                                                                                            title="Deletar"
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#modalDelete"
+                                                                                            onclick="sendDataToModal('<%=activity.activity_name%>')">
+                                                                                            <i
+                                                                                                class="zmdi zmdi-delete"></i>
+                                                                                        </button>
+                                                                                        <% }%>
+                                                                            </form>
+
+                                                                            <button class="item" data-toggle="modal"
+                                                                                data-placement="top" title="Mais"
+                                                                                data-target="#modalInfo"
+                                                                                onclick="modalMore('<%=activity.createdAt%>', '<%=activity.updatedAt%>')">
+                                                                                <i class="zmdi zmdi-more"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                        </tr>
+                                        <%}%>
+                                        <% })%>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include ('../partials/footer.ejs')%>
+                <%- include ('../partials/modal.ejs')%>
+
+                    </html>
+
+                    <script>
+                        var statusCode = '<%=statusCode%>';
+                        if (statusCode == 406) {
+                            $('#modal-title-id3').html('Erro ao Deletar');
+                            $('#modal-body-id3').html('<h5><center>POSSUI ATIVIDADES VINCULADAS A ESTE GRUPO');
+                            $('#modalDeleteError').modal('show');
+                            setTimeout(function () {
+                                $('#modalDeleteError').modal('hide');
+                            }, 3000); // 3000 = 3 segundos
+                        }
+
+
+                        function sendDataToModal(activity, agroup) {
+                            $('#modal-title-id1').html('Deletar Atividade');
+                            $('#modal-body-id1').html('<h5><center>DELETAR A ATIVIDADE: <b>' + activity +
+                                '</h5></b> '
+                            );
+                        }
+
+                        function sendForm(event, form) {
+                            event.preventDefault();
+                            document.getElementById("btn-confirm").addEventListener("click", function () {
+                                form.submit();
+                            });
+                        }
+
+                        function modalMore(d1, d2) {
+                            $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
+                                "<br><b>" + d2 + '</b>');
+                        }
+
+
+                    </script>

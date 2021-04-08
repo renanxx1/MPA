@@ -1,0 +1,159 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Criar Atividades</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="/atividades">Atividades</a></li>
+                        <li class="breadcrumb-item active">Criar</li>
+                    </ol>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cadastro de Atividades</h5>
+                            <form action="/atividades/criar" method="post">
+                                <div class="form-group">
+                                    <label class="mt-1">Processo <text>*</text> </label>
+                                    <select class="custom-select" name="processSelect" id="processSelectId" required>
+                                        <option value="" selected disabled>Inserir no processo...</option>
+
+                                        <%processes.forEach(process=> { %>
+                                            <option value="<%=process.id%>">
+                                                <%=process.process_name%>
+                                            </option>
+                                            <%})%>
+                                    </select>
+                                    <label class="mt-3">Nome da Atividade <text>*</text> </label>
+                                    <input class="form-control" name="activityNameInput"
+                                        placeholder="Insira o nome da atividade" maxlength="23" required>
+                                    <!--    <div class="form-check mt-1">
+                                <input name="agroupableCheckBox" class="form-check-input" type="checkbox"
+                                    id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Criar Grupo
+                                </label>
+                                <a type="button" class="item" data-toggle="popover"
+                                    data-content="Esta opção cria um grupo e permite que essa atividade agrupe outras atividades semelhantes. Ex: A atividade de 'Retrabalho' pode agrupar todas as outras causas de retrabalho desse processo."><i
+                                        class="zmdi zmdi-info"></i> </a>
+                            </div> -->
+                                    <label class="mt-3" id="agroupLabel">Agrupar</label>
+                                    <select class="custom-select" name="groupSelect" id="groupSelectId" required>
+                                        <option data-dep="0" value='0' selected disabled>Vincular a atividade...
+                                        </option>
+
+                                        <%activities.forEach(activity=>{ %>
+                                            <option data-dep="<%=activity.process_id%>"
+                                                value="<%= activity.activity_name %>">
+                                                <%= activity.activity_name %>
+                                            </option>
+                                            <% })%>
+
+                                    </select>
+                                    <div class="form-check mt-1">
+                                        <input name="agroupCheckBox" class="form-check-input" type="checkbox"
+                                            id="defaultCheck2">
+                                        <label class="form-check-label" for="defaultCheck2">
+                                            Habilitar
+                                        </label>
+                                        <a type="button" class="item" data-toggle="popover"
+                                            data-content="Esta opção permite vincular a atividade a outra atividade ja cadastrada, criando assim um grupo de atividade semelhantes."><i
+                                                class="zmdi zmdi-info"></i> </a>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dark">Cadastrar</button>
+                            </form>
+
+                            <% if(statusCode==201){%>
+                                <div class="alert alert-success mt-3" role="alert">
+                                    Atividade cadastrada com sucesso!
+                                </div>
+                                <% } %>
+                                    <% if(statusCode==406){%>
+                                        <div class="alert alert-danger mt-3" role="alert">
+                                            Atividade ja cadastrada!
+                                        </div>
+                                        <% } %>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <%- include ('../partials/footer.ejs')%>
+
+                <script>
+                    //ATIVA POPOVERS
+
+                    $(function () { //Ativa o popover de informações
+                        $('[data-toggle="popover"]').popover()
+                        $('body').on('click', function (e) {
+                            $('[data-toggle=popover]').each(function () {
+                                // hide any open popovers when the anywhere else in the body is clicked
+                                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                    $(this).popover('hide');
+                                }
+                            });
+                        });
+
+                        $('text').css("color", "red");
+                        $('$groupSelectId').attr('disabled', true);
+                    })
+
+
+                    //FUNÇÃO DOS SELECTS
+
+                    $(function () {
+                        let $select1 = $('#processSelectId'),
+                            $select2 = $('#groupSelectId'),
+                            $options = $select2.find('option');
+
+                        //Declarações dos select e variavel options para filtrar as opçoes do selelect 2
+                        $select2.attr('disabled', true) //Inicia o select desativado
+
+
+                        $select1.on('change', function () { //Ao alterar o select 1
+                            if ($("#defaultCheck2").is(
+                                ":checked")) { //Confere se o defaultCheck2 (Agrupar) esta marcado
+                                $select2.html($options.filter('[data-dep="' + $select1.val() +
+                                    '"]')); //Filtra os dados do select 2
+                            } else {
+                                $select2.html($options.filter('[data-dep="' + '0' +
+                                    '"]'));
+                            }
+                        })
+
+
+                        /*      //FUNÇÃO DO CHECK 1 (AGRUPAVEL)
+                 
+                             $('#defaultCheck1').change(function () { //função para ao alterar o check 1
+                                 if ($('#defaultCheck1').is(":checked")) { //se estiver marcado
+                                     $('#defaultCheck2').attr('disabled', true) //ira desabilitar o check 2
+                                 } else {
+                                     $('#defaultCheck2').attr('disabled', false) //ira ativar o check 2
+                                 }
+                             }) */
+
+
+                        //FUNÇÃO DO CHECK 2 (AGRUPAR)
+
+                        $("#defaultCheck2").change(function () { //Ao alterar o check Agrupar
+                            if ($('#defaultCheck2').prop("checked")) { //Confere se o check Agrupar esta checado
+                                $('#defaultCheck1').attr('disabled', true) //Desativa o check 1
+                                $select2.attr('disabled', false) // Ativa o select 2
+                                $select2.html($options.filter('[data-dep="' + $select1.val() +
+                                    '"]')); //Filtra os dados do select 2
+
+                            } else { //Caso nao esteja checado
+                                $('#defaultCheck1').attr('disabled', false)
+                                $select2.attr('disabled', true) //Desativa o select
+                                $select2.html($options.filter('[data-dep="' + 0 +
+                                    '"]')) //Altera o valor do select para opção 0
+
+                            }
+                        });
+                    })
+
+
+                </script>
+
+                </html>

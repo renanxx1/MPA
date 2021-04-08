@@ -1,0 +1,95 @@
+
+/* Buttons */
+.btn {
+  font-size: 0.875rem;
+  line-height: 1;
+  font-family: "roboto", sans-serif; }
+  .btn i {
+    margin-right: 0.3125rem;
+    font-size: inherit; }
+  .btn .btn-label:before {
+    font-size: 1rem;
+    line-height: 5px;
+    vertical-align: middle; }
+  .btn .btn-label.btn-label-left {
+    margin-right: 5px; }
+  .btn .btn-label.btn-label-right {
+    margin-left: 5px; }
+  .btn.btn-rounded {
+    border-radius: 50px; }
+  .btn.btn-square {
+    border-radius: 0px; }
+  .btn.btn-icons {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; }
+    .btn.btn-icons i {
+      margin: auto;
+      line-height: initial; }
+  .btn.btn-fw {
+    min-width: 120px; }
+  .btn.icon-btn i {
+    margin-right: 0; }
+  .btn.social-btn {
+    padding: 13px; }
+    .btn.social-btn i {
+      margin-right: 0;
+      font-size: 1rem; }
+  .btn.btn-sm, .btn-group-sm > .btn {
+    font-size: 0.875rem; }
+  .btn.btn-lg, .btn-group-lg > .btn {
+    font-size: 0.875rem; }
+  .btn.btn-xs {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.625rem; }
+  .btn.btn-transparent {
+    background: transparent; }
+  .btn.btn-danger, .btn.btn-info, .btn.btn-success, .btn.btn-teal, .btn.btn-warning {
+    color: #ffffff; }
+  .btn.btn-outline-light {
+    border-color: #d5d5d5;
+    color: #d5d5d5; }
+  .btn.btn-outline-secondary {
+    color: rgba(0, 0, 0, 0.5); }
+  .btn.btn-inverse-secondary {
+    background-color: rgba(221, 228, 235, 0.5);
+    color: rgba(0, 0, 0, 0.5); }
+    .btn.btn-inverse-secondary:hover {
+      color: rgba(0, 0, 0, 0.5); }
+  .btn.btn-inverse-light {
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.5);
+    border-color: #d9d9d9; }
+    .btn.btn-inverse-light:hover {
+      color: rgba(0, 0, 0, 0.5);
+      border-color: #d9d9d9; }
+
+.btn-group {
+  border: 1px solid #dee2e6;
+  border-radius: 0.1875rem; }
+  .btn-group .btn {
+    border-top: none;
+    border-bottom: none;
+    border-left: none; }
+    .btn-group .btn:last-child {
+      border-right: none; }
+    .btn-group .btn.btn-primary {
+      border-color: #128ff2; }
+    .btn-group .btn.btn-secondary {
+      border-color: #d3dce5; }
+    .btn-group .btn.btn-info {
+      border-color: #7e55dd; }
+    .btn-group .btn.btn-warning {
+      border-color: #f0a500; }
+    .btn-group .btn.btn-success {
+      border-color: #17ca8c; }
+    .btn-group .btn.btn-danger {
+      border-color: #ff5449; }
+    .btn-group .btn.btn-dark {
+      border-color: #20263c; }
+    .btn-group .btn.btn-light {
+      border-color: #f3f3f3; }
+
+

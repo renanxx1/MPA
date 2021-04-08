@@ -1,0 +1,51 @@
+<%- include ('../partials/header.ejs')%>
+    <%- include ('../partials/navbar.ejs')%>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Criar Administrador</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="/admin">Admin</a></li>
+                        <li class="breadcrumb-item active">Criar</li>
+                    </ol>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cadastro de Administrador</h5>
+                            <form action="/admin/criar" method="POST">
+                                <div class="form-group">
+                                    <label>Login</label>
+                                    <input type="login" class="form-control" name="login" placeholder="Digite o login"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Senha</label>
+                                    <input type="password" class="form-control" name="password"
+                                        placeholder="Digite uma senha" required>
+                                </div>
+                                <button type="submit" class="btn btn-dark">Cadastrar</button>
+                            </form>
+
+                            <% if(statusCode==201){%>
+                                <div class="alert alert-success mt-3" role="alert">
+                                    Cadastrado com sucesso!
+                                </div>
+                                <% } %>
+                                    <% if(statusCode==406){%>
+                                        <div class="alert alert-danger mt-3" role="alert">
+                                            Erro: Login já cadastrado.
+                                        </div>
+                                        <% } %>
+                                            <% if(statusCode==409){%>
+                                                <div class="alert alert-danger mt-3" role="alert">
+                                                    Erro: Login já cadastrado para um Colaborador.
+                                                </div>
+                                                <% } %>
+
+                        </div>
+                    </div>
+            </main>
+
+            <%- include ('../partials/footer.ejs')%>
+
+                </html>
