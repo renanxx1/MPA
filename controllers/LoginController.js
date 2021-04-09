@@ -1,4 +1,5 @@
 const LoginRepository = require('../repositories/LoginRepository');
+const LoginService = require('../services/LoginService');
 const bcrypt = require('bcryptjs');
 
 class LoginController {
@@ -15,59 +16,8 @@ class LoginController {
     }
 
     async authenticate(req, res) {
-        var login = req.body.login;
-        var password = req.body.password;
-
-        var adminLogin = await LoginRepository.findLoginAdmin(login);
-        var collaboratorLogin = await LoginRepository.findLoginCollaborator(login);
-
-        if (adminLogin) {
-            var passwordResult = await bcrypt.compare(password, adminLogin.password);
-            if (passwordResult) {
-                req.session.user = {
-                    id: adminLogin.id,
-                    login: adminLogin.login,
-                    admin: true
-                }
-                await LoginRepository.updateAdminSession(adminLogin.id, req.sessionID)
-                res.json({
-                    result: 0
-                })
-
-            } else {
-                res.json({
-                    result: 2
-                })
-            }
-
-        } else if (collaboratorLogin) {
-            var passwordResult = await bcrypt.compare(password, collaboratorLogin.password);
-            if (passwordResult) {
-                req.session.user = {
-                    id: collaboratorLogin.id,
-                    collaborator_name: collaboratorLogin.collaborator_name,
-                    login: collaboratorLogin.login,
-                    process_id: collaboratorLogin.process_id,
-                    process_name: collaboratorLogin.process.dataValues.process_name,
-                    admin: false
-                }
-                await LoginRepository.updateCollaboratorSession(collaboratorLogin.id, req.sessionID)
-                res.json({
-                    login_id: collaboratorLogin.id,
-                    process_name: collaboratorLogin.process.dataValues.process_name.toLowerCase()
-                })
-
-            } else {
-                res.json({
-                    result: 2
-                })
-            }
-
-        } else {
-            res.json({
-                result: 3
-            })
-        }
+        return await
+            LoginService.authenticate(req, res, req.body.login, req.body.password)
     }
 }
 
