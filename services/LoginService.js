@@ -3,13 +3,13 @@ const bcrypt = require('bcryptjs');
 
 class LoginService {
 
-    async authenticate(req, res, login, password) {
+    async authenticate(req, res) {
 
-        var adminLogin = await LoginRepository.findLoginAdmin(login);
-        var collaboratorLogin = await LoginRepository.findLoginCollaborator(login);
+        var adminLogin = await LoginRepository.findLoginAdmin(req.body.login);
+        var collaboratorLogin = await LoginRepository.findLoginCollaborator(req.body.login);
 
         if (adminLogin) {
-            var passwordResult = await bcrypt.compare(password, adminLogin.password);
+            var passwordResult = await bcrypt.compare(req.body.password, adminLogin.password);
             if (passwordResult) {
                 req.session.user = {
                     id: adminLogin.id,
@@ -28,7 +28,7 @@ class LoginService {
             }
 
         } else if (collaboratorLogin) {
-            var passwordResult = await bcrypt.compare(password, collaboratorLogin.password);
+            var passwordResult = await bcrypt.compare(req.body.password, collaboratorLogin.password);
             if (passwordResult) {
                 req.session.user = {
                     id: collaboratorLogin.id,
