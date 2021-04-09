@@ -27,7 +27,6 @@ class ActivityService {
     async activityCreatePost(activity_name, process_id, agroup, group_name) {
         try {
             var activityName = await ActivityRepository.findActivityByNameAndProcess(activity_name, process_id);
-            console.log(activityName)
             if (activityName == null) {
 
                 if (agroup) {

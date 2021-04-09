@@ -63,7 +63,6 @@
             var url = url_atual[2];
             var socket = io(url);
             socket.on('adminOn', (data) => {
-                console.log(data)
                 $('#userLogged').html(data.admin_id)
             })
         </script>

@@ -248,6 +248,7 @@
                     }],
                 },
                 options: {
+                    events: ["click", "mouseout"],
                     plugins: {
                         datalabels: {
                             anchor: 'end',
@@ -268,6 +269,7 @@
                     },
                     responsive: true,
                     tooltips: {
+
                         callbacks: {
                             title: function (tooltipItem, data) {
                                 return data['labels'][tooltipItem[0]['index']];
@@ -681,6 +683,7 @@
                 myBarChart.data.labels = []
                 myBarChart.data.datasets[0].data = []
                 myBarChart.data.datasets[0].backgroundColor = 'rgba(2,117,216,1)';
+                myBarChart.data.datasets[0].hoverBackgroundColor = 'rgba(2,117,216,1)'
 
                 myLineChart.data.labels = []
                 myLineChart.data.datasets[0].data = []
@@ -689,9 +692,20 @@
                 myPieChart.data.datasets[0].data = []
 
                 dataChart(1);
-
+console.log(myBarChart.data.datasets[0]._meta[0].data)
             });
 
+          
+    
 
+          /*   $('body').on('click', function(){
+                console.log(  myBarChart.options.tooltips.enabled)
+                myBarChart.options.tooltips.enabled =  false;
+         
+                setTimeout(function (){
+                    myBarChart.options.tooltips.enabled =  true;
+
+                },1000)
+            }) */
 
         </script>

@@ -68,7 +68,6 @@ class ActivityRepository {
 
 
     async findActivityByNameAndProcessAndId(activity_name, process_id, id) {
-        console.log(activity_name)
         return await
             Activity.findOne({
                 where: {
