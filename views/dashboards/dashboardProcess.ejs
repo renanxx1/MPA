@@ -128,7 +128,7 @@
                     <div id="divNoData" class="mx-auto text-center mb-0 mt-0" style="display: none;">
                         <br>
                         <h3>Sem dados disponiveis nesta data</h3>
-                       <img class="img-fluid mb-4" src="../../assets/img/nodata.png" >
+                        <img class="img-fluid mb-4" src="../../assets/img/nodata.png">
                     </div>
 
                 </div>
@@ -160,6 +160,9 @@
                     dataChart(1);
                 })
      */
+
+
+
             function dataChart(action) {
                 var date1 = $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
                 var date2 = $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
@@ -479,7 +482,7 @@
 
                     $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
-  
+
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
                     myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
                         let max = null

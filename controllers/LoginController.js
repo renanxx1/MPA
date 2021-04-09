@@ -79,6 +79,10 @@ io.on("connection", async function (socket) {
             io.emit('collaboratorOn', {
                 collaborator_id: socket.handshake.session.user.id
             })
+        } else if (socket.handshake.session.user.admin == true) {
+            io.emit('adminOn', {
+                admin_id: socket.handshake.session.user.login
+            })
         }
     } catch (error) {
         return error;
