@@ -13,11 +13,14 @@ class AdminRepository {
             });
     }
 
-    async findOne(login) {
+    async findOne(login, id) {
         return await
             Admin.findOne({
                 where: {
-                    login: login
+                    [Op.and]:[{
+                        login: login,
+                        id: { [Op.not]: id },
+                    }],
                 }
             })
     }
@@ -25,7 +28,10 @@ class AdminRepository {
     async findCollaboratorByLogin(login) {
         return await Collaborator.findOne({
             where: {
-                login: login
+                [Op.and]: [{
+                    login: login,
+                    status: true
+                }]
             }
         })
     }
@@ -93,7 +99,7 @@ class AdminRepository {
             Admin.findByPk(id);
     }
 
-  
+
 
 }
 

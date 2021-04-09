@@ -24,22 +24,7 @@
                                 <div class="form-group">
                                     <label id="labelSenha">Senha</label>
                                     <input type="password" class="form-control" name="password" placeholder="*********"
-                                        id="passwordId" disabled>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
-                                        value="option1" onchange="bloquearInput()" checked>
-                                    <label class="form-check-label" for="gridRadios1">
-                                        Login
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
-                                        value="option2" onchange="bloquearInput()">
-                                    <label class="form-check-label" for="gridRadios2">
-                                        Senha
-                                    </label>
+                                        id="passwordId">
                                 </div>
 
                                 <button type="submit" class="btn btn-dark mt-2" id="btnAlterar"
@@ -58,7 +43,7 @@
                                         <% } %>
                                             <% if(statusCode==409){%>
                                                 <div class="alert alert-danger mt-3" role="alert">
-                                                    Erro: Login já cadastrado para um Colaborador.
+                                                    Erro: Login ja cadastrado.
                                                 </div>
                                                 <% } %>
 
@@ -68,21 +53,7 @@
 
 
             <script>
-                function bloquearInput() {
-                    if (document.getElementById('gridRadios1').checked == true) {
-                        document.getElementById('loginId').disabled = false
-                        document.getElementById('passwordId').disabled = true
-
-                    } else if (document.getElementById('gridRadios2').checked == true) {
-                        document.getElementById('loginId').disabled = true
-                        document.getElementById('passwordId').disabled = false
-                    }
-                }
-
-                function removerAttr() {
-                    $('#loginId').removeAttr("disabled");
-                    $('#passwordId').removeAttr("disabled");
-                }
+          
             </script>
 
             <%- include ('../partials/footer.ejs')%>
