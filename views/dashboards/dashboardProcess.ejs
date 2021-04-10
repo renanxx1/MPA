@@ -72,6 +72,7 @@
                     </div>
 
                     <div id="mainDiv" class="row">
+
                         <div class="col-xl-6">
                             <div class="card mb-4">
                                 <div id="processCounter" class="card-header mb-2">
@@ -93,7 +94,7 @@
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Produtividade
                                 </div>
-                                <canvas id="myPieChart" width="132%" height="50"></canvas>
+                                <canvas id="myPieChart" height="200%"></canvas>
                                 <div class="card-footer text-center mt-2">
                                     <h2 id="efficiencyValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
@@ -145,7 +146,7 @@
         <script src="/js/daterangepicker.min.js"></script>
         <script src="/datepicker/datepicker.js"></script>
         <script src="/assets/chart/Chart.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+        <script src="/assets/chart/chartjs-plugin-datalabels.min.js"></script>
 
 
         <script>
@@ -156,12 +157,6 @@
         </script>
 
         <script>
-            /*     $(function () {
-                    dataChart(1);
-                })
-     */
-
-
 
             function dataChart(action) {
                 var date1 = $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -247,9 +242,21 @@
                         hoverBackgroundColor: []
                     }],
                 },
+                plugins: [ChartDataLabels],
                 options: {
-                    events: ["click", "mouseout"],
                     plugins: {
+                        legend:{
+                            display:false
+                        },
+                        tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                console.log(tooltipItem.raw)
+                                return new Date(tooltipItem.raw * 1000).toISOString().substr(11,
+                                        8);
+                            },
+                        },
+                    },
                         datalabels: {
                             anchor: 'end',
                             align: 'top',
@@ -268,29 +275,16 @@
                         }
                     },
                     responsive: true,
-                    tooltips: {
-
-                        callbacks: {
-                            title: function (tooltipItem, data) {
-                                return data['labels'][tooltipItem[0]['index']];
-                            },
-                            label: function (tooltipItem, data) {
-                                return new Date(parseInt(data['datasets'][0]['data'][tooltipItem[
-                                    'index']]) * 1000).toISOString().substr(11,
-                                        8);
-                            },
-                        },
-                    },
                     scales: {
-                        xAxes: [{
+                        x: {
                             time: {
                                 unit: 'month'
                             },
                             gridLines: {
                                 display: false
                             },
-                        }],
-                        yAxes: [{
+                        },
+                        y: {
                             ticks: {
                                 min: 0,
                                 suggestedMax: 36000,
@@ -300,11 +294,8 @@
                                     return convert(label);
                                 },
                             },
-                        }],
+                        },
                     },
-                    legend: {
-                        display: false
-                    }
                 }
             });
 
@@ -331,39 +322,39 @@
                         data: [],
                     }],
                 },
+                plugins: [ChartDataLabels],
                 options: {
+                    responsive:true,
                     plugins: {
+                        legend:{
+                            display:false
+                        },
                         datalabels: {
                             display: false,
                         },
                     },
                     scales: {
-                        xAxes: [{
+                        x: {
                             time: {
                                 unit: 'date'
                             },
                             gridLines: {
                                 display: false
                             },
-                            /*   ticks: {
-                                  maxTicksLimit: 7
-                              } */
-                        }],
-                        yAxes: [{
+                        },
+                        y: {
+                            beginAtZero: true,
                             ticks: {
                                 min: 0,
                                 suggestedMax: 30,
                                 maxTicksLimit: 5,
-                                beginAtZero: true
+                             
                             },
                             gridLines: {
                                 color: "rgba(0, 0, 0, .125)",
                             }
-                        }],
+                        },
                     },
-                    legend: {
-                        display: false
-                    }
                 }
             });
 
@@ -378,12 +369,28 @@
                     datasets: [{
                         data: [],
                         backgroundColor: ['rgb(70, 952, 0)', 'rgba(2,117,216,1)'],
-                        hoverBackgroundColor: ['rgb(80, 952, 0)', 'rgba(5,117,216,1)']
+                        hoverBackgroundColor: ['rgb(70, 952, 0)', 'rgba(2,117,216,1)']
                     }],
                 },
+                plugins: [ChartDataLabels],
                 options: {
-                    responsive: true,
+                    responsive: false,
                     plugins: {
+                        tooltip: {
+                        callbacks: {
+                                title: function(tooltipItem, data){
+                              return tooltipItem[0].label
+                                 },
+                            label: function (tooltipItem, data) {
+                                var totalNumberOfSeconds = tooltipItem.raw;
+                                var hours = parseInt(totalNumberOfSeconds / 3600);
+                                var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
+                                var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
+                                var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                                return result
+                            },
+                        },
+                    },
                         datalabels: {
                             align: 'center',
                             color: 'black',
@@ -399,23 +406,6 @@
                                 weight: 'bold'
                             }
                         }
-                    },
-                    responsive: true,
-                    tooltips: {
-                        callbacks: {
-                            title: function (tooltipItem, data) {
-                                return data['labels'][tooltipItem[0]['index']];
-                            },
-                            label: function (tooltipItem, data) {
-                                var totalNumberOfSeconds = parseInt(data['datasets'][0]['data'][tooltipItem[
-                                    'index']]);
-                                var hours = parseInt(totalNumberOfSeconds / 3600);
-                                var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
-                                var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
-                                var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                                return result
-                            },
-                        },
                     },
                 }
             });
@@ -460,15 +450,15 @@
                     myBarChart.data.datasets[0].data.push(seconds);
 
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
-                    myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
+          /*           myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
                         let max = null
                         let min = null
                         dataset.data.forEach((value, index) => {
                             max = max === null ? value : Math.max(max, value)
                             min = min === null ? value : Math.min(min, value)
                         })
-                        myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100;
-                    })
+                        myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; 
+                    })*/
                     myBarChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -486,7 +476,7 @@
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
-                    myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
+           /*          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
                         let max = null
                         let min = null
                         dataset.data.forEach((value, index) => {
@@ -494,21 +484,21 @@
                             min = min === null ? value : Math.min(min, value)
                         })
                         myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
-                    })
+                    }) */
                     myLineChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE PIZZA - 3
-
+                    myPieChart.data.datasets[0].data = []; //Zerando data pois esta retornando NaN
                     var soma = 0;
                     data.chronometers.forEach(element => {
                         var a = convertToTimeFormat(element.total_time).split(':');
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                         soma = soma + seconds;
                     })
-
+         
                     var work_time = data.chronometers[0].sum_work_time * 3600;
                     var efficiency = (soma / work_time) * 100;
 
@@ -516,11 +506,9 @@
                     myPieChart.data.datasets[0].data.push(soma, work_time)
 
                     myPieChart.update();
-                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
-
+                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%"); 
                     /*-----------------------------------------------------------------------------------------------------------*/
                 }
-
             })
 
 
@@ -538,15 +526,15 @@
                         myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
 
                         //Controle de escala Y do grafico, escala se baseia no maximo valor
-                        myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
+       /*                  myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
                             let max = null
                             let min = null
                             dataset.data.forEach((value, index) => {
                                 max = max === null ? value : Math.max(max, value)
                                 min = min === null ? value : Math.min(min, value)
                             })
-                            myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max + 1;
-                        })
+                            myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max + 1; */
+                     /*    }) */
                         myLineChart.update();
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -558,7 +546,7 @@
                     var hoverColor = []
                     myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
                         backColor.push('rgba(2,117,216,1)');
-                        hoverColor.push('rgba(2,117,316,30)');
+                        hoverColor.push('rgba(3,117,216,1)');
                     })
 
                     //Altera cor da barra que esta rodando
@@ -576,18 +564,18 @@
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
 
                         myBarChart.data.datasets[0].data[index] = seconds;
-                        myBarChart.data.datasets[0].backgroundColor[index] = ['rgb(70, 952, 0)'];
-                        myBarChart.data.datasets[0].hoverBackgroundColor[index] = ['rgb(100, 952, 0)'];
+                        myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
+                        myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
 
-                        myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
+                   /*      myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
                             let max = null
                             let min = null
                             dataset.data.forEach((value, index) => {
                                 max = max === null ? value : Math.max(max, value)
                                 min = min === null ? value : Math.min(min, value)
                             })
-                            myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100;
-                        })
+                            myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; */
+                       /*  }) */
                         myBarChart.update()
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -597,21 +585,21 @@
                     //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
                     if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
 
+
                         if (newDataChart.activity_id != null) {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
-
+                            
                             var work_time = newDataChart.work_time * 3600;
                             var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
                             $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%")
+                            myPieChart.update()
+                       
                         }
-                        myPieChart.update()
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
                 }
 
             })
-
-
 
 
 
@@ -624,25 +612,15 @@
                     })
 
                     for (var i = 0; i < myBarChart.data.labels.length; i++) {
-                        myBarChart.data.datasets[0].backgroundColor[i] = ['rgb(2,117,216,1)'];
-                        myBarChart.data.datasets[0].hoverBackgroundColor[i] = ['rgb(2,117,216,1)'];
+                        myBarChart.data.datasets[0].backgroundColor[i] = 'rgb(2,117,216,1)';
+                        myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgb(2,117,216,1)';
                     }
                     myBarChart.update()
                 }
             })
 
 
-
-
         </script>
-
-
-
-
-
-
-
-
 
 
         <script>
@@ -676,23 +654,21 @@
 
         <script>
 
-
-
             $('#btnDate').bind('DOMNodeInserted', function (e) {
 
                 myBarChart.data.labels = []
                 myBarChart.data.datasets[0].data = []
-                myBarChart.data.datasets[0].backgroundColor = 'rgba(2,117,216,1)';
-                myBarChart.data.datasets[0].hoverBackgroundColor = 'rgba(2,117,216,1)'
+           
+                myBarChart.data.datasets[0].backgroundColor = ['rgba(2,117,216,1)'];
+                myBarChart.data.datasets[0].hoverBackgroundColor = ['rgba(2,117,216,1)'];
 
                 myLineChart.data.labels = []
                 myLineChart.data.datasets[0].data = []
 
                 myPieChart.data.labels = []
-                myPieChart.data.datasets[0].data = []
+                myPieChart.data.datasets[0].data[0] = []
 
                 dataChart(1);
-console.log(myBarChart.data.datasets[0]._meta[0].data)
             });
 
           
