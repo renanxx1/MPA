@@ -103,12 +103,12 @@
 
                         </div>
 
-                        <div class="col">
+                        <div class="col-xl-12">
                             <div class="card mb-4">
-                                <div class="card-header">
+
+                                <div class="card-header mb-2">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Tempo das Atividades
-
                                     <div class="float-right">
                                         <div class="btn-group btn-toggle">
                                             <button onclick="buttonOnOff()" id="buttonOn" class="btn btn-xs btn-primary"
@@ -118,10 +118,11 @@
                                                 class="btn btn-xs btn-default" data-toggle="tooltip"
                                                 data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
                                         </div>
-
                                     </div>
                                 </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                <div class="card-body">
+                                    <canvas id="myBarChart" width="100%" height="40"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -244,19 +245,21 @@
                 },
                 plugins: [ChartDataLabels],
                 options: {
+                    responsive: true,
+
                     plugins: {
-                        legend:{
-                            display:false
+                        legend: {
+                            display: false
                         },
                         tooltip: {
-                        callbacks: {
-                            label: function (tooltipItem, data) {
-                                console.log(tooltipItem.raw)
-                                return new Date(tooltipItem.raw * 1000).toISOString().substr(11,
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    console.log(tooltipItem.raw)
+                                    return new Date(tooltipItem.raw * 1000).toISOString().substr(11,
                                         8);
+                                },
                             },
                         },
-                    },
                         datalabels: {
                             anchor: 'end',
                             align: 'top',
@@ -274,7 +277,6 @@
                             }
                         }
                     },
-                    responsive: true,
                     scales: {
                         x: {
                             time: {
@@ -324,10 +326,10 @@
                 },
                 plugins: [ChartDataLabels],
                 options: {
-                    responsive:true,
+                    responsive: true,
                     plugins: {
-                        legend:{
-                            display:false
+                        legend: {
+                            display: false
                         },
                         datalabels: {
                             display: false,
@@ -348,7 +350,7 @@
                                 min: 0,
                                 suggestedMax: 30,
                                 maxTicksLimit: 5,
-                             
+
                             },
                             gridLines: {
                                 color: "rgba(0, 0, 0, .125)",
@@ -377,20 +379,20 @@
                     responsive: false,
                     plugins: {
                         tooltip: {
-                        callbacks: {
-                                title: function(tooltipItem, data){
-                              return tooltipItem[0].label
-                                 },
-                            label: function (tooltipItem, data) {
-                                var totalNumberOfSeconds = tooltipItem.raw;
-                                var hours = parseInt(totalNumberOfSeconds / 3600);
-                                var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
-                                var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
-                                var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                                return result
+                            callbacks: {
+                                title: function (tooltipItem, data) {
+                                    return tooltipItem[0].label
+                                },
+                                label: function (tooltipItem, data) {
+                                    var totalNumberOfSeconds = tooltipItem.raw;
+                                    var hours = parseInt(totalNumberOfSeconds / 3600);
+                                    var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
+                                    var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
+                                    var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                                    return result
+                                },
                             },
                         },
-                    },
                         datalabels: {
                             align: 'center',
                             color: 'black',
@@ -450,15 +452,15 @@
                     myBarChart.data.datasets[0].data.push(seconds);
 
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
-          /*           myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
-                        let max = null
-                        let min = null
-                        dataset.data.forEach((value, index) => {
-                            max = max === null ? value : Math.max(max, value)
-                            min = min === null ? value : Math.min(min, value)
-                        })
-                        myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; 
-                    })*/
+                    /*           myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
+                                  let max = null
+                                  let min = null
+                                  dataset.data.forEach((value, index) => {
+                                      max = max === null ? value : Math.max(max, value)
+                                      min = min === null ? value : Math.min(min, value)
+                                  })
+                                  myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; 
+                              })*/
                     myBarChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -476,15 +478,15 @@
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
-           /*          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
-                        let max = null
-                        let min = null
-                        dataset.data.forEach((value, index) => {
-                            max = max === null ? value : Math.max(max, value)
-                            min = min === null ? value : Math.min(min, value)
-                        })
-                        myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
-                    }) */
+                    /*          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
+                                 let max = null
+                                 let min = null
+                                 dataset.data.forEach((value, index) => {
+                                     max = max === null ? value : Math.max(max, value)
+                                     min = min === null ? value : Math.min(min, value)
+                                 })
+                                 myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
+                             }) */
                     myLineChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -498,7 +500,7 @@
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                         soma = soma + seconds;
                     })
-         
+
                     var work_time = data.chronometers[0].sum_work_time * 3600;
                     var efficiency = (soma / work_time) * 100;
 
@@ -506,7 +508,7 @@
                     myPieChart.data.datasets[0].data.push(soma, work_time)
 
                     myPieChart.update();
-                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%"); 
+                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
                     /*-----------------------------------------------------------------------------------------------------------*/
                 }
             })
@@ -526,15 +528,8 @@
                         myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
 
                         //Controle de escala Y do grafico, escala se baseia no maximo valor
-       /*                  myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
-                            let max = null
-                            let min = null
-                            dataset.data.forEach((value, index) => {
-                                max = max === null ? value : Math.max(max, value)
-                                min = min === null ? value : Math.min(min, value)
-                            })
-                            myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max + 1; */
-                     /*    }) */
+                        var max = Math.max.apply(Math, (myLineChart.data.datasets[0].data))
+                        myLineChart.options.scales.y.ticks.suggestedMax = max + 1;
                         myLineChart.update();
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -553,6 +548,7 @@
                     myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
                     myBarChart.data.datasets[0].backgroundColor = backColor;
 
+
                     //Localiza o indice da barra que esta rodando
                     var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
 
@@ -567,15 +563,9 @@
                         myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
                         myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
 
-                   /*      myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
-                            let max = null
-                            let min = null
-                            dataset.data.forEach((value, index) => {
-                                max = max === null ? value : Math.max(max, value)
-                                min = min === null ? value : Math.min(min, value)
-                            })
-                            myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; */
-                       /*  }) */
+
+                        var max = Math.max.apply(Math, (myBarChart.data.datasets[0].data))
+                        myBarChart.options.scales.y.ticks.suggestedMax = max + 100
                         myBarChart.update()
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -588,12 +578,12 @@
 
                         if (newDataChart.activity_id != null) {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
-                            
+
                             var work_time = newDataChart.work_time * 3600;
                             var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
                             $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%")
                             myPieChart.update()
-                       
+
                         }
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -655,10 +645,11 @@
         <script>
 
             $('#btnDate').bind('DOMNodeInserted', function (e) {
+                /*   alert(screen.height + " " +screen.width) */
 
                 myBarChart.data.labels = []
                 myBarChart.data.datasets[0].data = []
-           
+
                 myBarChart.data.datasets[0].backgroundColor = ['rgba(2,117,216,1)'];
                 myBarChart.data.datasets[0].hoverBackgroundColor = ['rgba(2,117,216,1)'];
 
@@ -671,17 +662,7 @@
                 dataChart(1);
             });
 
-          
-    
 
-          /*   $('body').on('click', function(){
-                console.log(  myBarChart.options.tooltips.enabled)
-                myBarChart.options.tooltips.enabled =  false;
-         
-                setTimeout(function (){
-                    myBarChart.options.tooltips.enabled =  true;
-
-                },1000)
-            }) */
+// myBarChart.options.scales.x.display=false;
 
         </script>
