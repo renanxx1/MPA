@@ -20,15 +20,9 @@ const Process_Counter = connection.define("processes_counter", {
     },
     createdAt: {
         type: Sequelize.DATEONLY,
-        get() {
-            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
-        }
     },
     updatedAt: {
         type: Sequelize.DATE,
-        get() {
-            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
-        }
     }
 });
 

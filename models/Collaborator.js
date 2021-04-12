@@ -37,15 +37,9 @@ const Collaborator = connection.define("collaborator", {
     }, 
     createdAt: {
         type: Sequelize.DATE,
-        get() {
-            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
-        }
     },
     updatedAt: {
         type: Sequelize.DATE,
-        get() {
-            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
-        }
     },
     status: {
         type: Sequelize.BOOLEAN,

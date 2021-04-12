@@ -126,7 +126,10 @@ class CollectorRepository {
                 where: {
                     [Op.and]: [{
                         collaborator_id: collaborator_id,
-                        createdAt: moment().format('YYYY-MM-DD')
+                        createdAt: moment().format('YYYY-MM-DD'),
+                        activity_id: {
+                            [Op.not]: null
+                        }
                     }]
                 },
             })

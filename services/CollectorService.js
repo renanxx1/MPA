@@ -35,18 +35,25 @@ class CollectorController {
             var activities = await CollectorRepository.findActivityByProcessId(req.session.user.process_id);
             var activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id)
             var groups = await CollectorRepository.findGroups(req.session.user.process_id);
+            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
             var mainFunction;
 
             //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
-            if (activitiesAndChronometers[0] == null || activitiesAndChronometers == null) {
+            if (activitiesAndChronometers[0] == null && idleTime==null) {
                 for await (const activity of activities) {
                     await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id);
                 }
+                console.log('conferencia primeiro if')
                 await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id);
             }
 
+
+            console.log(Object.keys(activities).length)
+            console.log(Object.keys(activitiesAndChronometers).length)
+
             //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
             if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
+                console.log('CONFERENCIA IF QUANTIDADE DIF')
                 var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id)
                 var newActivities = [];
 
@@ -60,6 +67,7 @@ class CollectorController {
 
                 //Cria os cronometros no banco de dados
                 for await (const newActivity of newActivities) {
+                    console.log('CONFERENCIA FOR NEW ACTIVITY')
                     await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, newActivity.id, collaborator.id);
                 }
             }

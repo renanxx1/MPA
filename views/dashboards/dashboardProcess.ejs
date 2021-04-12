@@ -16,9 +16,7 @@
                     </h5>
 
                     <div class="row page-title-header">
-                        <div class="col-12">
-                            <div class="page-header mb-1 mt-0">
-                            </div>
+                        <div class="page-header mb-1 mt-0">
                         </div>
 
                         <div class="col-md-12">
@@ -28,10 +26,13 @@
                             <div class="page-header-toolbar">
 
                                 <div class="btn-group toolbar-item" role="group" aria-label="Basic example">
-                                    <button type="button" id="btnLastDate" class="btn btn-secondary"><i
+
+                                    <button type="button" id="btnLastDate" class="btn btn-secondary rounded"><i
                                             class="mdi mdi-chevron-left"></i></button>
+
                                     <button type="button" id="btnDate" name="date" class="btn btn-secondary"></button>
-                                    <button type="button" id="btnNextDate" class="btn btn-secondary"><i
+
+                                    <button type="button" id="btnNextDate" class="btn btn-secondary rounded"><i
                                             class="mdi mdi-chevron-right"></i></button>
                                     <br>
 
@@ -62,7 +63,7 @@
                                         data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">Exportar</button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="#">Exportar para PDF</a>
+                                        <a id="pdf" class="dropdown-item" href="#">Exportar para PDF</a>
                                         <a class="dropdown-item" href="#">Exportar para Excel</a>
                                     </div>
                                 </div>
@@ -93,8 +94,24 @@
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Produtividade
+
+
+                                    <button type="button" class="btn btn-default btn-sm dropdown float-right "
+                                        data-toggle="dropdown"> <i class="mx-auto zmdi zmdi-filter-list"></i>
+                                    </button>
+
+                                    <ul id="filterList" class="dropdown-menu checkbox-menu allow-focus">
+                                        <!-- 
+                                        <li class="small">
+                                            <label>
+                                                <input type="checkbox" value="Cheese">
+                                            </label>
+                                        </li> -->
+
+                                    </ul>
                                 </div>
-                                    <canvas id="myPieChart"></canvas>
+
+                                <canvas id="myPieChart"></canvas>
                                 <div class="card-footer text-center mt-2">
                                     <h2 id="efficiencyValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
@@ -254,7 +271,6 @@
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem, data) {
-                                    console.log(tooltipItem.raw)
                                     return new Date(tooltipItem.raw * 1000).toISOString().substr(11,
                                         8);
                                 },
@@ -434,11 +450,8 @@
 
 
 
-
-
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE BARRAS - 1
-
 
                     data.chronometers.forEach(element => {
                         var a = convertToTimeFormat(element.total_time).split(':'); //atividades
@@ -452,17 +465,10 @@
                     myBarChart.data.labels.push("Tempo Ocioso");
                     myBarChart.data.datasets[0].data.push(seconds);
 
-                    //Controle de escala Y do grafico, escala se baseia no maximo valor
-                    /*           myBarChart.data.datasets.forEach((dataset, datasetIndex) => {
-                                  let max = null
-                                  let min = null
-                                  dataset.data.forEach((value, index) => {
-                                      max = max === null ? value : Math.max(max, value)
-                                      min = min === null ? value : Math.min(min, value)
-                                  })
-                                  myBarChart.options.scales.yAxes[0].ticks.suggestedMax = max + 100; 
-                              })*/
-                    myBarChart.update();
+                    /*              //Controle de escala Y do grafico, escala se baseia no maximo valor
+                                 var max = Math.max.apply(Math, (myBarChart.data.datasets[0].data))
+                                 myBarChart.options.scales.y.ticks.max = parseFloat(max + 1000) */
+                    myBarChart.update()
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
@@ -479,24 +485,19 @@
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
                     //Controle de escala Y do grafico, escala se baseia no maximo valor
-                    /*          myLineChart.data.datasets.forEach((dataset, datasetIndex) => {
-                                 let max = null
-                                 let min = null
-                                 dataset.data.forEach((value, index) => {
-                                     max = max === null ? value : Math.max(max, value)
-                                     min = min === null ? value : Math.min(min, value)
-                                 })
-                                 myLineChart.options.scales.yAxes[0].ticks.suggestedMax = max;
-                             }) */
+                    var max = Math.max.apply(Math, (myLineChart.data.datasets[0].data))
+                    myLineChart.options.scales.y.ticks.suggestedMax = max + 100
                     myLineChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
                     /*-----------------------------------------------------------------------------------------------------------*/
-                    //CARREGANDO DADOS NO GRAFICO DE PIZZA - 3
+                    //CARREGANDO DADOS NO GRAFICO DE TORTA - 3
                     myPieChart.data.datasets[0].data = []; //Zerando data pois esta retornando NaN
                     var soma = 0;
+
                     data.chronometers.forEach(element => {
+                        $('#filterList').append('<li class="small"><label> <input type="checkbox" + data-value=" ' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
                         var a = convertToTimeFormat(element.total_time).split(':');
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                         soma = soma + seconds;
@@ -510,11 +511,28 @@
 
                     myPieChart.update();
                     $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+
+
+                    //Botao de filtrar
+                    $('.dropdown-menu li input').on('click', function (event) {
+
+                        var index = myBarChart.data.labels.indexOf($(this).val());
+                        var value = myBarChart.data.datasets[0].data[index];
+
+                        if ($(this).prop('checked') == true) {
+                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
+                        } else {
+                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
+                        }
+
+                        var efficiency = (myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1]) * 100;
+                        $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+                        myPieChart.update();
+
+                    })
                     /*-----------------------------------------------------------------------------------------------------------*/
                 }
             })
-
-
 
 
             //Sempre que houver novos dados, atualiza o grafico
@@ -527,10 +545,6 @@
 
                         $('#processCounterValue').html("Total " + newDataChart.process_counter_name + " " + newDataChart.process_counter)
                         myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
-
-                        //Controle de escala Y do grafico, escala se baseia no maximo valor
-                        var max = Math.max.apply(Math, (myLineChart.data.datasets[0].data))
-                        myLineChart.options.scales.y.ticks.suggestedMax = max + 1;
                         myLineChart.update();
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -549,7 +563,6 @@
                     myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
                     myBarChart.data.datasets[0].backgroundColor = backColor;
 
-
                     //Localiza o indice da barra que esta rodando
                     var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
 
@@ -564,9 +577,6 @@
                         myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
                         myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
 
-
-                        var max = Math.max.apply(Math, (myBarChart.data.datasets[0].data))
-                        myBarChart.options.scales.y.ticks.suggestedMax = max + 100
                         myBarChart.update()
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
@@ -575,7 +585,6 @@
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
                     if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
-
 
                         if (newDataChart.activity_id != null) {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
@@ -589,9 +598,7 @@
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
                 }
-
             })
-
 
 
 
@@ -648,17 +655,19 @@
             $('#btnDate').bind('DOMNodeInserted', function (e) {
                 /*   alert(screen.height + " " +screen.width) */
 
-                myBarChart.data.labels = []
-                myBarChart.data.datasets[0].data = []
+                myBarChart.data.labels = [];
+                myBarChart.data.datasets[0].data = [];
 
                 myBarChart.data.datasets[0].backgroundColor = ['rgba(2,117,216,1)'];
                 myBarChart.data.datasets[0].hoverBackgroundColor = ['rgba(2,117,216,1)'];
 
-                myLineChart.data.labels = []
-                myLineChart.data.datasets[0].data = []
+                myLineChart.data.labels = [];
+                myLineChart.data.datasets[0].data = [];
 
-                myPieChart.data.labels = []
-                myPieChart.data.datasets[0].data[0] = []
+                myPieChart.data.labels = [];
+                myPieChart.data.datasets[0].data[0] = [];
+
+                $('#filterList').html("")
 
                 dataChart(1);
             });
@@ -666,4 +675,80 @@
 
 // myBarChart.options.scales.x.display=false;
 
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/vfs_fonts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+        <script>
+            var sideBar = 0;
+            $('#sidebarToggle').on("click", function () {
+                if (sideBar == 0) {
+                    sideBar = 1;
+                } else {
+                    sideBar = 0;
+                }
+            });
+
+            $("#pdf").on("click", function () {
+
+                html2canvas(document.getElementById('layoutSidenav_content'), {
+                    onrendered: function (canvas) {
+                        var data = canvas.toDataURL();
+                        /*           if (screen.width < 400) {
+          
+                                  } else if (screen.width > 400 && screen.width < 961) {
+          
+           */
+
+                        if (sideBar == 0 && screen.width > 961) {
+                            var docDefinition = {
+                                pageMargins: [60, 15, 165, 0],
+                                content: [{
+                                    image: data,
+                                    width: 700,
+                                }],
+                                defaultStyle: {
+                                    alignment: 'center',
+                                },
+                            };
+                        } else if (sideBar == 1 && screen.width > 961) {
+                            var docDefinition = {
+                                pageMargins: [100, 15, 190, 0],
+                                content: [{
+                                    image: data,
+                                    width: 700,
+                                }],
+                                defaultStyle: {
+                                    alignment: 'center',
+                                },
+                            };
+                        } else if (screen.width > 400 && screen.width < 961) {
+                            var docDefinition = {
+                                pageMargins: [0, 0, 90, 0],
+                                content: [{
+                                    image: data,
+                                    width: 500,
+                                }],
+                                defaultStyle: {
+                                    alignment: 'center',
+                                },
+                            }
+                        } else if (screen.width < 400) {
+                            var docDefinition = {
+                                pageMargins: [0, 0, 90, 0],
+                                content: [{
+                                    image: data,
+                                    width: 500,
+                                }],
+                                defaultStyle: {
+                                    alignment: 'center',
+                                },
+                            }
+                        }
+
+                        pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+                    }
+                })
+            })
         </script>

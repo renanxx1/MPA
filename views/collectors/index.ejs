@@ -9,11 +9,6 @@
       </div>
     </div>
 
-    <!--  <ul class="navbar-nav ml-2" style="visibility: hidden;">
-    <li class="nav-item  ml-auto">
-      <a class="nav-link dropdown-toggle" disabled><i class="fas fa-user fa-fw" disabled></i></a>
-    </li>
-  </ul> -->
 
     <h1 class="navbar-nav mx-auto" style="color: white; position: fixed;">
       <%=collaborator.process.process_name%>
@@ -38,7 +33,7 @@
         <%if(mainFunction==true){ %>
           <div class="card col-lg-2 row mx-auto mt-4">
             <div class="card-header row">
-              <text for="" class="mx-auto mb-n2 mt-n2"><b>
+              <text class="mx-auto mb-n2 mt-n2"><b>
                   <%=processAndCounter.processes_counter.process_counter%>
                 </b></text>
             </div>
@@ -373,20 +368,20 @@
             //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
             $(function () {
 
+
+
+
               '<%activitiesAndChronometers.forEach((activity)=>{%>'
               if (screen.width < 400) {
                 $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
-                $("#mainDiv").show();
 
               } else if (screen.width > 400 && screen.width < 961) {
                 $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
-                $("#mainDiv").show();
 
               } else {
-                $("#mainDiv").show();
               }
               '<%})%>'
-
+              $("#mainDiv").show();
             })
 
             var noSleep = new NoSleep(); //Declaração do NoSleep para manter a tela acesa
@@ -548,12 +543,13 @@
               $('#mainFunctionCounter').val(counterNewValue);
               $('#modalCounter').modal('hide');
 
+              '<%if (mainFunction == true){%>'
               socket.emit('activityOn', {
                 collaborator_id: collaborator_id,
                 process_counter: counterNewValue,
                 process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
               });
-             
+              '<%}%>'
             }
 
             function counterAdd(process_id, collaborator_id) { //função do botão adicionar
@@ -568,11 +564,14 @@
                 collaborator_id: collaborator_id
               });
 
+              '<%if (mainFunction == true){%>'
               socket.emit('activityOn', {
                 collaborator_id: collaborator_id,
-                process_counter: counter,
+                process_counter: counterNewValue,
                 process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
               });
+              '<%}%>'
+
             }
 
             function groupOption(id) {
