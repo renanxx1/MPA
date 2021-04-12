@@ -465,9 +465,6 @@
                     myBarChart.data.labels.push("Tempo Ocioso");
                     myBarChart.data.datasets[0].data.push(seconds);
 
-                    /*              //Controle de escala Y do grafico, escala se baseia no maximo valor
-                                 var max = Math.max.apply(Math, (myBarChart.data.datasets[0].data))
-                                 myBarChart.options.scales.y.ticks.max = parseFloat(max + 1000) */
                     myBarChart.update()
                     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -484,9 +481,6 @@
                     $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
                     $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
-                    //Controle de escala Y do grafico, escala se baseia no maximo valor
-                    var max = Math.max.apply(Math, (myLineChart.data.datasets[0].data))
-                    myLineChart.options.scales.y.ticks.suggestedMax = max + 100
                     myLineChart.update();
                     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -516,10 +510,23 @@
                     //Botao de filtrar
                     $('.dropdown-menu li input').on('click', function (event) {
 
+
                         var index = myBarChart.data.labels.indexOf($(this).val());
                         var value = myBarChart.data.datasets[0].data[index];
 
                         if ($(this).prop('checked') == true) {
+                            data.chronometers.forEach(element => {
+                                if (element.activity_id == $(this).data('value')) {
+                                    var a = convertToTimeFormat(element.time)
+                                  console.log(a)
+                                    var b = a.split(':')
+                                  console.log(b)
+
+                                    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+                                }
+                            })
+
+
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
                         } else {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
