@@ -46,6 +46,7 @@ io.on("connection", async function (socket) {
 
     socket.on('activityOn', async (data) => {
         try {
+            console.log(data)
             if (data.process_counter) {
                 io.emit('newDataAvailable', {
                     collaborator_id: data.collaborator_id,

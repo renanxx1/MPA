@@ -368,9 +368,6 @@
             //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
             $(function () {
 
-
-
-
               '<%activitiesAndChronometers.forEach((activity)=>{%>'
               if (screen.width < 400) {
                 $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
@@ -557,6 +554,7 @@
               $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
                 1); //incrementa no mainfunction contador da pagina
               $('#counterNewValue').val($('#mainFunctionCounter').val());
+              var counterNewValue = $('#counterNewValue').val();
               var counter = parseInt($('#mainFunctionCounter').val());
               socket.emit('updateCounter', {
                 counter: counter,
