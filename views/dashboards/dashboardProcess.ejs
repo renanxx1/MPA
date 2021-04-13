@@ -491,7 +491,7 @@
                     var soma = 0;
 
                     data.chronometers.forEach(element => {
-                        $('#filterList').append('<li class="small"><label> <input type="checkbox" + data-value=" ' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
+                        $('#filterList').append('<li class="small"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
                         var a = convertToTimeFormat(element.total_time).split(':');
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                         soma = soma + seconds;
@@ -510,23 +510,10 @@
                     //Botao de filtrar
                     $('.dropdown-menu li input').on('click', function (event) {
 
-
                         var index = myBarChart.data.labels.indexOf($(this).val());
                         var value = myBarChart.data.datasets[0].data[index];
 
                         if ($(this).prop('checked') == true) {
-                            data.chronometers.forEach(element => {
-                                if (element.activity_id == $(this).data('value')) {
-                                    var a = convertToTimeFormat(element.time)
-                                  console.log(a)
-                                    var b = a.split(':')
-                                  console.log(b)
-
-                                    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
-                                }
-                            })
-
-
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
                         } else {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
@@ -588,11 +575,13 @@
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
+
+
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
                     if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
 
-                        if (newDataChart.activity_id != null) {
+                        if (newDataChart.activity_id != null && $('#' + newDataChart.activity_id).prop("checked")) {
                             myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
 
                             var work_time = newDataChart.work_time * 3600;
