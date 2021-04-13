@@ -8,14 +8,14 @@ class ProcessService {
         return processes;
     }
 
-    async processCreatePost(process_name, process_counter, main_functionCheck) {
+    async processCreatePost(process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByName(process_name);
         if (process == undefined) {
-            if (main_functionCheck) {
-                await ProcessRepository.createProcessAndFunction(process_name, process_counter);
+            if (process_counterCheck) {
+                await ProcessRepository.createProcessAndCounterAndGoal(process_name, process_counter, process_goal);
                 return 1;
             } else {
-                await ProcessRepository.createProcessAndFunction(process_name, '');
+                await ProcessRepository.createProcessAndCounterAndGoal(process_name, null);
                 return 1;
             }
         } else {
@@ -47,15 +47,16 @@ class ProcessService {
         return process;
     }
 
-    async processUpdatePost(id, process_name, process_counter, main_functionCheck) {
+    async processUpdatePost(id, process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByNameNotSameId(id, process_name);
+     
         if (process == null) {
-            if (main_functionCheck) {
-                await ProcessRepository.updateProcessAndFunction(id, process_name, process_counter);
+            if (process_counterCheck) {
+                await ProcessRepository.updateProcessAndCounterAndGoal(id, process_name, process_counter, process_goal);
                 return 1;
 
             } else {
-                await ProcessRepository.updateProcessAndFunction(id, process_name, '');
+                await ProcessRepository.updateProcessAndCounterAndGoal(id, process_name,  null, null);
                 return 1;
             }
 

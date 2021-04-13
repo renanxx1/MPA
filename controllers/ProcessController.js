@@ -11,7 +11,7 @@ class ProcessController {
     }
 
     async processCreatePost(req, res) {
-        var process = await ProcessService.processCreatePost(req.body.processNameInput, req.body.mainFunctionInput, req.body.mainFunctionCheckBox)
+        var process = await ProcessService.processCreatePost(req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox)
 
         if (process == 1) {
             renderCreate(req, res, 201);
@@ -41,7 +41,7 @@ class ProcessController {
     }
 
     async processUpdatePost(req, res) {
-        var process = await ProcessService.processUpdatePost(req.body.id, req.body.processNameInput, req.body.mainFunctionInput, req.body.mainFunctionCheckBox);
+        var process = await ProcessService.processUpdatePost(req.body.id, req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox);
         if (process == 1) {
             renderEdit(req, res, req.params.id, 201);
         } else {

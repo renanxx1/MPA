@@ -3,7 +3,7 @@
 
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
+                <div id="mainDiv" style="display:none" class="container-fluid">
                     <h1 class="mt-4">Editar Processos</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href='/'>Dashboard</a></li>
@@ -16,37 +16,52 @@
                             <form action="/processos/editar/<%=process.id%>" method="post">
 
                                 <div class="form-group mt-3">
-                                    <label>Nome do Processo <text>*</text> </label>
+                                    <label class="mt-1 mb-1">Nome do Processo <text>*</text> </label>
                                     <input class="form-control" name="processNameInput"
                                         placeholder="Alterar o nome do processo para..."
                                         value="<%=process.process_name%>" required>
                                     <input type="hidden" name='id' value="<%=process.id%>" />
+                                    <!-- 
+                                    <label class="mt-3">Descrição do Processo </label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
 
-                                    <!--    <label class="mt-3">Descrição do Processo </label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-             -->
-                                    <label class="mt-3">Contador </label>
-                                    <input class="form-control" name="mainFunctionInput" id="mainFunctionInputId"
+                                    <label class="mt-3 mb-1">Contador </label>
+                                    <input class="form-control" name="process_counterInput" id="process_counterInputId"
                                         placeholder="Digite o nome para uma variavel deste processo que deseje contar"
                                         maxlength="15" value="<%=process.process_counter%>" disabled>
 
 
                                     <div class="form-check mt-1">
-                                        <input name="mainFunctionCheckBox" class="form-check-input" type="checkbox"
+                                        <input name="process_counterCheckBox" class="form-check-input" type="checkbox"
                                             id="defaultCheck1">
                                         <label class="form-check-label" for="defaultCheck1">
-                                            Habilitar contador
+                                            Habilitar Contador
                                         </label>
                                         <a type="button" class="item" data-toggle="popover"
-                                            data-content="Esta opção gera um contador na pagina de coletor. Ex1: No processo de corte é possivel contar quantidade de chapas cortadas. Ex2: No processo de montagem é possivel contar a quantidade de modulos montados."><i
+                                            data-content="Esta opção gera um contador na pagina de coletor. Ex1: No processo de corte a variavel é Chapas, definindo o contador como chapas será possivel contar quantidade de chapas cortadas. Ex2: No processo de montagem a variavel é Modulos, definindo o contador como modulos é será possivel contar a quantidade de modulos montados."><i
                                                 class="zmdi zmdi-info"></i> </a>
-
-
-
-
-
                                     </div>
-                                    <button type="submit" class="btn btn-dark mt-2">Alterar</button>
+
+
+                                    <label class="mt-2 mb-1">Meta Diaria</label>
+                                    <input type="number" class="form-control" name="processGoalInput"
+                                        id="processGoalInputId" placeholder="Digite um valor para meta diaria"  value="<%=process.daily_goal%>" disabled>
+
+
+                                    <div class="form-check mt-1">
+                                        <input name="processGoalCheckBox" class="form-check-input" type="checkbox"
+                                            id="defaultCheck2" disabled>
+                                        <label class="form-check-label" for="defaultCheck2">
+                                            Habilitar Meta
+                                        </label>
+                                        <a type="button" class="item" data-toggle="popover"
+                                            data-content="Esta opção gera uma meta para o contador. Ex1: No processo de corte o contador é chapas e a META é de 22 chapas no dia. Ex2: No processo de montagem o contador é a quantidade de modulos montados e a META é 10 modulos no dia."><i
+                                                class="zmdi zmdi-info"></i> </a>
+                                    </div>
+
+
+                                </div>
+                                <button type="submit" class="btn btn-dark mt-2">Alterar</button>
                             </form>
 
 
@@ -70,7 +85,9 @@
 
 
                 <script>
+                    $('#mainDiv').show()
                     $('[data-toggle="popover"]').popover();
+
                     $('body').on('click', function (e) {
                         $('[data-toggle=popover]').each(function () {
                             // hide any open popovers when the anywhere else in the body is clicked
@@ -80,30 +97,58 @@
                         });
                     });
 
+                    $(function () {
+
+                        '<% if (process.process_counter == null) { %>' //Se o processo possui grupo e a data da criação da atividade é a mesma data do grupo, significa que é uma atividade agrupavel
+                        $("#defaultCheck1").prop("checked", false) //Ativa a opção do check de atividade agrupavel
+                        $('#process_counterInputId').attr('disabled', true)
+
+                        '<%} else { %>'
+                        $('#defaultCheck2').attr('disabled', false)
+                        $("#defaultCheck1").prop("checked", true) //Ativa a opção do check de atividade agrupavel
+                        $('#process_counterInputId').attr('disabled', false)
+                        '<%}%>'
+
+                        '<% if (process.daily_goal != null) { %>'
+                        $('#defaultCheck2').attr('disabled', false)
+                        $("#defaultCheck2").prop("checked", true) //Ativa a opção da meta
+                        $('#processGoalInputId').attr('disabled', false)
+
+                        '<%}%>'
+
+                    })
+
+
 
                     $('#defaultCheck1').change(function () { //função para ao alterar o check 1
                         if ($('#defaultCheck1').is(":checked")) { //se estiver marcado
-                            $('#mainFunctionInputId').attr('disabled', false) //ira habilitar o check 2
-                            $('#mainFunctionInputId').attr('required', true) //ira habilitar o check 2
+                            $('#process_counterInputId').attr('disabled', false) //ira habilitar o check 2
+                            $('#process_counterInputId').attr('required', true) //ira habilitar o check 2
+                            $('#defaultCheck2').attr('disabled', false)
 
                         } else {
-                            $('#mainFunctionInputId').attr('disabled', true) //ira desabilitar o check 2
+                            $('#process_counterInputId').val('')
+                            $('#processGoalInputId').val('')
+                            $('#processGoalInputId').attr('disabled', true)
+                            $('#defaultCheck2').prop('checked', false)
+                            $('#process_counterInputId').attr('disabled', true)
+                            $('#defaultCheck2').attr('disabled', true)
                         }
                     })
 
 
-                    $(function () {
-
-                        '<% if (process.process_counter == "") { %>' //Se o processo possui grupo e a data da criação da atividade é a mesma data do grupo, significa que é uma atividade agrupavel
-                        $("#defaultCheck1").prop("checked", false) //Ativa a opção do check de atividade agrupavel
-                        $('#mainFunctionInputId').attr('disabled', true)
-
-                        '<%} else { %>'
-
-                        $("#defaultCheck1").prop("checked", true) //Ativa a opção do check de atividade agrupavel
-                        $('#mainFunctionInputId').attr('disabled', false)
-                        '<%}%>'
+                    $('#defaultCheck2').change(function () { //função para ao alterar o check 1
+                        if ($('#defaultCheck1').is(":checked") && $('#defaultCheck2').is(":checked")) { //se estiver marcado
+                            $('#processGoalInputId').attr('disabled', false) //ira desabilitar o check 2
+                            $('#processGoalInputId').attr('required', true)
+                        } else {
+                            $('#processGoalInputId').attr('required', false)
+                            $('#processGoalInputId').val('')
+                            $('#processGoalInputId').attr('disabled', true)
+                        }
                     })
+
+
                 </script>
 
 

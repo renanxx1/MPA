@@ -29,6 +29,10 @@ const Process = connection.define("process", {
             return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
         }
     },
+    daily_goal: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+    },
     status: {
         type: Sequelize.BOOLEAN,
         allowNull: false
