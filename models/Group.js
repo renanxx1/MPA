@@ -14,9 +14,15 @@ const Group = connection.define("group", {
     },
     createdAt: {
         type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
+        }
     },
     updatedAt: {
         type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
+        }
     }
 });
 
@@ -26,6 +32,3 @@ Group.sync({
     force: false
 });
 module.exports = Group;
-
-//ALTER TABLE `atividades` CHANGE grupo grupo VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_general_cs;
-//Para alterar grupo para collate latin 1, sequelize nao suporta alteração de collate por colunas.

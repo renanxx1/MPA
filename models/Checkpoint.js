@@ -17,10 +17,16 @@ const Checkpoint = connection.define("checkpoint", {
 
     createdAt: {
         type: Sequelize.DATEONLY,
+        get() {
+            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY');
+        }
     },
 
     updatedAt: {
         type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
+        }
     }
 });
 

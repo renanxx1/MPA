@@ -18,9 +18,15 @@ const Activity = connection.define("activity", {
     },
     createdAt: {
         type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
+        }
     },
     updatedAt: {
         type: Sequelize.DATE,
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
+        }
     },
     status: {
         type: Sequelize.BOOLEAN,
@@ -62,4 +68,3 @@ Activity.sync({
     force: false
 });
 module.exports = Activity;
-
