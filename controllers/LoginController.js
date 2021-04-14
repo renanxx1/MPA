@@ -31,7 +31,7 @@ io.on("connection", async function (socket) {
             })
         } else if (socket.handshake.session.user.admin == true) {
             io.emit('adminOn', {
-                admin_id: socket.handshake.session.user.login
+                admin_login: socket.handshake.session.user.login
             })
         }
     } catch (error) {

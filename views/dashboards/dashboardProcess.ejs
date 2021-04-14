@@ -56,8 +56,6 @@
 
                                 </div>
 
-
-                                <!--   <button type="button" class="btn btn-secondary ml-3">Localizar</button> -->
                                 <div class="dropdown ml-lg-auto ml-3 toolbar-item">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-haspopup="true"
@@ -89,29 +87,39 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6">
+
+
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    Meta
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mt-n3 ml-auto" id="dashboard-guage-chart"></div>
+                                </div>
+                                <div class="card-footer text-center">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-3">
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Produtividade
 
-
                                     <button type="button" class="btn btn-default btn-sm dropdown float-right "
                                         data-toggle="dropdown"> <i class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
-
                                     <ul id="filterList" class="dropdown-menu checkbox-menu allow-focus">
-                                        <!-- 
-                                        <li class="small">
-                                            <label>
-                                                <input type="checkbox" value="Cheese">
-                                            </label>
-                                        </li> -->
-
                                     </ul>
                                 </div>
 
-                                <canvas id="myPieChart"></canvas>
+                                <canvas id="myPieChart" width="100%" height="100%"></canvas>
                                 <div class="card-footer text-center mt-2">
                                     <h2 id="efficiencyValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
@@ -244,6 +252,31 @@
                     return time = element.slice(0, 3) + ":" + element.slice(3, 5) + ":" + element.slice(5, 7);
                 }
             }
+
+
+/* 
+                var g3 = new JustGage({
+                    id: 'dashboard-guage-chart',
+                    value: 65,
+                    min: 0,
+                    max: 100,
+                    symbol: '%',
+                    pointer: true,
+                    gaugeWidthScale: 1,
+                    customSectors: [{
+                        color: '#ff0000',
+                        lo: 50,
+                        hi: 100
+                    }, {
+                        color: '#00ff00',
+                        lo: 0,
+                        hi: 50
+                    }],
+                    counter: true
+                });
+
+ */
+
 
             /*-----------------------------------------------------------------------------------------------------------*/
             //BAR CHART - GRAFICO 1
@@ -393,7 +426,7 @@
                 plugins: [ChartDataLabels],
                 options: {
                     responsive: true,
-                    aspectRatio: 2.649,
+                    aspectRatio: 1.25,
                     plugins: {
                         tooltip: {
                             callbacks: {

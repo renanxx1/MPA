@@ -1,4 +1,5 @@
 const Activity = require('../models/Activity');
+const Admin = require('../models/Admin');
 const sequelize = require('../database/database');
 const Collaborator = require('../models/Collaborator');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
@@ -59,21 +60,21 @@ class DashboardRepository {
 
     }
 
- /*    async findProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
-        return await
-            Process_Counter.findOne({
-                raw: true,
-                nest: true,
-                where: {
-                    [Op.and]: [{
-                        collaborator_id: collaborator_id,
-                        createdAt: {
-                            [Op.between]: [startDate, endDate]
-                        },
-                    }],
-                }
-            })
-    } */
+    /*    async findProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
+           return await
+               Process_Counter.findOne({
+                   raw: true,
+                   nest: true,
+                   where: {
+                       [Op.and]: [{
+                           collaborator_id: collaborator_id,
+                           createdAt: {
+                               [Op.between]: [startDate, endDate]
+                           },
+                       }],
+                   }
+               })
+       } */
 
     async findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
         return await
