@@ -18,6 +18,10 @@ const Process_Counter = connection.define("processes_counter", {
         type: Sequelize.STRING,
         allowNull: true
     },
+    daily_goal: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+    },
     createdAt: {
         type: Sequelize.DATEONLY,
         get() {
