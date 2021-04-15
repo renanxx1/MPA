@@ -174,13 +174,14 @@ class CollectorRepository {
         })
     }
 
-    async createCounter(counter, process_counter, process_id, collaborator_id) {
+    async createCounter(counter, process_counter, process_id, collaborator_id, daily_goal) {
         return await
             Process_Counter.create({
                 counter: counter,
                 process_counter: process_counter,
                 process_id: process_id,
-                collaborator_id: collaborator_id
+                collaborator_id: collaborator_id,
+                daily_goal: daily_goal
             })
     }
 

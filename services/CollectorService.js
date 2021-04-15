@@ -74,7 +74,7 @@ class CollectorController {
 
             //Caso não possua contador da função principal, estara criando no BD e retornando para a view.
             if (collaborator.process.process_counter != '' && processAndCounter == null) {
-                await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id);
+                await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id, collaborator.process.daily_goal);
                 processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.process.id, collaborator.id);
                 mainFunction = true;
             } else if (processAndCounter) {
