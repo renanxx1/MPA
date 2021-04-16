@@ -51,7 +51,7 @@ class DashboardRepository {
 
     async findIdleTime(collaborator_id, process_id, startDate, endDate) {
         return await
-            sequelize.query('SELECT *, sum(time) as total_time_idle FROM activities_chronometers WHERE activity_id is NULL AND  collaborator_id = ? AND createdAt BETWEEN ? AND ? GROUP BY activity_id;'
+            sequelize.query('SELECT *, sum(time) as total_time_idle,  min(activities_chronometers.createdAt) as min_date, max(activities_chronometers.createdAt) as max_date FROM activities_chronometers WHERE activity_id is NULL AND  collaborator_id = ? AND createdAt BETWEEN ? AND ? GROUP BY activity_id;'
                 , {
                     replacements: [collaborator_id, startDate, endDate], type: sequelize.QueryTypes.SELECT,
                     raw: true,
@@ -78,7 +78,7 @@ class DashboardRepository {
 
     async findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate) {
         return await
-            sequelize.query('SELECT * FROM processes_counters WHERE collaborator_id = ? AND createdAt BETWEEN ? AND ? GROUP BY id'
+            sequelize.query('SELECT *,  min(createdAt) as min_date, max(createdAt) as max_date FROM processes_counters WHERE collaborator_id = ? AND createdAt BETWEEN ? AND ? GROUP BY id'
                 , {
                     replacements: [collaborator_id, startDate, endDate], type: sequelize.QueryTypes.SELECT,
                     raw: true,

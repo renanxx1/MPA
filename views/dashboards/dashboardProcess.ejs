@@ -74,7 +74,7 @@
 
                     <div id="mainDiv" class="row">
 
-                        <div class="col-xl-6">
+                        <div id="chart1"class="col-xl-6">
                             <div class="card mb-4">
                                 <div id="processCounter" class="card-header mb-2">
                                     <i class="fas fa-chart-bar mr-1"></i>
@@ -101,13 +101,6 @@
                                     </button>
 
                                     <ul id="filterList" class="dropdown-menu checkbox-menu allow-focus">
-                                        <!-- 
-                                        <li class="small">
-                                            <label>
-                                                <input type="checkbox" value="Cheese">
-                                            </label>
-                                        </li> -->
-
                                     </ul>
                                 </div>
 
@@ -338,9 +331,9 @@
                         pointHitRadius: 50,
                         pointBorderWidth: 2,
                         data: [],
-                     
-                     
-                     
+
+
+
                     },
                     {
                         label: "Meta",
@@ -356,7 +349,7 @@
                         data: [],
 
 
-                
+
                     },
                     ],
                 },
@@ -451,7 +444,6 @@
 
 
             socket.on("chartData", (data) => {
-                console.log(data)
                 if (data == null) {
                     $('#divNoData').show();
                     $('#mainDiv').hide();
@@ -460,15 +452,38 @@
                     $('#mainDiv').show();
                     $('#divNoData').hide();
 
-                    console.log(data)
-                    if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
-                        var d1 = data.chronometers[0].min_date.split("-");
-                        var d2 = data.chronometers[0].max_date.split("-");
 
-                        $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
-                    } else {
-                        $('#smallDateInfo').html("");
+                    var stage = null;
+                    if (data.chronometers[0] == null && data.process_counter[0] == null && data.idleTime[0] != null) {
+                        stage = 1;
+
+                        if ( data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') ||  data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                            var d1 = data.idleTime[0].min_date.split("-");
+                            var d2 =  data.idleTime[0].max_date.split("-");
+
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                        } else {
+                            $('#smallDateInfo').html("");
+                        }
+                   
                     }
+
+
+                    if (data.chronometers[0] != null && data.process_counter[0] == null)  {
+                        stage = 2;
+
+                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                            var d1 = data.chronometers[0].min_date.split("-");
+                            var d2 = data.chronometers[0].max_date.split("-");
+
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                        } else {
+                            $('#smallDateInfo').html("");
+                        }
+                    }
+
+
+
 
 
 
