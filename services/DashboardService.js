@@ -11,6 +11,7 @@ class DashboardService {
         return collaborator;
     }
 
+    
     async getDashboardData(collaborator_id, process_id, startDate, endDate) {
         var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
         var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);

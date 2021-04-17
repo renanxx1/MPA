@@ -32,7 +32,6 @@ io.on("connection", async function (socket) {
 
     socket.on('getDataChart', async (data) => {
         var chartData = await DashboardService.getDashboardData(data.collaborator_id, data.process_id, data.startDate, data.endDate);
-        console.log(chartData)
         if (data.action == 1) {
             socket.emit('chartData', chartData);
         } else {

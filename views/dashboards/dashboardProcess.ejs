@@ -19,7 +19,7 @@
                         <div class="page-header mb-1 mt-0">
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
 
                             <small id="smallDateInfo" style="color: red;"></small>
 
@@ -29,42 +29,31 @@
 
                                     <button type="button" id="btnLastDate" class="btn btn-secondary rounded"><i
                                             class="mdi mdi-chevron-left"></i></button>
-
                                     <button type="button" id="btnDate" name="date" class="btn btn-secondary"></button>
-
                                     <button type="button" id="btnNextDate" class="btn btn-secondary rounded"><i
                                             class="mdi mdi-chevron-right"></i></button>
-                                    <br>
-
                                 </div>
-
-                                <div class="filter-wrapper">
-                                    <div class="dropdown ml-lg-auto ml-3 toolbar-item">
-                                        <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button"
-                                            data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Hoje</button>
-                                        <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                            <a id="a1" class="dropdown-item" href="#">Hoje</a>
-                                            <a id="a2" class="dropdown-item" href="#">Ontem</a>
-                                            <a id="a3" class="dropdown-item" href="#">Ultimos 7 Dias</a>
-                                            <a id="a4" class="dropdown-item" href="#">Ultimos 30 Dias</a>
-                                            <a id="a5" class="dropdown-item" href="#">Este Mes</a>
-                                            <a id="a6" class="dropdown-item" href="#">Mes Passado</a>
-                                        </div>
-
+                                <div class="ml-3"></div>
+                                <div class="dropdown toolbar-item text-center ">
+                                    <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hoje</button>
+                                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                        <a id="a1" class="dropdown-item" href="#">Hoje</a>
+                                        <a id="a2" class="dropdown-item" href="#">Ontem</a>
+                                        <a id="a3" class="dropdown-item" href="#">Ultimos 7 Dias</a>
+                                        <a id="a4" class="dropdown-item" href="#">Ultimos 30 Dias</a>
+                                        <a id="a5" class="dropdown-item" href="#">Este Mes</a>
+                                        <a id="a6" class="dropdown-item" href="#">Mes Passado</a>
                                     </div>
-
                                 </div>
 
-
-                                <!--   <button type="button" class="btn btn-secondary ml-3">Localizar</button> -->
-                                <div class="dropdown ml-lg-auto ml-3 toolbar-item">
+                                <div class="dropdown ml-auto toolbar-item">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">Exportar</button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                         <a id="pdf" class="dropdown-item" href="#">Exportar para PDF</a>
-                                        <a class="dropdown-item" href="#">Exportar para Excel</a>
+                                        <a id="excel" class="dropdown-item" href="#">Exportar para Excel</a>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +63,21 @@
 
                     <div id="mainDiv" class="row">
 
-                        <div id="chart1"class="col-xl-6">
+                        <table id="datatable">
+                            <tr>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>300</td>
+                            </tr>
+                            <tr>
+                                <td>400</td>
+                                <td>500</td>
+                                <td>600</td>
+                            </tr>
+                        </table>
+
+
+                        <div id="chart1" class="col-xl-6">
                             <div class="card mb-4">
                                 <div id="processCounter" class="card-header mb-2">
                                     <i class="fas fa-chart-bar mr-1"></i>
@@ -89,7 +92,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6">
+                        <div id="chart2" class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i>
@@ -148,6 +151,9 @@
             <%- include ('../partials/footer.ejs')%>
         </div>
 
+
+
+
         </html>
 
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -161,6 +167,7 @@
 
 
         <script>
+            //Conexao com socket io
             var url_atual = window.location.href.split('/');
             var url = url_atual[2];
             var socket = io(url);
@@ -168,7 +175,7 @@
         </script>
 
         <script>
-
+            //Função chamada para exibir dados do grafico de acordo com a data no date range
             function dataChart(action) {
                 var date1 = $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
                 var date2 = $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
@@ -184,6 +191,7 @@
         </script>
 
         <script>
+            //Função para converter time de segundos para formato time: 00:00:00
             function formatTime(secs) {
                 var hours = Math.floor(secs / (60 * 60));
                 var divisor_for_minutes = secs % (60 * 60);
@@ -193,7 +201,7 @@
                 return +hours + ":" + minutes + ":" + seconds;
             }
 
-
+            //Função para converter time para segundos
             function convert(time) {
                 var hrs = ~~(time / 3600);
                 var mins = ~~((time % 3600) / 60);
@@ -208,11 +216,13 @@
                 return ret;
             }
 
+            //Função para converter data no formato 2021-01-01 para 01/01/2021
             function convertDate(date) {
                 var d = date.split("-");
                 return d[2] + "/" + d[1] + "/" + d[0];
             }
 
+            //Função para converter time do banco no formato: 010101 para formato Time: 01:01:01 
             function convertToTimeFormat(element) {
                 var time;
                 if (Object.keys(element).length == 1) {
@@ -331,9 +341,6 @@
                         pointHitRadius: 50,
                         pointBorderWidth: 2,
                         data: [],
-
-
-
                     },
                     {
                         label: "Meta",
@@ -347,9 +354,6 @@
                         pointHitRadius: 50,
                         pointBorderWidth: 2,
                         data: [],
-
-
-
                     },
                     ],
                 },
@@ -443,7 +447,10 @@
             });
 
 
+            //Ao carregar a pagina recebe o chartData atráves do socket.io
             socket.on("chartData", (data) => {
+
+                //Caso o dado recebido seja null, exibe uma div informando que dados não foram encontrados
                 if (data == null) {
                     $('#divNoData').show();
                     $('#mainDiv').hide();
@@ -453,25 +460,24 @@
                     $('#divNoData').hide();
 
 
-                    var stage = null;
+                    //Caso nao tenha informação de cronometros e process counter, exibe apenas o grafico barchart com o tempo ocioso
                     if (data.chronometers[0] == null && data.process_counter[0] == null && data.idleTime[0] != null) {
-                        stage = 1;
-
-                        if ( data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') ||  data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                        $('#chart1').hide();
+                        $('#chart2').hide();
+                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
                             var d1 = data.idleTime[0].min_date.split("-");
-                            var d2 =  data.idleTime[0].max_date.split("-");
-
+                            var d2 = data.idleTime[0].max_date.split("-");
                             $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
                         } else {
                             $('#smallDateInfo').html("");
                         }
-                   
+
                     }
 
-
-                    if (data.chronometers[0] != null && data.process_counter[0] == null)  {
-                        stage = 2;
-
+                    //Caso tenha cronometro e não tenho process counter, oculta o grafico do process counter
+                    if (data.chronometers[0] != null && data.process_counter[0] == null) {
+                        $('#chart1').hide();
+                        $('#chart2').toggleClass('col-xl-12');
                         if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
                             var d1 = data.chronometers[0].min_date.split("-");
                             var d2 = data.chronometers[0].max_date.split("-");
@@ -484,90 +490,93 @@
 
 
 
-
-
-
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE BARRAS - 1
+                    if (data.chronometers[0] != null || data.idleTime[0] != null) {
+                        data.chronometers.forEach(element => {
+                            var a = convertToTimeFormat(element.total_time).split(':'); //atividades
+                            var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                            myBarChart.data.labels.push(element.activity_name);
+                            myBarChart.data.datasets[0].data.push(seconds);
+                        })
 
-                    data.chronometers.forEach(element => {
-                        var a = convertToTimeFormat(element.total_time).split(':'); //atividades
+                        var a = convertToTimeFormat(data.idleTime[0].total_time_idle).split(':'); //tempo ocioso
                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                        myBarChart.data.labels.push(element.activity_name);
+                        myBarChart.data.labels.push("Tempo Ocioso");
                         myBarChart.data.datasets[0].data.push(seconds);
-                    })
 
-                    var a = convertToTimeFormat(data.idleTime[0].total_time_idle).split(':'); //tempo ocioso
-                    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                    myBarChart.data.labels.push("Tempo Ocioso");
-                    myBarChart.data.datasets[0].data.push(seconds);
-
-                    myBarChart.update()
+                        myBarChart.update()
+                    }
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE LINHAS - 2
-                    var sum_counter = 0;
-                    data.process_counter.forEach(element => {
-                        myLineChart.data.labels.push(convertDate(element.createdAt));
-                        myLineChart.data.datasets[0].data.push(element.counter);
-                        myLineChart.data.datasets[1].data.push(element.daily_goal);
-                        sum_counter = sum_counter + element.counter;
-                    })
+                    if (data.process_counter[0] != null) {
+                        var sum_counter = 0;
+                        data.process_counter.forEach(element => {
+                            myLineChart.data.labels.push(convertDate(element.createdAt));
+                            myLineChart.data.datasets[0].data.push(element.counter);
+                            myLineChart.data.datasets[1].data.push(element.daily_goal);
+                            sum_counter = sum_counter + element.counter;
+                        })
 
-                    $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
-                    $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
+                        $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
+                        $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
-                    myLineChart.update();
+                        myLineChart.update();
+                    }
                     /*-----------------------------------------------------------------------------------------------------------*/
 
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE TORTA - 3
-                    myPieChart.data.datasets[0].data = []; //Zerando data pois esta retornando NaN
-                    var soma = 0;
+                    if (data.chronometers[0] != null) {
+                        myPieChart.data.datasets[0].data = []; //Zerando data pois esta retornando NaN
+                        var soma = 0;
 
-                    data.chronometers.forEach(element => {
-                        $('#filterList').append('<li class="small"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
-                        var a = convertToTimeFormat(element.total_time).split(':');
-                        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                        soma = soma + seconds;
-                    })
+                        data.chronometers.forEach(element => {
+                            $('#filterList').append('<li class="small"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
+                            var a = convertToTimeFormat(element.total_time).split(':');
+                            var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                            soma = soma + seconds;
+                        })
 
-                    var work_time = data.chronometers[0].sum_work_time * 3600;
-                    var efficiency = (soma / work_time) * 100;
+                        var work_time = data.chronometers[0].sum_work_time * 3600;
+                        var efficiency = (soma / work_time) * 100;
 
-                    myPieChart.data.labels.push('Tempo Total Executado', 'Horario de Trabalho');
-                    myPieChart.data.datasets[0].data.push(soma, work_time)
+                        myPieChart.data.labels.push('Tempo Total Executado', 'Horario de Trabalho');
+                        myPieChart.data.datasets[0].data.push(soma, work_time)
 
-                    myPieChart.update();
-                    $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
-
-
-                    //Botao de filtrar
-                    $('.dropdown-menu li input').on('click', function (event) {
-
-                        var index = myBarChart.data.labels.indexOf($(this).val());
-                        var value = myBarChart.data.datasets[0].data[index];
-
-                        if ($(this).prop('checked') == true) {
-                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
-                        } else {
-                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
-                        }
-
-                        var efficiency = (myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1]) * 100;
-                        $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
                         myPieChart.update();
+                        $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
 
-                    })
-                    /*-----------------------------------------------------------------------------------------------------------*/
+
+                        //Botao de filtrar
+                        $('.dropdown-menu li input').on('click', function (event) {
+
+                            var index = myBarChart.data.labels.indexOf($(this).val());
+                            var value = myBarChart.data.datasets[0].data[index];
+
+                            if ($(this).prop('checked') == true) {
+                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
+                            } else {
+                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
+                            }
+
+                            var efficiency = (myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1]) * 100;
+                            $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+                            myPieChart.update();
+
+                        })
+                    }
                 }
+                /*-----------------------------------------------------------------------------------------------------------*/
+
             })
 
 
-            //Sempre que houver novos dados, atualiza o grafico
+            //Sempre que houver novos dados, atualiza o grafico diario
             socket.on("newDataAvailable", (newDataChart) => {
                 if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
 
@@ -583,22 +592,23 @@
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //ATUALIZANDO DADOS NO GRAFICO DE BARRAS - 1
-                    var backColor = []
-                    var hoverColor = []
-                    myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
-                        backColor.push('rgba(2,117,216,1)');
-                        hoverColor.push('rgba(3,117,216,1)');
-                    })
-
-                    //Altera cor da barra que esta rodando
-                    myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
-                    myBarChart.data.datasets[0].backgroundColor = backColor;
-
-                    //Localiza o indice da barra que esta rodando
-                    var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
-
-                    //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
                     if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
+
+                        var backColor = []
+                        var hoverColor = []
+                        myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
+                            backColor.push('rgba(2,117,216,1)');
+                            hoverColor.push('rgba(3,117,216,1)');
+                        })
+
+                        //Altera cor da barra que esta rodando
+                        myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
+                        myBarChart.data.datasets[0].backgroundColor = backColor;
+
+                        //Localiza o indice da barra que esta rodando
+                        var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
+
+                        //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
 
                         var hms = newDataChart.time;
                         var a = hms.split(':');
@@ -611,7 +621,6 @@
                         myBarChart.update()
                     }
                     /*-----------------------------------------------------------------------------------------------------------*/
-
 
 
 
@@ -634,14 +643,9 @@
             })
 
 
-
-
+            //Caso o colaborador deslogue e o administrador esteja na pagina diaria, visualizando os dados, chama essa função atualizando os graficos
             socket.on('collaboratorOff', (data) => {
                 if (data.collaborator_id == '<%=collaborator.id%>') {
-                    myBarChart.data.labels.forEach(element => {
-                        console.log(element)
-                    })
-
                     for (var i = 0; i < myBarChart.data.labels.length; i++) {
                         myBarChart.data.datasets[0].backgroundColor[i] = 'rgb(2,117,216,1)';
                         myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgb(2,117,216,1)';
@@ -655,11 +659,12 @@
 
 
         <script>
+            //Botão do tempo ocioso
             $('.btn-toggle').click(function () {
                 $(this).find('.btn').toggleClass('btn-primary');
             });
 
-
+            //Adiciona e remove o tempo ocioso do barchart
             function buttonOnOff() {
                 var index = myBarChart.data.labels.indexOf("Tempo Ocioso");
 
@@ -683,10 +688,11 @@
             }
         </script>
 
+
         <script>
 
+            //Função ao alterar a data da pagina, zera os dados todos graficos
             $('#btnDate').bind('DOMNodeInserted', function (e) {
-                /*   alert(screen.height + " " +screen.width) */
 
                 myBarChart.data.labels = [];
                 myBarChart.data.datasets[0].data = [];
@@ -705,15 +711,16 @@
                 dataChart(1);
             });
 
-
 // myBarChart.options.scales.x.display=false;
-
         </script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/vfs_fonts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
         <script>
+
+            //Script para gerar PDF
             var sideBar = 0;
             $('#sidebarToggle').on("click", function () {
                 if (sideBar == 0) {
@@ -728,11 +735,6 @@
                 html2canvas(document.getElementById('layoutSidenav_content'), {
                     onrendered: function (canvas) {
                         var data = canvas.toDataURL();
-                        /*           if (screen.width < 400) {
-          
-                                  } else if (screen.width > 400 && screen.width < 961) {
-          
-           */
 
                         if (sideBar == 0 && screen.width > 961) {
                             var docDefinition = {
@@ -779,9 +781,48 @@
                                 },
                             }
                         }
-
-                        pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+                        pdfMake.createPdf(docDefinition).download("Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + $('#btnDate').html());
                     }
                 })
+            })
+
+        </script>
+
+
+        <script src="http://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+        <script>
+            require(['dist/excellentexport'], function (ee) {
+                window.ExcellentExport = ee;
+            });
+        </script>
+
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/excellentexport@3.4.3/dist/excellentexport.min.js"></script>
+
+
+        <script>
+            $("#excel").on("click", function () {
+
+                var options =
+                {
+                    format: 'xls',
+                    filename: String
+                }
+
+                var sheets = [
+                    {
+                        name: 'Sheet 1', // Sheet name
+                        from: {
+                            table: 'datatable', // Table ID or table element
+                            array: [] // Array with the data. Array where each element is a row. Every row is an array of the cells.
+                        },
+                        filterRowFn: function (row) { return true }, // Function to decide which rows are returned
+                        fixValue: function (value, row, column) { return fixedValue } // Function to fix values, receiving value, row num, column num
+                    },
+                ]
+
+                $(this).attr('download', 'aaaaaaa.xls');
+                ExcellentExport.convert(options, sheets).excel();
+
             })
         </script>
