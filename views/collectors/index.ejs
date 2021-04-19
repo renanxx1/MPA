@@ -495,7 +495,7 @@
               //Cria um cronometro para cada atividade
               mapChronometer.set('<%=activity.id%>', new Chronometer('<%=activity.id%>', '<%=activity.activity_name%>',
                 time[0], time[1], time[2], parseInt('<%=activity.activities_chronometer.counter%>'),
-                '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>'))
+                '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>', '<%=activity.activities_chronometer.process_id%>'))
               '<%})%>'
 
               //Divide o tempo em 3 array
@@ -510,7 +510,7 @@
               //Cria um cronometro de tempo ocioso
               mapChronometer.set(null, new Chronometer(null, 'Tempo Ocioso',
                 idleTime[0], idleTime[1], idleTime[2], parseInt('<%=idleTime.counter%>'),
-                '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>'))
+                '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>', '<%=idleTime.process_id%>'))
               '})'
             })
           </script>
@@ -686,7 +686,7 @@
           <script>
             class Chronometer {
 
-              constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time) {
+              constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time, process_id) {
                 this.id = id;
                 this.activity_name = activity_name;
                 this.h = h;
@@ -695,6 +695,7 @@
                 this.counter = counter;
                 this.collaborator_id = collaborator_id;
                 this.work_time = work_time;
+                this.process_id = process_id
                 this.run = false;
               }
 

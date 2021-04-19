@@ -8,8 +8,8 @@
 
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
-                    <h1 class="mt-3 display-6">Dashboard <%=collaborator.process.process_name%>
+                <div id="container-fluid" class="container-fluid">
+                    <h1 class="mt-3 display-6">Dashboard
                     </h1>
                     <h5 class="display-6">
                         <%=collaborator.collaborator_name%>
@@ -21,7 +21,7 @@
 
                         <div class="col-md-12 text-center">
 
-                            <small id="smallDateInfo" style="color: red;"></small>
+                            <small id="smallDateInfo" class="float-left" style="color: red;"></small>
 
                             <div class="page-header-toolbar">
 
@@ -93,7 +93,7 @@
                                     </ul>
                                 </div>
 
-                                <canvas id="myPieChart"></canvas>
+                                <canvas id="myPieChart" height="114,5"></canvas>
                                 <div class="card-footer text-center mt-2">
                                     <h2 id="efficiencyValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
@@ -253,7 +253,6 @@
                 plugins: [ChartDataLabels],
                 options: {
                     responsive: true,
-
                     plugins: {
                         legend: {
                             display: false
@@ -397,7 +396,7 @@
                 plugins: [ChartDataLabels],
                 options: {
                     responsive: true,
-                    aspectRatio: 2.649,
+                    aspectRatio: 2.63,
                     plugins: {
                         tooltip: {
                             callbacks: {
@@ -462,8 +461,8 @@
 
                     //Caso nao tenha informação de cronometros e process counter, exibe apenas o grafico barchart com o tempo ocioso
                     if (data.chronometers[0] == null && data.process_counter[0] != null && data.idleTime[0] != null) {
-                        $('#chart1').toggleClass('col-xl-12');
                         $('#chart2').hide();
+                        $('#chart1').toggleClass('col-xl-12');
                         if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
                             var d1 = data.idleTime[0].min_date.split("-");
                             var d2 = data.idleTime[0].max_date.split("-");
@@ -488,6 +487,17 @@
                     }
 
 
+                    //Caso tenha todos os dados
+                    if (data.chronometers[0] != null && data.process_counter[0] != null && data.process_counter[0] != null) {
+                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                            var d1 = data.chronometers[0].min_date.split("-");
+                            var d2 = data.chronometers[0].max_date.split("-");
+
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                        } else {
+                            $('#smallDateInfo').html("");
+                        }
+                    }
 
                     /*-----------------------------------------------------------------------------------------------------------*/
                     //CARREGANDO DADOS NO GRAFICO DE BARRAS - 1
@@ -548,7 +558,7 @@
                         myPieChart.data.datasets[0].data.push(soma, work_time)
 
                         myPieChart.update();
-                        $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+                        $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
 
 
                         //Botao de filtrar
@@ -564,81 +574,84 @@
                             }
 
                             var efficiency = (myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1]) * 100;
-                            $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%");
+                            $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
                             myPieChart.update();
 
                         })
                     }
                 }
                 /*-----------------------------------------------------------------------------------------------------------*/
-
             })
 
 
             //Sempre que houver novos dados, atualiza o grafico diario
             socket.on("newDataAvailable", (newDataChart) => {
-                if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
+                setTimeout(function () {
 
-                    /*-----------------------------------------------------------------------------------------------------------*/
-                    //ATUALIZANDO DADOS NO GRAFICO DE LINHAS
-                    if (newDataChart.process_counter != null && newDataChart.collaborator_id == '<%=collaborator.id%>') {
-                        $('#processCounterValue').html("Total " + newDataChart.process_counter_name + " " + newDataChart.process_counter)
-                        myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
-                        myLineChart.update();
-                    }
-                    /*-----------------------------------------------------------------------------------------------------------*/
+                    if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
 
-
-                    /*-----------------------------------------------------------------------------------------------------------*/
-                    //ATUALIZANDO DADOS NO GRAFICO DE BARRAS - 1
-                    if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
-
-                        var backColor = []
-                        var hoverColor = []
-                        myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
-                            backColor.push('rgba(2,117,216,1)');
-                            hoverColor.push('rgba(3,117,216,1)');
-                        })
-
-                        //Altera cor da barra que esta rodando
-                        myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
-                        myBarChart.data.datasets[0].backgroundColor = backColor;
-
-                        //Localiza o indice da barra que esta rodando
-                        var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
-
-                        //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
-
-                        var hms = newDataChart.time;
-                        var a = hms.split(':');
-                        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-
-                        myBarChart.data.datasets[0].data[index] = seconds;
-                        myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
-                        myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
-
-                        myBarChart.update()
-                    }
-                    /*-----------------------------------------------------------------------------------------------------------*/
-
-
-
-                    /*-----------------------------------------------------------------------------------------------------------*/
-                    //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
-                    if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
-
-                        if (newDataChart.activity_id != null && $('#' + newDataChart.activity_id).prop("checked")) {
-                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
-
-                            var work_time = newDataChart.work_time * 3600;
-                            var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
-                            $('#efficiencyValue').html("Eficiencia Total " + efficiency.toFixed(0) + "%")
-                            myPieChart.update()
-
+                        /*-----------------------------------------------------------------------------------------------------------*/
+                        //ATUALIZANDO DADOS NO GRAFICO DE LINHAS
+                        if (newDataChart.process_counter != null && newDataChart.collaborator_id == '<%=collaborator.id%>') {
+                            $('#processCounterValue').html("Total " + newDataChart.process_counter_name + " " + newDataChart.process_counter)
+                            myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
+                            myLineChart.update();
                         }
+                        /*-----------------------------------------------------------------------------------------------------------*/
+
+
+                        /*-----------------------------------------------------------------------------------------------------------*/
+                        //ATUALIZANDO DADOS NO GRAFICO DE BARRAS - 1
+                        if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
+
+                            var backColor = []
+                            var hoverColor = []
+                            myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
+                                backColor.push('rgba(2,117,216,1)');
+                                hoverColor.push('rgba(3,117,216,1)');
+                            })
+
+                            //Altera cor da barra que esta rodando
+                            myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
+                            myBarChart.data.datasets[0].backgroundColor = backColor;
+
+                            //Localiza o indice da barra que esta rodando
+                            var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
+
+                            //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
+
+                            var hms = newDataChart.time;
+                            var a = hms.split(':');
+                            var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+
+                            myBarChart.data.datasets[0].data[index] = seconds;
+                            myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
+                            myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
+
+                            myBarChart.update()
+                        }
+                        /*-----------------------------------------------------------------------------------------------------------*/
+
+
+
+                        /*-----------------------------------------------------------------------------------------------------------*/
+                        //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
+                        if (newDataChart.collaborator_id == '<%=collaborator.id%>') {
+
+                            if (newDataChart.activity_id != null && $('#' + newDataChart.activity_id).prop("checked")) {
+                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
+
+                                var work_time = newDataChart.work_time * 3600;
+                                var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
+                                $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%")
+                                myPieChart.update()
+
+                            }
+                        }
+                        /*-----------------------------------------------------------------------------------------------------------*/
                     }
-                    /*-----------------------------------------------------------------------------------------------------------*/
-                }
+                }, 500)
+
             })
 
 
@@ -652,7 +665,6 @@
                     myBarChart.update()
                 }
             })
-
 
         </script>
 
@@ -710,9 +722,21 @@
                 dataChart(1);
             });
 
-// myBarChart.options.scales.x.display=false;
         </script>
 
+
+        <script>
+            //Ajustes para mobile
+            if (screen.width < 400) {
+                $('#smallDateInfo').removeClass();
+                myBarChart.options.scales.x.display = false;
+                myBarChart.options.plugins.datalabels.display = false;
+            }else if(screen.width > 400 && screen.width < 961){
+                $('#smallDateInfo').removeClass();
+                myBarChart.options.scales.x.display = false;
+                myBarChart.options.plugins.datalabels.display = false;
+            }
+        </script>
 
 
 
@@ -723,38 +747,25 @@
         <script>
 
             //Script para gerar PDF
-            var sideBar = 0;
-            $('#sidebarToggle').on("click", function () {
-                if (sideBar == 0) {
-                    sideBar = 1;
-                } else {
-                    sideBar = 0;
-                }
-            });
-
             $("#pdf").on("click", function () {
 
-                html2canvas(document.getElementById('layoutSidenav_content'), {
+                //Pega a data do grafico para criar relatorio
+                var d = $('#smallDateInfo').html()
+                var date = d.slice(22, 45)
+                if (date == "") {
+                    date = $('#btnDate').html()
+                }
+
+                html2canvas(document.getElementById('container-fluid'), {
                     onrendered: function (canvas) {
                         var data = canvas.toDataURL();
 
-                        if (sideBar == 0 && screen.width > 961) {
+                        if (screen.width > 961) {
                             var docDefinition = {
-                                pageMargins: [60, 15, 165, 0],
+                                pageMargins: [0, 15, 0, 0],
                                 content: [{
                                     image: data,
-                                    width: 700,
-                                }],
-                                defaultStyle: {
-                                    alignment: 'center',
-                                },
-                            };
-                        } else if (sideBar == 1 && screen.width > 961) {
-                            var docDefinition = {
-                                pageMargins: [100, 15, 190, 0],
-                                content: [{
-                                    image: data,
-                                    width: 700,
+                                    width: 600,
                                 }],
                                 defaultStyle: {
                                     alignment: 'center',
@@ -762,10 +773,10 @@
                             };
                         } else if (screen.width > 400 && screen.width < 961) {
                             var docDefinition = {
-                                pageMargins: [0, 0, 90, 0],
+                                pageMargins: [0, 0, 0, 0],
                                 content: [{
                                     image: data,
-                                    width: 500,
+                                    width: 310,
                                 }],
                                 defaultStyle: {
                                     alignment: 'center',
@@ -773,17 +784,17 @@
                             }
                         } else if (screen.width < 400) {
                             var docDefinition = {
-                                pageMargins: [0, 0, 90, 0],
+                                pageMargins: [0, 0, 0, 0],
                                 content: [{
                                     image: data,
-                                    width: 500,
+                                    width: 310,
                                 }],
                                 defaultStyle: {
                                     alignment: 'center',
                                 },
                             }
                         }
-                        pdfMake.createPdf(docDefinition).download("Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + $('#btnDate').html());
+                        pdfMake.createPdf(docDefinition).download("Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date);
                     }
                 })
             })
@@ -797,6 +808,8 @@
 
 
         <script>
+
+            //Relatorio do excel
             $("#excel").on("click", function () {
                 table();
 
@@ -854,22 +867,27 @@
                     x++;
                 }
 
-                $(this).attr('download', "Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + $('#btnDate').html() + '.xls');
+                //Pego a data para inserir no arquivo do relatorio
+                var d = $('#smallDateInfo').html()
+                var date = d.slice(22, 45)
+                if (date == "") {
+                    date = $('#btnDate').html()
+                }
+
+                $(this).attr('download', "Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date + '.xls');
                 return ExcellentExport.excel(this, 'datatable', 'Relatório ' + '<%=collaborator.process.process_name%>');
 
             })
 
-
+            //Função para limpar o relatorio após ser executado
             $("#excel").mouseup(function () {
-                setTimeout(function () {
-                    $("table").children().remove()
-                }, 1000)
-
+                $("table").children().remove()
             });
 
+            //Função para inserir cabeçalhos na tabela do relatorio de excel
             function table() {
                 $('#datatable').html(
-                    '<thead> <colgroup width ="109"></colgroup ><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=4 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr ><tr><td height="19" style="overflow:auto; width:100%; ">NOME ATIVIDADE</td><td style="overflow:auto; width:100%; ">TEMPO ATIVIDADE</td><td style="overflow:auto; width:100%; ">PROCESSO</td><td style="overflow:auto; width:100%; ">COLABORADOR</td><td><br></td><td style="overflow:auto; width:100%; ">NOME CONTADOR</td><td style="overflow:auto; width:100%; ">PRODUZIDO</td><td style="overflow:auto; width:100%; ">META</td><td><br></td><td style="overflow:auto; width:100%; ">TEMPO TOTAL EXECUTADO</td><td style="overflow:auto; width:100%; ">HORARIO DE TRABALHO</td><td style="overflow:auto; width:100%; ">EFICIENCIA TOTAL</td></tr></thead>')
+                    '<thead> <colgroup width ="109"></colgroup ><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=4 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr ><tr><td height="19" style="overflow:auto; width:100%; ">NOME ATIVIDADE</td><td style="overflow:auto; width:100%; ">TEMPO ATIVIDADE</td><td style="overflow:auto; width:100%; ">PROCESSO</td><td style="overflow:auto; width:100%; ">COLABORADOR</td><td><br></td><td style="overflow:auto; width:100%; ">NOME CONTADOR</td><td style="overflow:auto; width:100%; ">PRODUZIDO</td><td style="overflow:auto; width:100%; ">META</td><td><br></td><td style="overflow:auto; width:100%; ">TEMPO TOTAL EXECUTADO</td><td style="overflow:auto; width:100%; ">HORARIO DE TRABALHO</td><td style="overflow:auto; width:100%; ">PRODUTIVIDADE TOTAL</td></tr></thead>')
             }
 
         </script>

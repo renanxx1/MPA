@@ -3,6 +3,7 @@ const connection = require("../database/database");
 const moment = require("moment");
 const Collaborator = require("./Collaborator");
 const Activity = require("./Activity");
+const Process = require("./Process");
 
 const Activity_Chronometer = connection.define("activities_chronometer", {
     id: {
@@ -52,6 +53,13 @@ Activity.hasOne(Activity_Chronometer, {
 Collaborator.hasMany(Activity_Chronometer, {
     foreignKey: {
         name: 'collaborator_id',
+        allowNull: false
+    }
+})
+
+Process.hasMany(Activity_Chronometer,{
+    foreignKey: {
+        name: 'process_id',
         allowNull: false
     }
 })

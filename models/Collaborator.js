@@ -35,6 +35,7 @@ const Collaborator = connection.define("collaborator", {
         type: Sequelize.STRING,
         allowNull: true
     }, 
+    
     createdAt: {
         type: Sequelize.DATE,
         get() {

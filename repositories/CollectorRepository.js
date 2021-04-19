@@ -19,7 +19,7 @@ class CollectorRepository {
             Collaborator.findOne({
                 raw: true,
                 nest: true,
-                attributes: ['id', 'login', 'work_time'],
+                attributes: ['id', 'login', 'work_time', 'process_id'],
                 where: {
                     [Op.and]: [{
                         id: id,
@@ -136,14 +136,15 @@ class CollectorRepository {
     }
 
 
-    async createChronometer(time, work_time, counter, activity_id, collaborator_id) {
+    async createChronometer(time, work_time, counter, activity_id, collaborator_id, process_id) {
         return await
             Activity_Chronometer.create({
                 time: time,
                 work_time: work_time,
                 counter: counter,
                 activity_id: activity_id,
-                collaborator_id: collaborator_id
+                collaborator_id: collaborator_id,
+                process_id: process_id
             })
     }
 

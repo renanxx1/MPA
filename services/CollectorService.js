@@ -41,19 +41,16 @@ class CollectorController {
             //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
             if (activitiesAndChronometers[0] == null && idleTime==null) {
                 for await (const activity of activities) {
-                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id);
+                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id, collaborator.process_id);
                 }
-                console.log('conferencia primeiro if')
-                await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id);
+                await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id, collaborator.process_id);
             }
-
 
             console.log(Object.keys(activities).length)
             console.log(Object.keys(activitiesAndChronometers).length)
 
             //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
             if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
-                console.log('CONFERENCIA IF QUANTIDADE DIF')
                 var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id)
                 var newActivities = [];
 
@@ -67,13 +64,11 @@ class CollectorController {
 
                 //Cria os cronometros no banco de dados
                 for await (const newActivity of newActivities) {
-                    console.log('CONFERENCIA FOR NEW ACTIVITY')
-                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, newActivity.id, collaborator.id);
+                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, newActivity.id, collaborator.id, collaborator.process_id);
                 }
             }
 
             //Caso não possua contador da função principal, estara criando no BD e retornando para a view.
-            console.log(collaborator)
             if (collaborator.process.process_counter != null && processAndCounter == null) {
                 await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id, collaborator.process.daily_goal);
                 processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.process.id, collaborator.id);
@@ -132,7 +127,7 @@ class CollectorController {
                 checkPoint = null;
             }
             var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
-
+          
             return {
                 activitiesAndChronometers: activitiesAndChronometers,
                 idleTime: idleTime,
