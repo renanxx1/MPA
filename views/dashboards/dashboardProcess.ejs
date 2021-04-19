@@ -63,20 +63,6 @@
 
                     <div id="mainDiv" class="row">
 
-                        <table id="datatable">
-                            <tr>
-                                <td>100</td>
-                                <td>200</td>
-                                <td>300</td>
-                            </tr>
-                            <tr>
-                                <td>400</td>
-                                <td>500</td>
-                                <td>600</td>
-                            </tr>
-                        </table>
-
-
                         <div id="chart1" class="col-xl-6">
                             <div class="card mb-4">
                                 <div id="processCounter" class="card-header mb-2">
@@ -147,12 +133,13 @@
                     </div>
 
                 </div>
+
+
             </main>
+            <table cellspacing="0" id="datatable" style="display: none;">
+            </table>
             <%- include ('../partials/footer.ejs')%>
         </div>
-
-
-
 
         </html>
 
@@ -471,7 +458,19 @@
                         } else {
                             $('#smallDateInfo').html("");
                         }
+                    }
 
+                    //Caso nao tenha informação de cronometros e process counter, exibe apenas o grafico barchart com o tempo ocioso
+                    if (data.chronometers[0] == null && data.process_counter[0] != null && data.idleTime[0] != null) {
+                        $('#chart1').toggleClass('col-xl-12');
+                        $('#chart2').hide();
+                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                            var d1 = data.idleTime[0].min_date.split("-");
+                            var d2 = data.idleTime[0].max_date.split("-");
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                        } else {
+                            $('#smallDateInfo').html("");
+                        }
                     }
 
                     //Caso tenha cronometro e não tenho process counter, oculta o grafico do process counter
@@ -714,6 +713,9 @@
 // myBarChart.options.scales.x.display=false;
         </script>
 
+
+
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/vfs_fonts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
@@ -789,40 +791,85 @@
         </script>
 
 
-        <script src="http://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
-        <script>
-            require(['dist/excellentexport'], function (ee) {
-                window.ExcellentExport = ee;
-            });
-        </script>
-
         <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/excellentexport@3.4.3/dist/excellentexport.min.js"></script>
+        <script src="http://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
 
 
         <script>
             $("#excel").on("click", function () {
+                table();
 
-                var options =
-                {
-                    format: 'xls',
-                    filename: String
+                let dataTable = document.getElementById('datatable');
+
+                var x = 0;
+                while (x < myBarChart.data.labels.length) { // Para cada linha
+                    var tr = document.createElement('tr');
+
+                    dataTable.appendChild(tr);
+                    var y = 0;
+                    while (y < 12) { // Para cada coluna
+                        let td = document.createElement('td'); // Crio o dado
+                        if (y == 0) {
+                            td.appendChild(document.createTextNode(myBarChart.data.labels[x]));
+                        }
+                        if (y == 1) {
+                            td.appendChild(document.createTextNode(myBarChart.data.datasets[0].data[x]));
+                        }
+                        if (y == 2) {
+                            td.appendChild(document.createTextNode('<%=collaborator.process.process_name%>'));
+                        }
+                        if (y == 3) {
+                            td.appendChild(document.createTextNode('<%=collaborator.collaborator_name%>'));
+                        }
+                        if (y == 5) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode('<%=collaborator.process.process_counter%>'));
+                        }
+                        if (y == 6) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode(myLineChart.data.datasets[0].data[0]));
+                        }
+                        if (y == 7) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode(myLineChart.data.datasets[1].data[0]));
+                        }
+                        if (y == 9) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode(myPieChart.data.datasets[0].data[0]));
+                        }
+                        if (y == 10) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode(myPieChart.data.datasets[0].data[1]));
+                        }
+                        if (y == 11) {
+                            if (x == 0)
+                                td.appendChild(document.createTextNode((myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1] * 100).toFixed(3)));
+                        }
+
+                        tr.appendChild(td); // Subo o td pra linha.
+                        y++;
+                    }
+                    dataTable.appendChild(tr); // Subo a linha pra tabela, após adicionar todas as colunas.
+                    x++;
                 }
 
-                var sheets = [
-                    {
-                        name: 'Sheet 1', // Sheet name
-                        from: {
-                            table: 'datatable', // Table ID or table element
-                            array: [] // Array with the data. Array where each element is a row. Every row is an array of the cells.
-                        },
-                        filterRowFn: function (row) { return true }, // Function to decide which rows are returned
-                        fixValue: function (value, row, column) { return fixedValue } // Function to fix values, receiving value, row num, column num
-                    },
-                ]
-
-                $(this).attr('download', 'aaaaaaa.xls');
-                ExcellentExport.convert(options, sheets).excel();
+                $(this).attr('download', "Relatorio - " + '<%=collaborator.process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + $('#btnDate').html() + '.xls');
+                return ExcellentExport.excel(this, 'datatable', 'Relatório ' + '<%=collaborator.process.process_name%>');
 
             })
+
+
+            $("#excel").mouseup(function () {
+                setTimeout(function () {
+                    $("table").children().remove()
+                }, 1000)
+
+            });
+
+            function table() {
+                $('#datatable').html(
+                    '<thead> <colgroup width ="109"></colgroup ><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=4 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr ><tr><td height="19" style="overflow:auto; width:100%; ">NOME ATIVIDADE</td><td style="overflow:auto; width:100%; ">TEMPO ATIVIDADE</td><td style="overflow:auto; width:100%; ">PROCESSO</td><td style="overflow:auto; width:100%; ">COLABORADOR</td><td><br></td><td style="overflow:auto; width:100%; ">NOME CONTADOR</td><td style="overflow:auto; width:100%; ">PRODUZIDO</td><td style="overflow:auto; width:100%; ">META</td><td><br></td><td style="overflow:auto; width:100%; ">TEMPO TOTAL EXECUTADO</td><td style="overflow:auto; width:100%; ">HORARIO DE TRABALHO</td><td style="overflow:auto; width:100%; ">EFICIENCIA TOTAL</td></tr></thead>')
+            }
+
         </script>
