@@ -420,13 +420,6 @@
             $('#modalCheckPoint').modal('show'); //exibe a modal
             $('#checkButtonOk').on('click', () => { //ao clicar no botao ok da modal
 
-              socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
-                time: '<%=checkPoint.timeFixed%>',
-                counter: '<%=checkPoint.counter%>',
-                activity_id: '<%=checkPoint.activity_id%>',
-                collaborator_id: '<%=checkPoint.collaborator_id%>'
-              })
-
               var time = '<%=checkPoint.timeFixed%>'.split(":"); //separa o tempo do checkpoint para inserir na view
 
               $('#backhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
@@ -440,6 +433,21 @@
               $('#backhourGroup_' + '<%=checkPoint.activity_id%>').html(time[0]);
               $('#backminuteGroup_' + '<%=checkPoint.activity_id%>').html(time[1]);
               $('#backsecondGroup_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+              socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
+                time: '<%=checkPoint.timeFixed%>',
+                counter: '<%=checkPoint.counter%>',
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=checkPoint.collaborator_id%>'
+              })
+
+              socket.emit('activityOn', {
+                collaborator_id: '<%=checkPoint.collaborator_id%>',
+                activity_id: '<%=checkPoint.activity_id%>',
+                activity_name: '<%=checkPoint.activity_name%>',
+                time: '<%=checkPoint.timeFixed%>',
+                counter: '<%=checkPoint.counter%>',
+              });
 
               socket.emit('checkPointDelete', { //deleta o checkpoint criado no banco de dados
                 activity_id: '<%=checkPoint.activity_id%>'
