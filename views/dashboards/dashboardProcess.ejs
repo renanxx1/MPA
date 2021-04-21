@@ -84,12 +84,11 @@
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Produtividade
 
-
-                                    <button type="button" class="btn btn-default btn-sm dropdown float-right "
-                                        data-toggle="dropdown"> <i class="mx-auto zmdi zmdi-filter-list"></i>
+                                    <button type="button" id="buttonDropDown" class="btn btn-default btn-sm dropdown float-right "
+                                        data-toggle="dropdown" data-flip="false" > <i class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
 
-                                    <ul id="filterList" class="dropdown-menu checkbox-menu allow-focus">
+                                    <ul id="filterList" class="dropdown-menu  dropdown-menu-right checkbox-menu allow-focus" >
                                     </ul>
                                 </div>
 
@@ -545,12 +544,12 @@
                         var soma = 0;
 
                         data.chronometers.forEach(element => {
-                            $('#filterList').append('<li class="small"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
+                            $('#filterList').append('<li class="small dropdow"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
                             var a = convertToTimeFormat(element.total_time).split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                             soma = soma + seconds;
                         })
-
+                        $('#filterList').dropdown('update')
                         var work_time = data.chronometers[0].sum_work_time * 3600;
                         var efficiency = (soma / work_time) * 100;
 
