@@ -1,17 +1,25 @@
 const Sequelize = require("sequelize");
-const sequelizeHistory = require('sequelize-history');
 const connection = require("../database/database");
 const Process = require('./Process');
+const Collaborator = require('./Collaborator');
 const moment = require("moment");
 
-const Collaborator = connection.define("collaborator", {
+const Collaborator_History = connection.define("collaborator_history", {
     id: {
-        allowNull: false,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        unique: true
     },
-
+    modelId: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    archivedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false
+    },
     collaborator_name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -32,11 +40,11 @@ const Collaborator = connection.define("collaborator", {
         allowNull: false
     },
 
-     session_id: {
+    session_id: {
         type: Sequelize.STRING,
         allowNull: true
-    }, 
-    
+    },
+
     createdAt: {
         type: Sequelize.DATE,
         get() {
@@ -55,18 +63,16 @@ const Collaborator = connection.define("collaborator", {
     },
 });
 
-Collaborator.belongsTo(Process, {
+Collaborator_History.belongsTo(Process, {
     foreignKey: {
         name: 'process_id',
         allowNull: false
     }
 });
 
-sequelizeHistory(Collaborator, connection);
 
-
-Collaborator.sync({
-    force: false
+Collaborator_History.sync({
+    force: true
 });
 
-module.exports = Collaborator;
+module.exports = Collaborator_History;

@@ -9,21 +9,22 @@
         <div id="layoutSidenav_content">
             <main>
                 <div id="container-fluid" class="container-fluid">
-                  
-                    <div class="dropdown toolbar-item float-right">
-                        <button class="btn btn-dark dropdown-toggle float-right" type="button"
-                            data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"><%=collaborator.process.process_name%></button>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a id="pdf" class="dropdown-item" href="#">Exportar para PDF</a>
-                            <a id="excel" class="dropdown-item" href="#">Exportar para Excel</a>
+                    <div class="float-right text-center">
+                        <h6 class="">Processo</h6>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                                <%=collaborator.process.process_name%>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item small" href="#">aaaaaaa</a>
+                            </div>
                         </div>
                     </div>
-                    
-                    <h1 class="mt-3 display-6">Dashboard
-                    </h1>
-                 
+
+                    <h1 class="mt-3 display-6">Dashboard Colaborador</h1>
+
                     <h5 class="display-6">
                         <%=collaborator.collaborator_name%>
                     </h5>
@@ -60,7 +61,7 @@
                                     </div>
                                 </div>
 
-                         
+
 
 
                                 <div class="dropdown ml-auto toolbar-item">
@@ -101,10 +102,11 @@
                                     Produtividade
 
                                     <button type="button" class="btn btn-default btn-sm dropdown float-right"
-                                        data-toggle="dropdown" data-flip="false" > <i class="mx-auto zmdi zmdi-filter-list"></i>
+                                        data-toggle="dropdown" data-flip="false"> <i
+                                            class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
 
-                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus" >
+                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus">
                                     </ul>
                                 </div>
 
@@ -746,7 +748,7 @@
                 $('#smallDateInfo').removeClass();
                 myBarChart.options.scales.x.display = false;
                 myBarChart.options.plugins.datalabels.display = false;
-            }else if(screen.width > 400 && screen.width < 961){
+            } else if (screen.width > 400 && screen.width < 961) {
                 $('#smallDateInfo').removeClass();
                 myBarChart.options.scales.x.display = false;
                 myBarChart.options.plugins.datalabels.display = false;

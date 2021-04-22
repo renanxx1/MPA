@@ -1,4 +1,5 @@
 const Collaborator = require('../models/Collaborator');
+const Collaborator_History = require('../models/Collaborator_History');
 const Admin = require('../models/Admin');
 const Process = require('../models/Process');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
@@ -58,6 +59,8 @@ class CollaboratorRepository {
         })
     }
 
+
+
     async findOneByName(collaborator_name) {
         return await Collaborator.findOne({
             where: {
@@ -80,6 +83,11 @@ class CollaboratorRepository {
                     }]
                 }
             })
+    }
+
+    async findCollaboratorByPk(id) {
+        return await
+            Collaborator.findByPk(id);
     }
 
     async updateCollaboratorNoPassword(id, collaborator_name, login, process_id, work_time) {
