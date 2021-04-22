@@ -13,12 +13,12 @@
                     <div class="float-right text-center">
                         <h6 class="">Processo</h6>
                         <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                            <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" value="<%=collaborator.process_id%>">
                                 <%=collaborator.process.process_name%>
                             </button>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item small" href="#">aaaaaaa</a>
+                            <div id="filterProcess" class="dropdown-menu dropdown-menu-right">
+
                             </div>
                         </div>
                     </div>
@@ -60,9 +60,6 @@
                                         <a id="a6" class="dropdown-item" href="#">Mes Passado</a>
                                     </div>
                                 </div>
-
-
-
 
                                 <div class="dropdown ml-auto toolbar-item">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -148,9 +145,7 @@
                         <h3>Sem dados disponiveis nesta data</h3>
                         <img class="img-fluid mb-4" src="../../assets/img/nodata.png">
                     </div>
-
                 </div>
-
 
             </main>
             <table cellspacing="0" id="datatable" style="display: none;">
@@ -177,6 +172,41 @@
             var socket = io(url);
             console.log(url)
         </script>
+
+        <script>
+            //Opçoes de processo
+            $('#filterProcess').append('<a class="dropdown-item small" id="<%=collaborator.process.process_id%>" value="<%=collaborator.process.process_name%>"><%=collaborator.process.process_name%> *</a>')
+            '<%collaboratorProcessHistory.forEach(element => { %>'
+            console.log('<%=element.process_name%>')
+            $('#filterProcess').append('<a class="dropdown-item small" id="<%=element.id%>" value="<%=element.process_name%>"><%=element.process_name%></a>')
+            '<% }) %>'
+
+            $('.dropdown-item').on('click', function () {
+                $('#buttonProcess').html($(this).attr('value'))
+                $('#buttonProcess').val($(this).attr('id'))
+                window.location.href = "/dashboard/" + $(this).attr('value')+ '/' + '<%=collaborator.id%>';
+            })
+       
+
+            /*     //Botao de filtrar
+                $('.dropdown-menu li input').on('click', function (event) {
+    
+                    var index = myBarChart.data.labels.indexOf($(this).val());
+                    var value = myBarChart.data.datasets[0].data[index];
+    
+                    if ($(this).prop('checked') == true) {
+                        myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
+                    } else {
+                        myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
+                    }
+    
+                    var efficiency = (myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1]) * 100;
+                    $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
+                    myPieChart.update();
+    
+                }) */
+        </script>
+
 
         <script>
             //Função chamada para exibir dados do grafico de acordo com a data no date range
@@ -576,11 +606,16 @@
 
                         myPieChart.update();
                         $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
-
+           
+     
+                      //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
+                        $(document).on('click', 'li', function(event){ 
+                             event.stopPropagation();
+                        });
 
                         //Botao de filtrar
                         $('.dropdown-menu li input').on('click', function (event) {
-
+                         
                             var index = myBarChart.data.labels.indexOf($(this).val());
                             var value = myBarChart.data.datasets[0].data[index];
 

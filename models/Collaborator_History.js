@@ -4,7 +4,7 @@ const Process = require('./Process');
 const Collaborator = require('./Collaborator');
 const moment = require("moment");
 
-const Collaborator_History = connection.define("collaborator_history", {
+const Collaborator_History = connection.define("collaboratorhistory", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,

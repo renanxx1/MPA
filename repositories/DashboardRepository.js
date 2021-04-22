@@ -2,6 +2,7 @@ const Activity = require('../models/Activity');
 const Admin = require('../models/Admin');
 const sequelize = require('../database/database');
 const Collaborator = require('../models/Collaborator');
+const Collaborator_History = require('../models/Collaborator_History');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
 const Process = require('../models/Process');
 const Process_Counter = require('../models/Process_Counter');
@@ -38,7 +39,7 @@ class DashboardRepository {
     async findAllActivitiesAndChronometersOnlyId(collaborator_id) {
         return await
             Activity_Chronometer.findAll({
-                attributes: ['activity_id'],
+
                 raw: true,
                 where: {
                     [Op.and]: [{
@@ -90,7 +91,7 @@ class DashboardRepository {
     async findCollaboratorAndProcess(process, collaborator_id) {
         return await
             Collaborator.findOne({
-                attributes: ['id', 'collaborator_name'],
+                attributes: ['id', 'collaborator_name', 'process_id'],
                 raw: true,
                 nest: true,
                 include: [{
@@ -109,6 +110,65 @@ class DashboardRepository {
     }
 
 
+    async findCollaboratorAndProcessInHistory(process, collaborator_id) {
+        return await
+            Collaborator_History.findOne({
+                attributes: ['id', 'collaborator_name', 'process_id'],
+                raw: true,
+                nest: true,
+
+                include: [{
+                    model: Process,
+                    where: {
+                        process_name: process
+                    }
+                }],
+
+                where: {
+                    [Op.and]: [{
+                        modelId: collaborator_id,
+                    }]
+                }
+            })
+    }
+
+    async findCollaboratorAndProcessHistory(process, collaborator_id) {
+        var collaborator =
+            await Collaborator.findOne({
+                attributes: ['process_id'],
+                raw: true,
+                nest: true,
+                where: {
+                    [Op.and]: [{
+                        id: collaborator_id,
+                        status: true
+                    }]
+                }
+            })
+
+        var collaboratorProcessHistory =
+            await Collaborator_History.findAll({
+                raw: true,
+                nest: true,
+                attributes: ['process_id'],
+                group: ['process_id'],
+                include: [{
+                    attributes: ['id','process_name'],
+                    model: Process,
+                }],
+                where: {
+                    [Op.and]: [{
+                        modelId: collaborator_id
+                    }],
+                    [Op.not]: [{
+                        process_id: collaborator.process_id
+                    }]
+                }
+            })
+            console.log(collaboratorProcessHistory)
+        return collaboratorProcessHistory;
+    }
 }
+
 
 module.exports = new DashboardRepository();

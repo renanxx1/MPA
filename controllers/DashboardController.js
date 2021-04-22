@@ -20,9 +20,10 @@ async function renderIndex(req, res, code) {
 
 
 async function renderDashboard(req, res, code) {
-    var collaborator = await DashboardService.dashboardIndexGet(req.params.process, req.params.id);
+    var get = await DashboardService.dashboardIndexGet(req.params.process, req.params.id);
     res.status(code).render('dashboards/dashboardProcess', {
-        collaborator: collaborator,
+        collaborator: get.collaborator,
+        collaboratorProcessHistory: get.collaboratorProcessHistory,
         statusCode: code,
     });
 }
