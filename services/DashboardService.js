@@ -7,14 +7,15 @@ class DashboardService {
 
 
     async dashboardIndexGet(process, collaborator_id) {
-        var collaborator = await DashboardRepository.findCollaboratorAndProcess(process, collaborator_id);
+        var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
         var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
-        var collaboratorInHistory = await DashboardRepository.findCollaboratorAndProcessInHistory(process, collaborator_id);
+        var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);
 
-    /*     if (collaborator == null) {
-            collaborator = await DashboardRepository.findCollaboratorAndProcessInHistory(process, collaborator_id);
-        } */
-        return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory };
+        if (process_name != null && collaborator!=null) {
+            return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory, process: process_name };
+        } else {
+            return null;
+        }
     }
 
 

@@ -21,11 +21,18 @@ async function renderIndex(req, res, code) {
 
 async function renderDashboard(req, res, code) {
     var get = await DashboardService.dashboardIndexGet(req.params.process, req.params.id);
+  
+    if(get!=null){
     res.status(code).render('dashboards/dashboardProcess', {
         collaborator: get.collaborator,
         collaboratorProcessHistory: get.collaboratorProcessHistory,
+        process: get.process,
         statusCode: code,
     });
+   }else{
+       res.redirect('/')
+   }
+
 }
 
 

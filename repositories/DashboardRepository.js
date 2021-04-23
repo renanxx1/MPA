@@ -13,6 +13,60 @@ const moment = require('moment');
 
 class DashboardRepository {
 
+    async findProcessByName(process_name, collaborator_id) {
+        var process = await Process.findOne({
+            where: {
+                process_name: process_name
+            }
+        })
+
+        if (process == null) {
+            return null;
+        }
+
+        var collaborator = await
+            Collaborator.findOne({
+                attributes: ['id', 'collaborator_name', 'process_id'],
+                raw: true,
+                nest: true,
+                include: [{
+                    model: Process,
+                    where: {
+                        id: process.id
+                    }
+                }],
+                where: {
+                    [Op.and]: [{
+                        id: collaborator_id,
+                        status: true
+                    }]
+                }
+            })
+
+        var collaboratorProcessHistory =
+            await Collaborator_History.findOne({
+                raw: true,
+                nest: true,
+                attributes: ['process_id'],
+                include: [{
+                    attributes: ['id', 'process_name'],
+                    model: Process,
+                }],
+                where: {
+                    process_id: process.id
+                }
+            })
+
+
+
+        if (collaborator != null || collaboratorProcessHistory != null) {
+            return process;
+        } else {
+            return null;
+        }
+
+    }
+
     async findAllChronometers(collaborator_id) {
         return await
             Activity_Chronometer.findAll({
@@ -88,6 +142,29 @@ class DashboardRepository {
 
     }
 
+    async findCollaborator(collaborator_id) {
+        var collaborator =
+            await Collaborator.findOne({
+                attributes: ['id', 'collaborator_name', 'process_id'],
+                raw: true,
+                nest: true,
+                include: [{
+                    model: Process,
+                }],
+                where: {
+                    [Op.and]: [{
+                        id: collaborator_id,
+                        status: true
+                    }]
+                }
+            })
+            if(collaborator!=null){
+                return collaborator;
+            }else{
+                return null;
+            }
+    }
+
     async findCollaboratorAndProcess(process, collaborator_id) {
         return await
             Collaborator.findOne({
@@ -146,6 +223,10 @@ class DashboardRepository {
                 }
             })
 
+        if (collaborator == null) {
+            return null;
+        }
+
         var collaboratorProcessHistory =
             await Collaborator_History.findAll({
                 raw: true,
@@ -153,7 +234,7 @@ class DashboardRepository {
                 attributes: ['process_id'],
                 group: ['process_id'],
                 include: [{
-                    attributes: ['id','process_name'],
+                    attributes: ['id', 'process_name'],
                     model: Process,
                 }],
                 where: {
@@ -165,8 +246,9 @@ class DashboardRepository {
                     }]
                 }
             })
-            console.log(collaboratorProcessHistory)
-        return collaboratorProcessHistory;
+        if (collaboratorProcessHistory) {
+            return collaboratorProcessHistory;
+        }
     }
 }
 
