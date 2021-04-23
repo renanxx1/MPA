@@ -3,6 +3,7 @@ const connection = require("../database/database");
 const moment = require("moment");
 const Activity_Chronometer = require("./Activity_Chronometer");
 const Collaborator = require("./Collaborator");
+const Process= require("./Process");
 const {
     checkPoint
 } = require("../services/CollectorService");
@@ -40,6 +41,13 @@ Activity_Chronometer.hasOne(Checkpoint, {
 Collaborator.hasOne(Checkpoint, {
     foreignKey: {
         name: 'collaborator_id',
+        allowNull: false,
+    }
+})
+
+Process.hasOne(Checkpoint, {
+    foreignKey: {
+        name: 'process_id',
         allowNull: false,
     }
 })

@@ -249,11 +249,12 @@ class CollectorRepository {
             })
     }
 
-    async createCheckPoint(collaborator_id, chronometer_id) {
+    async createCheckPoint(collaborator_id, chronometer_id, process_id) {
         return await
             Checkpoint.create({
                 collaborator_id: collaborator_id,
-                chronometer_id: chronometer_id
+                chronometer_id: chronometer_id,
+                process_id: process_id
             })
     }
 

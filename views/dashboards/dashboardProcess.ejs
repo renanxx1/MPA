@@ -199,7 +199,7 @@
                     startDate: date1,
                     endDate: date2,
                     collaborator_id: '<%=collaborator.id%>',
-                    process_id: '<%=collaborator.process.id%>',
+                    process_id: $('#buttonProcess').attr('value'),
                     action: action
                 });
             }
@@ -463,7 +463,7 @@
 
             //Ao carregar a pagina recebe o chartData atráves do socket.io
             socket.on("chartData", (data) => {
-
+console.log(data)
                 //Caso o dado recebido seja null, exibe uma div informando que dados não foram encontrados
                 if (data == null) {
                     $('#divNoData').show();
@@ -619,6 +619,7 @@
 
             //Sempre que houver novos dados, atualiza o grafico diario
             socket.on("newDataAvailable", (newDataChart) => {
+                console.log(newDataChart)
                 setTimeout(function () {
 
                     if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {

@@ -18,7 +18,7 @@ class CollectorController {
         var check = await CollectorRepository.findCheckPoint(chronometer.id);
 
         if (check == null || check == undefined) {
-            await CollectorRepository.createCheckPoint(chronometer.collaborator_id, chronometer.id);
+            await CollectorRepository.createCheckPoint(chronometer.collaborator_id, chronometer.id, chronometer.process_id);
         }
     }
 
@@ -39,7 +39,7 @@ class CollectorController {
             var mainFunction;
 
             //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
-            if (activitiesAndChronometers[0] == null && idleTime==null) {
+            if (activitiesAndChronometers[0] == null && idleTime == null) {
                 for await (const activity of activities) {
                     await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id, collaborator.process_id);
                 }
@@ -117,6 +117,7 @@ class CollectorController {
 
                 checkPoint = {
                     collaborator_id: await check.collaborator_id,
+                    process_id: await check.process_id,
                     activity_id: await check.activity_id,
                     activity_name: await activityCheckPoint.activity_name,
                     group_id: await check.group_id,
@@ -127,7 +128,7 @@ class CollectorController {
                 checkPoint = null;
             }
             var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
-          
+
             return {
                 activitiesAndChronometers: activitiesAndChronometers,
                 idleTime: idleTime,
