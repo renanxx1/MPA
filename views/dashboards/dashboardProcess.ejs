@@ -14,7 +14,7 @@
                         <h6 class="">Processo</h6>
                         <div class="dropdown">
                             <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button"
-                                data-toggle="dropdown" value="<%=process.id%>">
+                                data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
                                 <%=process.process_name%>
                             </button>
 
@@ -181,15 +181,17 @@
             $('#filterProcess').append('<a class="dropdown-item small" id="<%=element.process.id%>" value="<%=element.process.process_name%>"><%=element.process.process_name%></a>')
             '<% }) %>'
 
-            //Ao clicar na opçao do processo, insere o id no butao principal do dropdown
+            //Ao clicar na opçao do processo, insere o id no botao principal do dropdown
             $('.dropdown-item a').on('click', function () {
                 $('#buttonProcess').val($(this).attr('id'));
             })
             //Redireciona e altera o html do botao principal
-            $('.dropdown-item').on('click', function () {
+            $('#filterProcess a').on('click', function () {
                 $('#buttonProcess').html($(this).attr('value'));
-                window.location.href = "/dashboard/" + $('#buttonProcess').html() + '/' + '<%=collaborator.id%>';
+                window.location.href = "/dashboard/" +$(this).attr('value')+ '/' + '<%=collaborator.id%>';
             })
+
+       
 
         </script>
 

@@ -14,6 +14,7 @@ const moment = require('moment');
 class DashboardRepository {
 
     async findProcessByName(process_name, collaborator_id) {
+      
         var process = await Process.findOne({
             where: {
                 process_name: process_name
@@ -56,7 +57,6 @@ class DashboardRepository {
                     process_id: process.id
                 }
             })
-
 
 
         if (collaborator != null || collaboratorProcessHistory != null) {
