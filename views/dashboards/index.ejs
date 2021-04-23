@@ -27,41 +27,37 @@
                                 <button type="button" class="ml-1 btn btn-dark">
                                     Filtrar <i class="fas fa-search"></i>
                                 </button>
-                                <div id="myDIV">
-
-
-                                </div>
 
                             </div>
                         </div>
                     </div>
 
-                    <div id="mainDiv" class="row">
+                    <div id="myDIV" class="row">
 
-                        <div class="col-xl-6">
+                        <div id="div" class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                 </div>
-
+                                <h1 class="text-center">1</h1>
                                 <div class="card-footer text-center mt-2">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-xl-6">
+
+                        <div id="div1" class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                 </div>
-
+                                <h1 class="text-center">2</h1>
                                 <div class="card-footer text-center mt-2">
                                 </div>
                             </div>
                         </div>
-
+                    
                     </div>
-
             </main>
 
             <%- include ('../partials/footer.ejs')%>
@@ -73,19 +69,23 @@
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="/js/socket.io.js"></script>
         <script src="/js/moment.min.js"></script>
-        <script src="/assets/chart/Chart.min.js"></script>
-        <script src="/assets/chart/chartjs-plugin-datalabels.min.js"></script>
+     
 
         <script>
             $(document).ready(function () {
                 $("#anythingSearch").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
-                    $("#myDIV *").filter(function () {
+                    $(".col-xl-6").filter(function () {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
                 });
             });
 
-
+           document.getElementById("anythingSearch").addEventListener("search", function (event) {
+                var value = $(this).val().toLowerCase();
+                    $(".col-xl-6").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+            }); 
 
         </script>
