@@ -552,6 +552,7 @@
               '<%if (mainFunction == true){%>'
               socket.emit('activityOn', {
                 collaborator_id: collaborator_id,
+                process_id: process_id,
                 process_counter: counterNewValue,
                 process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
               });
@@ -574,6 +575,7 @@
               '<%if (mainFunction == true){%>'
               socket.emit('activityOn', {
                 collaborator_id: collaborator_id,
+                process_id: process_id,
                 process_counter: counterNewValue,
                 process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
               });
@@ -764,6 +766,7 @@
 
                   socket.emit('activityOn', {
                     collaborator_id: this.collaborator_id,
+                    process_id: this.process_id,
                     activity_id: this.id,
                     activity_name: this.activity_name,
                     time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
