@@ -13,8 +13,18 @@ const moment = require('moment');
 
 class DashboardRepository {
 
+    async findAllCollaborators() {
+        return await
+            Collaborator.findAll({
+                include: [{
+                    model: Process
+                }]
+            })
+    }
+
+
+
     async findProcessByName(process_name, collaborator_id) {
-      
         var process = await Process.findOne({
             where: {
                 process_name: process_name

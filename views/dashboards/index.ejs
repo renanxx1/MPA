@@ -33,30 +33,53 @@
                     </div>
 
                     <div id="myDIV" class="row">
+                        <%collaborators.forEach(collaborator=> { %>
 
-                        <div id="div" class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar mr-1"></i>
-                                </div>
-                                <h1 class="text-center">1</h1>
-                                <div class="card-footer text-center mt-2">
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <!-- <div class="card-header">
+                                        <img class="img-fluid" width="7%" height="7%" style="margin-left: -8px;"
+                                            src="../../assets/img/prod.png">
+                                    </div> -->
+                                    <div class="card-body"
+                                        onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
+
+                                        <h6 class="float-right" style="color: rgb(14, 202, 14);">online</h6>
+
+                                        <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
+                                            class="mr-auto  ml-2 display-5">Colaborador:
+                                            <b>
+                                                <%=collaborator.collaborator_name%>
+                                            </b>
+                                        </h6>
+
+                                        <img class="img-fluid float-right" width="14%" height="14%"
+                                            src="../../assets/img/prod.png">
+
+                                        <h6 id="process" value="<%=collaborator.process.process_name%>"
+                                            class="mr-auto  ml-2 display-5">Processo:
+                                            <b>
+                                                <%=collaborator.process.process_name%>
+                                            </b>
+                                        </h6>
+
+                                        <h6 class="mr-auto  ml-2 display-5">Status:
+                                            <% if(collaborator.status==true){%>
+                                                <b> Ativo</b>
+                                                <%}else{%>
+                                                    <b> Desativado</b>
+                                                    <%}%>
+                                        </h6>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <h5 class="text-center ml-2 display-5">Atividade em Execução:
+                                        <b>  <%=collaborator.process.process_name%></b> 
+                                        </h5>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div id="div1" class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar mr-1"></i>
-                                </div>
-                                <h1 class="text-center">2</h1>
-                                <div class="card-footer text-center mt-2">
-                                </div>
-                            </div>
-                        </div>
-                    
+                            <%})%>
                     </div>
             </main>
 
@@ -69,23 +92,31 @@
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="/js/socket.io.js"></script>
         <script src="/js/moment.min.js"></script>
-     
+
 
         <script>
             $(document).ready(function () {
                 $("#anythingSearch").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
-                    $(".col-xl-6").filter(function () {
+                    $(".col-xl-4").filter(function () {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
                 });
             });
 
-           document.getElementById("anythingSearch").addEventListener("search", function (event) {
+            document.getElementById("anythingSearch").addEventListener("search", function (event) {
                 var value = $(this).val().toLowerCase();
-                    $(".col-xl-6").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-            }); 
+                $(".col-xl-4").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
 
+
+            $('.card-body').hover(function () {
+                $(this).css('cursor', 'pointer');
+            });
+
+            function redirect(process, id) {
+                window.location.href = "/dashboard/" + process + '/' + id;
+            }
         </script>

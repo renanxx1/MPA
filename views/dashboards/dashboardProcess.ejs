@@ -299,16 +299,13 @@
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem, data) {
-                                    return new Date(tooltipItem.raw * 1000).toISOString().substr(11,
-                                        8) + " " + 'Vezes: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex];
-                                },
-                                /*                               afterLabel: function (tooltipItem, data) {
-                                                                  return 'Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex];
-                                                              },
-                               */
-                                afterLabel: function (tooltipItem, data) {
-                                    return 'Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
-                                        8);;
+                                    var labelOptions = [];
+                                    labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
+                                        8));
+                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex])
+                                    labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
+                                        8))
+                                    return labelOptions;
                                 },
                             },
                         },
@@ -678,6 +675,7 @@
                             var a = hms.split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
 
+                            myBarChart.data.datasets[0].data1[index] = newDataChart.counter;
                             myBarChart.data.datasets[0].data[index] = seconds;
                             myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
                             myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';

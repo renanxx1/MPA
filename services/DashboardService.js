@@ -1,8 +1,8 @@
 const DashboardRepository = require('../repositories/DashboardRepository');
 class DashboardService {
 
-    async dashboardGeneralIndexGet(req) {
-
+    async dashboardGeneralIndexGet() {
+        return DashboardRepository.findAllCollaborators();
     }
 
 
@@ -11,7 +11,7 @@ class DashboardService {
         var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
         var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);
 
-        if (process_name != null && collaborator!=null) {
+        if (process_name != null && collaborator != null) {
             return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory, process: process_name };
         } else {
             return null;
@@ -23,7 +23,7 @@ class DashboardService {
         var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
         var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);
         var idleTime = await DashboardRepository.findIdleTime(collaborator_id, process_id, startDate, endDate);
- 
+
         if (chronometers[0] == null && process_counter[0] == null && idleTime[0] == null) {
             return null;
         } else {
