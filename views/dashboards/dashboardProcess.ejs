@@ -591,7 +591,7 @@
                         var soma = 0;
 
                         data.chronometers.forEach(element => {
-                            $('#filterList').append('<li class="small dropdow"><label> <input type="checkbox" id="' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
+                            $('#filterList').append('<li class="small"><label> <input type="checkbox" id="filter_' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
                             var a = convertToTimeFormat(element.total_time).split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                             soma = soma + seconds;
@@ -683,16 +683,16 @@
                             myBarChart.update()
                             /*-----------------------------------------------------------------------------------------------------------*/
 
+
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
-
-                            if (newDataChart.activity_id != null && $('#' + newDataChart.activity_id).prop("checked")) {
-                                myPieChart.data.datasets[0].data[0] = parseInt(myPieChart.data.datasets[0].data[0]++);
+                            if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart.activity_id != null) {
+                                myPieChart.data.datasets[0].data[0]++;
 
                                 var work_time = newDataChart.work_time * 3600;
                                 var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
                                 $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%")
-                              
+
                                 myPieChart.update()
                             }
                         }
