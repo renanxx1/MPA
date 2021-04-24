@@ -24,7 +24,6 @@ class DashboardService {
         var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);
         var idleTime = await DashboardRepository.findIdleTime(collaborator_id, process_id, startDate, endDate);
  
-        console.log(collaborator_id, process_id, startDate, endDate)
         if (chronometers[0] == null && process_counter[0] == null && idleTime[0] == null) {
             return null;
         } else {
