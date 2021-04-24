@@ -683,23 +683,21 @@
                             myBarChart.update()
                             /*-----------------------------------------------------------------------------------------------------------*/
 
-
-
                             /*-----------------------------------------------------------------------------------------------------------*/
-                            //ATUALIZANDO DADOS NO GRAFICO DE PIZZA - 3
+                            //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
 
                             if (newDataChart.activity_id != null && $('#' + newDataChart.activity_id).prop("checked")) {
-                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + 1;
+                                myPieChart.data.datasets[0].data[0] = parseInt(myPieChart.data.datasets[0].data[0]++);
 
                                 var work_time = newDataChart.work_time * 3600;
                                 var efficiency = (myPieChart.data.datasets[0].data[0] / work_time) * 100;
                                 $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%")
+                              
                                 myPieChart.update()
-
                             }
                         }
                     }
-                }, 500)
+                }, 100)
             })
 
             /*-----------------------------------------------------------------------------------------------------------*/
