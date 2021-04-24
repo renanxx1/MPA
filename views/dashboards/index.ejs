@@ -33,53 +33,55 @@
                     </div>
 
                     <div id="myDIV" class="row">
-                  
-                        <%collaborators.forEach(collaborator=> { %>
-                            <div class="col-xl-4"  style="display: flex;">
-                                <div class="card mb-4">
-                                    <!-- <div class="card-header">
-                                        <img class="img-fluid" width="7%" height="7%" style="margin-left: -8px;"
-                                            src="../../assets/img/prod.png">
-                                    </div> -->
-                                    <div class="card-body"
-                                        onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
+                        <%if(collaborators==null){ %>
+                            <h1>Sem colaboradores cadastrados no sistema.</h1>
+                            <%}%>
+                                <%collaborators.forEach(collaborator=> { %>
+                                    <div class="col-xl-4" style="display: flex;">
+                                        <div class="card mb-4">
 
-                                        <h6 class="float-right" style="color: rgb(14, 202, 14);">online</h6>
-                                  
-                                        <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
-                                            class="mr-auto  ml-2 display-5">Colaborador:
-                                            <b>
-                                                <%=collaborator.collaborator_name%>
-                                            </b>
-                                        </h6>
-                                        <img class="img-fluid float-right" width="13%"
-                                        src="../../assets/img/prod.png">
-                                       
-                                        <h6 id="process" value="<%=collaborator.process.process_name%>"
-                                            class="mr-auto ml-2 display-5">Processo:
-                                            <b>
-                                                <%=collaborator.process.process_name%>
-                                            </b>
-                                        </h6>
+                                            <div class="card-body"
+                                                onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-                                        <h6 class="mr-auto  ml-2 display-5">Status:
-                                            <% if(collaborator.status==true){%>
-                                                <b> Ativo</b>
-                                                <%}else{%>
-                                                    <b> Desativado</b>
-                                                    <%}%>
-                                        </h6>
+                                                <h6 class="float-right" style="color: rgb(14, 202, 14);">online</h6>
+                                                <img class="img-fluid float-right" width="13%"
+                                                    src="../../assets/img/prod.png"
+                                                    style="margin-top: 8%; margin-right:-13.7%">
+                                                <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
+                                                    class="mr-auto  ml-2 display-5">Colaborador:
+                                                    <b>
+                                                        <%=collaborator.collaborator_name%>
+                                                    </b>
+                                                </h6>
+
+
+                                                <h6 id="process" value="<%=collaborator.process.process_name%>"
+                                                    class="mr-auto ml-2 display-5">Processo:
+                                                    <b>
+                                                        <%=collaborator.process.process_name%>
+                                                    </b>
+                                                </h6>
+
+                                                <h6 class="mr-auto  ml-2 display-5">Status:
+                                                    <% if(collaborator.status==true){%>
+                                                        <b> Ativo</b>
+                                                        <%}else{%>
+                                                            <b> Desativado</b>
+                                                            <%}%>
+                                                </h6>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <h5 class="text-center display-5">Atividade em Execução:
+                                                    <b>
+                                                        <%=collaborator.process.process_name%>
+                                                    </b>
+                                                </h5>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-footer text-center">
-                                        <h5 class="text-center display-5">Atividade em Execução:
-                                        <b>  <%=collaborator.process.process_name%></b> 
-                                        </h5>
-
-                                    </div>
-                                </div>
-                        </div>
-                            <%})%>
-                    </div>  
+                                    <%})%>
+                    </div>
             </main>
 
             <%- include ('../partials/footer.ejs')%>
