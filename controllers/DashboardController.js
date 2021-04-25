@@ -1,6 +1,6 @@
 const DashboardService = require('../services/DashboardService');
-class DashboardController {
 
+class DashboardController {
 
     async index(req, res) {
         renderIndex(req, res, 200);
@@ -31,7 +31,7 @@ async function renderDashboard(req, res, code) {
             statusCode: code,
         });
     } else {
-       // res.redirect('/')
+        // res.redirect('/')
     }
 
 }

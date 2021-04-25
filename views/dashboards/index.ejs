@@ -37,16 +37,21 @@
                             <h1>Sem colaboradores cadastrados no sistema.</h1>
                             <%}%>
                                 <%collaborators.forEach(collaborator=> { %>
+
+
                                     <div class="col-xl-4" style="display: flex;">
                                         <div class="card mb-4">
 
                                             <div class="card-body"
                                                 onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-                                                <h6 class="float-right" style="color: rgb(14, 202, 14);">online</h6>
+                                                <h6 id="collaboratorLogged_<%=collaborator.id%>" class="float-right"
+                                                    style="color: red">offline</h6>
                                                 <img class="img-fluid float-right" width="13%"
                                                     src="../../assets/img/prod.png"
-                                                    style="margin-top: 8%; margin-right:-13.7%">
+                                                    style="margin-top: 6%; margin-right:-12.5%">
+
+
                                                 <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
                                                     class="mr-auto  ml-2 display-5">Colaborador:
                                                     <b>
@@ -71,9 +76,10 @@
                                                 </h6>
                                             </div>
                                             <div class="card-footer text-center">
-                                                <h5 class="text-center display-5">Atividade em Execução:
+                                                <h5 id="collaboratorExec_<%=collaborator.id%>"
+                                                    class="text-center display-5">
                                                     <b>
-                                                        <%=collaborator.process.process_name%>
+                                                         
                                                     </b>
                                                 </h5>
 
@@ -83,16 +89,20 @@
                                     <%})%>
                     </div>
             </main>
-
             <%- include ('../partials/footer.ejs')%>
         </div>
 
         </html>
 
-        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="/js/socket.io.js"></script>
-        <script src="/js/moment.min.js"></script>
+
+        <script>
+            //Conexao com socket io
+            var url_atual = window.location.href.split('/');
+            var url = url_atual[2];
+            var socket = io('192.168.1.67');
+            console.log(url)
+        </script>
 
 
         <script>
@@ -120,4 +130,22 @@
             function redirect(process, id) {
                 window.location.href = "/dashboard/" + process + '/' + id;
             }
+        </script>
+
+
+        <script>
+            socket.on("newDataAvailable", (data) => {
+
+                $('#collaboratorLogged_' + data.collaborator_id).html('online');
+                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
+                $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
+                console.log(newDataChart)
+            })
+
+            socket.on('collaboratorOff', (data) => {
+                $('#collaboratorLogged_' + data.collaborator_id).html('offline');
+                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
+                $('#collaboratorExec_' + data.collaborator_id).html(' ');
+            })
+
         </script>
