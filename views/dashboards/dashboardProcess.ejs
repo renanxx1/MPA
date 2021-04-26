@@ -17,9 +17,8 @@
                                 data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
                                 <%=process.process_name%>
                             </button>
-
+                         
                             <div id="filterProcess" class="dropdown-menu dropdown-menu-right">
-
                             </div>
                         </div>
                     </div>
@@ -29,13 +28,17 @@
                     <h5 class="display-6">
                         <%=collaborator.collaborator_name%>
                     </h5>
-
+                  
                     <div class="row page-title-header">
-                        <div class="page-header mb-1 mt-0">
+                        <div class="page-header mb-3">
                         </div>
 
                         <div class="col-md-12 text-center">
 
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Dashboard Colaborador</li>
+                            </ol>
                             <small id="smallDateInfo" class="float-left" style="color: red;"></small>
 
                             <div class="page-header-toolbar">
@@ -943,7 +946,7 @@
             //Função para inserir cabeçalhos na tabela do relatorio de excel
             function table() {
                 $('#datatable').html(
-                    '<thead><colgroup width="109"></colgroup><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=6 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr><tr><td height="19" style=" width:100%; height:100%; ">NOME ATIVIDADE</td><td style=" width:100%; height:100%; ">TEMPO ATIVIDADE (SEG)</td><td style=" width:100%; height:100%; ">VEZES EXECUTADO</td><td style=" width:100%; height:100%; ">TEMPO MEDIO (SEG)</td><td style=" width:100%; height:100%; ">PROCESSO</td><td style=" width:100%; height:100%; ">COLABORADOR</td><td><br></td><td style=" width:100%; height:100%; ">NOME CONTADOR</td><td style=" width:100%; height:100%; ">PRODUZIDO</td><td style=" width:100%; height:100%; ">META</td><td><br></td><td style=" width:100%; height:100%; ">TEMPO TOTAL EXECUTADO (SEG)</td><td style=" width:100%; height:100%; ">HORARIO DE TRABALHO (SEG)</td><td style=" width:100%; height:100%; ">PRODUTIVIDADE TOTAL</td></tr></thead></table>'
+                    '<thead><colgroup width="109"></colgroup><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=6 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR VARIAVEL</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr><tr><td height="19" style=" width:100%; height:100%; ">NOME ATIVIDADE</td><td style=" width:100%; height:100%; ">TEMPO ATIVIDADE (SEG)</td><td style=" width:100%; height:100%; ">VEZES EXECUTADO</td><td style=" width:100%; height:100%; ">TEMPO MEDIO (SEG)</td><td style=" width:100%; height:100%; ">PROCESSO</td><td style=" width:100%; height:100%; ">COLABORADOR</td><td><br></td><td style=" width:100%; height:100%; ">NOME CONTADOR</td><td style=" width:100%; height:100%; ">PRODUZIDO</td><td style=" width:100%; height:100%; ">META</td><td><br></td><td style=" width:100%; height:100%; ">TEMPO TOTAL EXECUTADO (SEG)</td><td style=" width:100%; height:100%; ">HORARIO DE TRABALHO (SEG)</td><td style=" width:100%; height:100%; ">PRODUTIVIDADE TOTAL</td></tr></thead></table>'
                 )
             }
 
