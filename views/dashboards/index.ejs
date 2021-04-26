@@ -21,12 +21,34 @@
 
 
                                 <input id="anythingSearch" type="search" id="form1"
-                                    class=" ml-auto form-control  input-group-sm" placeholder="Procurar..."
+                                    class="ml-auto form-control  input-group-sm" placeholder="Procurar..."
                                     style="width: 20%; height:29px" />
 
-                                <button type="button" class="ml-1 btn btn-dark">
-                                    Filtros <i class="fas fa-search"></i>
+
+
+                                <button type="button" class="btn btn-light btn-sm dropdown float-right ml-1"
+                                    data-toggle="dropdown" data-flip="false"> Filtros <i class="fas fa-search"></i>
                                 </button>
+
+                                <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus">
+                                    <!-- 
+                                    <li class="ml-1">Processos</li>
+                                    <hr class="mb-0 mt-0">
+                                    <li class="small"><label> <input type="checkbox"> Corte</label></li>
+                                    <li class="small"><label> <input type="checkbox"> Borda</label></li>
+
+                                    <li class="ml-1">Cadastro</li>
+                                    <hr class="mb-0 mt-0">
+                                    <li class="small"><label> <input type="checkbox"> Ativo</label></li>
+                                    <li class="small"><label> <input type="checkbox"> Desativado</label></li>
+
+                                    <li class="ml-1">Status</li>
+                                    <hr class="mb-0 mt-0">
+                                    <li class="small"><label> <input type="checkbox"> Online</label></li>
+                                    <li class="small"><label> <input type="checkbox"> Offline</label></li> -->
+                                </ul>
+
+
 
                             </div>
                         </div>
@@ -38,8 +60,8 @@
                             <%}%>
                                 <%collaborators.forEach(collaborator=> { %>
 
-
-                                    <div class="col-xl-4" style="display: flex;">
+                                    <div class="col-xl-4"
+                                        style="display: flex;">
                                         <div class="card mb-4">
 
                                             <div class="card-body"
@@ -67,7 +89,7 @@
                                                     </b>
                                                 </h6>
 
-                                                <h6 class="mr-auto  ml-2 display-5">Status:
+                                                <h6 class="mr-auto  ml-2 display-5">Cadastro:
                                                     <% if(collaborator.status==true){%>
                                                         <b> Ativo</b>
                                                         <%}else{%>
@@ -122,7 +144,6 @@
                 });
             });
 
-
             $('.card-body').hover(function () {
                 $(this).css('cursor', 'pointer');
             });
@@ -148,4 +169,66 @@
                 $('#collaboratorExec_' + data.collaborator_id).html(' ');
             })
 
+        </script>
+
+        <script>
+
+            //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
+            $(document).on('click', 'li', function (event) {
+                event.stopPropagation();
+            });
+
+            //OPÇÕES DE PROCESSOS
+            $('#filterList').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
+
+            var processes = [];
+            '<%collaborators.forEach(collaborator=> { %>'
+            processes.push('<%=collaborator.process.process_name%>')
+            '<%})%>'
+
+            //FUNÇÃO PARA RETORNAR VALOR UNICO
+            function unique(value, index, self) {
+                return self.indexOf(value) === index;
+            }
+
+            //PARA CADA PROCESSO UNICO, INSERE NA LISTA
+            processes.filter(unique).forEach(process => {
+                $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
+            });
+
+
+            //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
+            $('#filterList').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
+            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
+            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
+
+
+            //OPÇOES DE STATUS ONLINE OU OFFLINE
+            $('#filterList').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
+            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
+            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
+
+        </script>
+
+        <script>
+            var values = [];
+            $('#filterList li input').on('click', function () {
+                var checked = $(this).prop('checked');
+                var v = $(this).val().toLowerCase();
+                values.push(v);
+
+                      $(".col-xl-4").filter(function () {
+     
+                     /*     if (checked == true) {
+                             values.forEach(value => { */
+                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    /*          })
+                         } else {
+                             !$(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
+                         }
+      */
+     
+                     }); 
+
+            })
         </script>
