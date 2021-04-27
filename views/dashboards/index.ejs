@@ -60,8 +60,7 @@
                             <%}%>
                                 <%collaborators.forEach(collaborator=> { %>
 
-                                    <div class="col-xl-4"
-                                        style="display: flex;">
+                                    <div class="col-xl-4" style="display: flex;">
                                         <div class="card mb-4">
 
                                             <div class="card-body"
@@ -110,6 +109,65 @@
                                     </div>
                                     <%})%>
                     </div>
+
+                    <form id="live-search" action="" class="styled" method="post">
+                        <fieldset>
+                            <input type="text" class="text-input" id="filter" value="" /> <span
+                                id="filter-count"></span>
+
+                        </fieldset>
+                    </form>
+                    <div class="tags">
+                        <label>
+                            <input type="checkbox" rel="A" />A</label>
+                        <label>
+                            <input type="checkbox" rel="B" />B</label>
+                        <label>
+                            <input type="checkbox" rel="C" />C</label>
+                    </div>
+                    <ul class='studentList'>
+                        <li class="A">
+                            <div class='img'></div>
+                            <div class='name'>peter A</div>
+                        </li>
+                        <li class='B'>
+                            <div class='img'></div>
+                            <div class='name'>cloe B</div>
+                        </li>
+                        <li class='C'>
+                            <div class='img'></div>
+                            <div class='name'>aaron C</div>
+                        </li>
+                        <li class='A'>
+                            <div class='img'></div>
+                            <div class='name'>phil A</div>
+                        </li>
+                        <li class='C'>
+                            <div class='img'></div>
+                            <div class='name'>mark V</div>
+                        </li>
+                        <li class='C'>
+                            <div class='img'></div>
+                            <div class='name'>peet C</div>
+                        </li>
+                        <li class='B'>
+                            <div class='img'></div>
+                            <div class='name'>mike B</div>
+                        </li>
+                        <li class='A'>
+                            <div class='img'></div>
+                            <div class='name'>bob A</div>
+                        </li>
+                        <li class='A'>
+                            <div class='img'></div>
+                            <div class='name'>alicia A</div>
+                        </li>
+                        <li class='B'>
+                            <div class='img'></div>
+                            <div class='name'>mitch B</div>
+                        </li>
+                    </ul>
+
             </main>
             <%- include ('../partials/footer.ejs')%>
         </div>
@@ -170,7 +228,8 @@
             })
 
         </script>
-
+        <script src="https://code.jquery.com/jquery-1.7.2.min.js"
+            integrity="sha256-R7aNzoy2gFrVs+pNJ6+SokH04ppcEqJ0yFLkNGoFALQ=" crossorigin="anonymous"></script>
         <script>
 
             //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
@@ -209,26 +268,61 @@
             $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
 
         </script>
-
+        <!-- 
         <script>
-            var values = [];
             $('#filterList li input').on('click', function () {
                 var checked = $(this).prop('checked');
                 var v = $(this).val().toLowerCase();
-                values.push(v);
 
                       $(".col-xl-4").filter(function () {
-     
-                     /*     if (checked == true) {
-                             values.forEach(value => { */
-                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    /*          })
+
+                        if (checked == true) {
+                                return $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1)
                          } else {
                              !$(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
                          }
-      */
-     
                      }); 
-
             })
+        </script>
+ -->
+
+
+        <script>
+            $(document).ready(function () {
+                $("#filter").keyup(function () {
+
+                    // Retrieve the input field text and reset the count to zero
+                    var filter = $(this).val(),
+                        count = 0;
+
+                    // Loop through the comment list
+                    $("li").each(function () {
+
+                        // If the list item does not contain the text phrase fade it out
+                        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                            $(this).fadeOut(0);
+
+                            // Show the list item if the phrase matches and increase the count by 1
+                        } else {
+                            $(this).show();
+                            count++;
+                        }
+                    });
+
+                    // Update the count
+                    var numberItems = count;
+                    $("#filter-count").text("Number of Comments = " + count);
+                });
+            });
+
+            $(document).ready(function () {
+                $('.studentList > li.' + $(this).attr('rel')).show();
+
+                $('div.tags').find('input:checkbox').live('click', function () {
+                    $('.studentList > li').hide();
+                    $('div.tags').find('input:checked').each(function () {
+                        $('.studentList > li.' + $(this).attr('rel')).show();
+                    });
+                });
+            });
         </script>
