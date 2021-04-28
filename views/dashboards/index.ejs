@@ -58,9 +58,12 @@
                         <%if(collaborators==null){ %>
                             <h1>Sem colaboradores cadastrados no sistema.</h1>
                             <%}%>
-                                <%collaborators.forEach(collaborator=> { %>
+                            <ul class='studentList'>
 
-                                    <div class="col-xl-4" style="display: flex;">
+                                <%collaborators.forEach(collaborator=> { %>
+                                    <li class="<%=collaborator.process.process_name%>">
+                                    <div class="col-xl-4" style="display: flex;"
+                                      >
                                         <div class="card mb-4">
 
                                             <div class="card-body"
@@ -107,66 +110,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </li>
                                     <%})%>
                     </div>
-
-                    <form id="live-search" action="" class="styled" method="post">
-                        <fieldset>
-                            <input type="text" class="text-input" id="filter" value="" /> <span
-                                id="filter-count"></span>
-
-                        </fieldset>
-                    </form>
-                    <div class="tags">
-                        <label>
-                            <input type="checkbox" rel="A" />A</label>
-                        <label>
-                            <input type="checkbox" rel="B" />B</label>
-                        <label>
-                            <input type="checkbox" rel="C" />C</label>
-                    </div>
-                    <ul class='studentList'>
-                        <li class="A">
-                            <div class='img'></div>
-                            <div class='name'>peter A</div>
-                        </li>
-                        <li class='B'>
-                            <div class='img'></div>
-                            <div class='name'>cloe B</div>
-                        </li>
-                        <li class='C'>
-                            <div class='img'></div>
-                            <div class='name'>aaron C</div>
-                        </li>
-                        <li class='A'>
-                            <div class='img'></div>
-                            <div class='name'>phil A</div>
-                        </li>
-                        <li class='C'>
-                            <div class='img'></div>
-                            <div class='name'>mark V</div>
-                        </li>
-                        <li class='C'>
-                            <div class='img'></div>
-                            <div class='name'>peet C</div>
-                        </li>
-                        <li class='B'>
-                            <div class='img'></div>
-                            <div class='name'>mike B</div>
-                        </li>
-                        <li class='A'>
-                            <div class='img'></div>
-                            <div class='name'>bob A</div>
-                        </li>
-                        <li class='A'>
-                            <div class='img'></div>
-                            <div class='name'>alicia A</div>
-                        </li>
-                        <li class='B'>
-                            <div class='img'></div>
-                            <div class='name'>mitch B</div>
-                        </li>
-                    </ul>
 
             </main>
             <%- include ('../partials/footer.ejs')%>
@@ -186,22 +132,22 @@
 
 
         <script>
-            $(document).ready(function () {
-                $("#anythingSearch").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $(".col-xl-4").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-            });
-
-            document.getElementById("anythingSearch").addEventListener("search", function (event) {
-                var value = $(this).val().toLowerCase();
-                $(".col-xl-4").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-
+            /*      $(document).ready(function () {
+                     $("#anythingSearch").on("keyup", function () {
+                         var value = $(this).val().toLowerCase();
+                         $(".col-xl-4").filter(function () {
+                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                         });
+                     });
+                 });
+     
+                 document.getElementById("anythingSearch").addEventListener("search", function (event) {
+                     var value = $(this).val().toLowerCase();
+                     $(".col-xl-4").filter(function () {
+                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                     });
+                 });
+      */
             $('.card-body').hover(function () {
                 $(this).css('cursor', 'pointer');
             });
@@ -289,14 +235,14 @@
 
         <script>
             $(document).ready(function () {
-                $("#filter").keyup(function () {
+                $("#anythingSearch").keyup(function () {
 
                     // Retrieve the input field text and reset the count to zero
                     var filter = $(this).val(),
                         count = 0;
 
                     // Loop through the comment list
-                    $("li").each(function () {
+                    $(".col-xl-4").each(function () {
 
                         // If the list item does not contain the text phrase fade it out
                         if ($(this).text().search(new RegExp(filter, "i")) < 0) {
@@ -309,11 +255,29 @@
                         }
                     });
 
-                    // Update the count
-                    var numberItems = count;
-                    $("#filter-count").text("Number of Comments = " + count);
+                    /*     // Update the count
+                        var numberItems = count;
+                        $("#filter-count").text("Number of Comments = " + count); */
                 });
             });
+            /* 
+                        $(document).ready(function () {
+                            //  $('.col-xl-4' + $(this).attr('rel')).show();
+            
+            
+                            $('#filterList').find('input:checkbox').live('click', function () {
+                               
+                               
+                                $(this).hide()
+            
+                                $('.col-xl-4').find('input:checked').each(function () {
+                                 //   alert('clicou')
+            
+                                    //  $('.col-xl-4').attr('rel').show();
+                                });
+                            });
+                        }); */
+
 
             $(document).ready(function () {
                 $('.studentList > li.' + $(this).attr('rel')).show();
