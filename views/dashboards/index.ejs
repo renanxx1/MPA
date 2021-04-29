@@ -58,12 +58,10 @@
                         <%if(collaborators==null){ %>
                             <h1>Sem colaboradores cadastrados no sistema.</h1>
                             <%}%>
-                            <ul class='studentList'>
 
                                 <%collaborators.forEach(collaborator=> { %>
-                                    <li class="<%=collaborator.process.process_name%>">
                                     <div class="col-xl-4" style="display: flex;"
-                                      >
+                                        data-categories="<%=collaborator.process.process_name%>">
                                         <div class="card mb-4">
 
                                             <div class="card-body"
@@ -110,7 +108,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    </li>
                                     <%})%>
                     </div>
 
@@ -126,28 +123,27 @@
             //Conexao com socket io
             var url_atual = window.location.href.split('/');
             var url = url_atual[2];
-            var socket = io('192.168.1.67');
+            var socket = io(url);
             console.log(url)
         </script>
 
 
         <script>
-            /*      $(document).ready(function () {
-                     $("#anythingSearch").on("keyup", function () {
-                         var value = $(this).val().toLowerCase();
-                         $(".col-xl-4").filter(function () {
-                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                         });
-                     });
-                 });
-     
-                 document.getElementById("anythingSearch").addEventListener("search", function (event) {
-                     var value = $(this).val().toLowerCase();
-                     $(".col-xl-4").filter(function () {
-                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                     });
-                 });
-      */
+            $(document).ready(function () {
+                $("#anythingSearch").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $(".col-xl-4").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+
+            document.getElementById("anythingSearch").addEventListener("search", function (event) {
+                var value = $(this).val().toLowerCase();
+                $(".col-xl-4").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
             $('.card-body').hover(function () {
                 $(this).css('cursor', 'pointer');
             });
@@ -164,7 +160,6 @@
                 $('#collaboratorLogged_' + data.collaborator_id).html('online');
                 $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
                 $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
-                console.log(newDataChart)
             })
 
             socket.on('collaboratorOff', (data) => {
@@ -198,7 +193,7 @@
 
             //PARA CADA PROCESSO UNICO, INSERE NA LISTA
             processes.filter(unique).forEach(process => {
-                $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
+                $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + process + '"' + 'rel="' + process + '"' + '>' + process + '</label></li>');
             });
 
 
@@ -214,79 +209,108 @@
             $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
 
         </script>
-        <!-- 
         <script>
-            $('#filterList li input').on('click', function () {
-                var checked = $(this).prop('checked');
-                var v = $(this).val().toLowerCase();
-
-                      $(".col-xl-4").filter(function () {
-
-                        if (checked == true) {
-                                return $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1)
+            /*      $('#filterList li input').on('click', function () {
+                     var checked = $(this).prop('checked');
+                     var v = $(this).val().toLowerCase();
+     
+                     $(".col-xl-4").filter(function () {
+     
+                         if (checked == true) {
+                             return $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1)
                          } else {
                              !$(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
                          }
-                     }); 
-            })
+                     });
+                 }) */
         </script>
- -->
-
 
         <script>
-            $(document).ready(function () {
-                $("#anythingSearch").keyup(function () {
 
-                    // Retrieve the input field text and reset the count to zero
-                    var filter = $(this).val(),
-                        count = 0;
+     
+            $("#filterList li input").on('click',function () {
+   var v = $(this).val();
+   var checked = $(this).prop('checked');
+   var check = [];
+   var checkName = [];
+ var allChecks = [];
 
-                    // Loop through the comment list
-                    $(".col-xl-4").each(function () {
+   $('li input:checkbox').each(function () {
+    var v = $(this).val();
+        check.push($(this));
+    });
 
-                        // If the list item does not contain the text phrase fade it out
-                        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                            $(this).fadeOut(0);
+    check.forEach((e)=>{
+      
+        
+    })
+   $('#myDIV').find('.col-xl-4').each(function(){
+  
+    if($(this).data('categories')== v){
+        $(this).show();
 
-                            // Show the list item if the phrase matches and increase the count by 1
-                        } else {
-                            $(this).show();
-                            count++;
-                        }
-                    });
+    }else{
+        $(this).hide();
+    }
+   })
+  
+});
 
-                    /*     // Update the count
-                        var numberItems = count;
-                        $("#filter-count").text("Number of Comments = " + count); */
-                });
-            });
-            /* 
-                        $(document).ready(function () {
-                            //  $('.col-xl-4' + $(this).attr('rel')).show();
-            
-            
-                            $('#filterList').find('input:checkbox').live('click', function () {
-                               
-                               
-                                $(this).hide()
-            
-                                $('.col-xl-4').find('input:checked').each(function () {
-                                 //   alert('clicou')
-            
-                                    //  $('.col-xl-4').attr('rel').show();
-                                });
-                            });
-                        }); */
+    
+
+  /*   $('#myDIV').find('.col-xl-4').each(function(){
+       var div = $(this);
+
+    if($(this).data('categories') != check.val()){
+        $(this).hide();
+    }else{
+        $(this).show();
+    }
+ */
+/* }); */
 
 
-            $(document).ready(function () {
-                $('.studentList > li.' + $(this).attr('rel')).show();
+/* var found = allChecks.find(element => element == true);
+if(found!=true){
+    $(this).show();
+} */
+      
 
-                $('div.tags').find('input:checkbox').live('click', function () {
-                    $('.studentList > li').hide();
-                    $('div.tags').find('input:checked').each(function () {
-                        $('.studentList > li.' + $(this).attr('rel')).show();
-                    });
-                });
-            });
+    /*   $(".col-xl-4[data-categories="+value+"]").show();
+      console.log( $(".col-xl-4").data('categories'))
+  
+      if($(".col-xl-4").data('categories')){
+    $(".col-xl-4").hide();
+
+   }
+    }else{
+
+      $(".col-xl-4[data-categories="+value+"]").show();
+      } */
+
+            /*  $(document).ready(function () {
+                 $("#anythingSearch").keyup(function () {
+
+                     // Retrieve the input field text and reset the count to zero
+                     var filter = $(this).val(),
+                         count = 0;
+
+                     // Loop through the comment list
+                     $(".col-xl-4").each(function () {
+
+                         // If the list item does not contain the text phrase fade it out
+                         if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                             $(this).fadeOut(0);
+
+                             // Show the list item if the phrase matches and increase the count by 1
+                         } else {
+                             $(this).show();
+                             count++;
+                         }
+                     });
+                 });
+             });
+
+  */
+
         </script>
