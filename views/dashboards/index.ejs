@@ -30,7 +30,7 @@
                                     data-toggle="dropdown" data-flip="false"> Filtros <i class="fas fa-search"></i>
                                 </button>
 
-                                <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus">
+                                <ul id="filters" class="dropdown-menu  checkbox-menu allow-focus">
                                     <!-- 
                                     <li class="ml-1">Processos</li>
                                     <hr class="mb-0 mt-0">
@@ -60,57 +60,65 @@
                             <%}%>
 
                                 <%collaborators.forEach(collaborator=> { %>
-                                    <div class="col-xl-4" style="display: flex;"
-                                        data-categories="<%=collaborator.process.process_name%>">
-                                        <div class="card mb-4">
+                                    <%if(collaborator.status==1){%>
+                                        <%collaborator.status='Ativo' %>
+                                            <%}else{%>
+                                                <%collaborator.status='Desativado' %>
+                                                    <%}%>
 
-                                            <div class="card-body"
-                                                onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
+                                                        <div class="col-xl-4" id="div_<%=collaborator.id%>"
+                                                            style="display: flex;"
+                                                            data-filter="<%=collaborator.process.process_name%> <%=collaborator.status%> Offline">
+                                                            <div class="card mb-4">
 
-                                                <h6 id="collaboratorLogged_<%=collaborator.id%>" class="float-right"
-                                                    style="color: red">offline</h6>
-                                                <img class="img-fluid float-right" width="13%"
-                                                    src="../../assets/img/prod.png"
-                                                    style="margin-top: 6%; margin-right:-12.5%">
+                                                                <div class="card-body"
+                                                                    onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-
-                                                <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
-                                                    class="mr-auto  ml-2 display-5">Colaborador:
-                                                    <b>
-                                                        <%=collaborator.collaborator_name%>
-                                                    </b>
-                                                </h6>
+                                                                    <h6 id="collaboratorLogged_<%=collaborator.id%>"
+                                                                        class="float-right" style="color: red">offline
+                                                                    </h6>
+                                                                    <img class="img-fluid float-right" width="13%"
+                                                                        src="../../assets/img/prod.png"
+                                                                        style="margin-top: 6%; margin-right:-12.5%">
 
 
-                                                <h6 id="process" value="<%=collaborator.process.process_name%>"
-                                                    class="mr-auto ml-2 display-5">Processo:
-                                                    <b>
-                                                        <%=collaborator.process.process_name%>
-                                                    </b>
-                                                </h6>
+                                                                    <h6 id="collaborator"
+                                                                        value="<%=collaborator.collaborator_name%>"
+                                                                        class="mr-auto  ml-2 display-5">Colaborador:
+                                                                        <b>
+                                                                            <%=collaborator.collaborator_name%>
+                                                                        </b>
+                                                                    </h6>
 
-                                                <h6 class="mr-auto  ml-2 display-5">Cadastro:
-                                                    <% if(collaborator.status==true){%>
-                                                        <b> Ativo</b>
-                                                        <%}else{%>
-                                                            <b> Desativado</b>
-                                                            <%}%>
-                                                </h6>
-                                            </div>
-                                            <div class="card-footer text-center">
-                                                <h5 id="collaboratorExec_<%=collaborator.id%>"
-                                                    class="text-center display-5">
-                                                    <b>
-                                                         
-                                                    </b>
-                                                </h5>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <%})%>
+                                                                    <h6 id="process"
+                                                                        value="<%=collaborator.process.process_name%>"
+                                                                        class="mr-auto ml-2 display-5">Processo:
+                                                                        <b>
+                                                                            <%=collaborator.process.process_name%>
+                                                                        </b>
+                                                                    </h6>
+
+                                                                    <h6 class="mr-auto  ml-2 display-5">Cadastro:
+                                                                        <b>
+                                                                            <%=collaborator.status%>
+                                                                        </b>
+
+                                                                    </h6>
+                                                                </div>
+                                                                <div class="card-footer text-center">
+                                                                    <h5 id="collaboratorExec_<%=collaborator.id%>"
+                                                                        class="text-center display-5">
+                                                                        <b>
+                                                                             
+                                                                        </b>
+                                                                    </h5>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <%})%>
                     </div>
-
             </main>
             <%- include ('../partials/footer.ejs')%>
         </div>
@@ -129,6 +137,11 @@
 
 
         <script>
+            //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
+            $(document).on('click', 'li', function (event) {
+                event.stopPropagation();
+            });
+
             $(document).ready(function () {
                 $("#anythingSearch").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
@@ -160,6 +173,11 @@
                 $('#collaboratorLogged_' + data.collaborator_id).html('online');
                 $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
                 $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
+
+                var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
+                var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
+                $('#div_' + data.collaborator_id).attr('data-filter', filterOn)
+
             })
 
             socket.on('collaboratorOff', (data) => {
@@ -169,17 +187,11 @@
             })
 
         </script>
-        <script src="https://code.jquery.com/jquery-1.7.2.min.js"
-            integrity="sha256-R7aNzoy2gFrVs+pNJ6+SokH04ppcEqJ0yFLkNGoFALQ=" crossorigin="anonymous"></script>
+
         <script>
 
-            //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
-            $(document).on('click', 'li', function (event) {
-                event.stopPropagation();
-            });
-
             //OPÇÕES DE PROCESSOS
-            $('#filterList').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
+            $('#filters').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
 
             var processes = [];
             '<%collaborators.forEach(collaborator=> { %>'
@@ -193,124 +205,36 @@
 
             //PARA CADA PROCESSO UNICO, INSERE NA LISTA
             processes.filter(unique).forEach(process => {
-                $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + process + '"' + 'rel="' + process + '"' + '>' + process + '</label></li>');
+                $('#filters').append('<li class="small"><label> <input class="process" type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
             });
 
 
             //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
-            $('#filterList').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
-            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
-            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
+            $('#filters').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
+            $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
+            $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
 
 
             //OPÇOES DE STATUS ONLINE OU OFFLINE
-            $('#filterList').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
-            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
-            $('#filterList').append('<li class="small"><label> <input type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
-
-        </script>
-        <script>
-            /*      $('#filterList li input').on('click', function () {
-                     var checked = $(this).prop('checked');
-                     var v = $(this).val().toLowerCase();
-     
-                     $(".col-xl-4").filter(function () {
-     
-                         if (checked == true) {
-                             return $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1)
-                         } else {
-                             !$(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
-                         }
-                     });
-                 }) */
+            $('#filters').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
+            $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
+            $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
         </script>
 
         <script>
+            var getFilter = function (category) {
 
-     
-            $("#filterList li input").on('click',function () {
-   var v = $(this).val();
-   var checked = $(this).prop('checked');
-   var check = [];
-   var checkName = [];
- var allChecks = [];
+                var filter = $("#filters ." + category + ":checked").map(function () {
+                    return '[data-filter*="' + this.value + '"]';
+                }).get().join(",");
+                filter = (filter.length > 0) ? filter : "*";
+                return filter;
+            }
 
-   $('li input:checkbox').each(function () {
-    var v = $(this).val();
-        check.push($(this));
-    });
-
-    check.forEach((e)=>{
-      
-        
-    })
-   $('#myDIV').find('.col-xl-4').each(function(){
-  
-    if($(this).data('categories')== v){
-        $(this).show();
-
-    }else{
-        $(this).hide();
-    }
-   })
-  
-});
-
-    
-
-  /*   $('#myDIV').find('.col-xl-4').each(function(){
-       var div = $(this);
-
-    if($(this).data('categories') != check.val()){
-        $(this).hide();
-    }else{
-        $(this).show();
-    }
- */
-/* }); */
-
-
-/* var found = allChecks.find(element => element == true);
-if(found!=true){
-    $(this).show();
-} */
-      
-
-    /*   $(".col-xl-4[data-categories="+value+"]").show();
-      console.log( $(".col-xl-4").data('categories'))
-  
-      if($(".col-xl-4").data('categories')){
-    $(".col-xl-4").hide();
-
-   }
-    }else{
-
-      $(".col-xl-4[data-categories="+value+"]").show();
-      } */
-
-            /*  $(document).ready(function () {
-                 $("#anythingSearch").keyup(function () {
-
-                     // Retrieve the input field text and reset the count to zero
-                     var filter = $(this).val(),
-                         count = 0;
-
-                     // Loop through the comment list
-                     $(".col-xl-4").each(function () {
-
-                         // If the list item does not contain the text phrase fade it out
-                         if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                             $(this).fadeOut(0);
-
-                             // Show the list item if the phrase matches and increase the count by 1
-                         } else {
-                             $(this).show();
-                             count++;
-                         }
-                     });
-                 });
-             });
-
-  */
-
+            $("#filters :checkbox").click(function () {
+                var all = $(".col-xl-4");
+                var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                all.not(tgts).hide();
+                tgts.show();
+            });
         </script>
