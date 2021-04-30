@@ -122,126 +122,136 @@
             </main>
             <%- include ('../partials/footer.ejs')%>
 
-        <script src="/js/socket.io.js"></script>
+                <script src="/js/socket.io.js"></script>
 
-        <script>
-            //Conexao com socket io
-            var url_atual = window.location.href.split('/');
-            var url = url_atual[2];
-            var socket = io(url);
-            console.log(url)
-        </script>
-
-
-        <script>
-            //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
-            $(document).on('click', 'li', function (event) {
-                event.stopPropagation();
-            });
-
-            //Altera o ponteiro do mouse ao passar em cima do card
-            $('.card-body').hover(function () {
-                $(this).css('cursor', 'pointer');
-            });
-
-            //Redireciona a pagina ao clicar no card
-            function redirect(process, id) {
-                window.location.href = "/dashboard/" + process + '/' + id;
-            }
-        </script>
+                <script>
+                    //Conexao com socket io
+                    var url_atual = window.location.href.split('/');
+                    var url = url_atual[2];
+                    var socket = io(url);
+                    console.log(url)
+                </script>
 
 
-        <script>
-            socket.on("newDataAvailable", (data) => {
+                <script>
 
-                $('#collaboratorLogged_' + data.collaborator_id).html('online');
-                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
-                $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
+                    //Caso esteja em versão mobile, aumenta o input do search
+                    if (screen.width > 400 && screen.width < 961) {
+                        $('#anythingSearch').css('width', '50%')
+                    } else if (screen.width < 400) {
+                        $('#anythingSearch').css('width', '50%')
+                    }
 
-                var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
-                var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
-                $('#div_' + data.collaborator_id).attr('data-filter', filterOn)
-
-            })
-
-            socket.on('collaboratorOff', (data) => {
-                $('#collaboratorLogged_' + data.collaborator_id).html('offline');
-                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
-                $('#collaboratorExec_' + data.collaborator_id).html(' ');
-            })
-
-        </script>
-
-        <script>
-
-            //OPÇÕES DE PROCESSOS
-            $('#filters').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
-
-            var processes = [];
-            '<%collaborators.forEach(collaborator=> { %>'
-            processes.push('<%=collaborator.process.process_name%>')
-            '<%})%>'
-
-            //FUNÇÃO PARA RETORNAR VALOR UNICO
-            function unique(value, index, self) {
-                return self.indexOf(value) === index;
-            }
-
-            //PARA CADA PROCESSO UNICO, INSERE NA LISTA
-            processes.filter(unique).forEach(process => {
-                $('#filters').append('<li class="small"><label> <input class="process" type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
-            });
-
-
-            //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
-            $('#filters').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
-            $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
-            $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
-
-
-            //OPÇOES DE STATUS ONLINE OU OFFLINE
-            $('#filters').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
-            $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
-            $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
-        </script>
-
-        <script>
-
-            //FILTRO BOTAO FILTRAR
-            var getFilter = function (category) {
-                var filter = $("#filters ." + category + ":checked").map(function () {
-                    return '[data-filter*="' + this.value + '"]';
-                }).get().join(",");
-                filter = (filter.length > 0) ? filter : "*";
-                return filter;
-            }
-
-            $("#filters :checkbox").click(function () {
-                var all = $(".col-xl-4");
-                var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                all.not(tgts).hide();
-                tgts.show();
-            });
-
-
-            //FILTRO DA BARRA DE PESQUISA
-            $(document).ready(function () {
-                $("#anythingSearch").on("keyup", function () {
-                    var all = $(".col-xl-4");
-                    var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                    var value = $(this).val().toLowerCase();
-                    tgts.filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
+                    $(document).on('click', 'li', function (event) {
+                        event.stopPropagation();
                     });
-                });
-            });
 
-            document.getElementById("anythingSearch").addEventListener("search", function (event) {
-                var all = $(".col-xl-4");
-                var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                var value = $(this).val().toLowerCase();
-                tgts.filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        </script>
+                    //Altera o ponteiro do mouse ao passar em cima do card
+                    $('.card-body').hover(function () {
+                        $(this).css('cursor', 'pointer');
+                    });
+
+                    //Redireciona a pagina ao clicar no card
+                    function redirect(process, id) {
+                        window.location.href = "/dashboard/" + process + '/' + id;
+                    }
+                </script>
+
+
+                <script>
+
+                    //Ao receber dados do colaboradorr
+                    socket.on("newDataAvailable", (data) => {
+
+                        $('#collaboratorLogged_' + data.collaborator_id).html('online');
+                        $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
+                        $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
+
+                        var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
+                        var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
+                        $('#div_' + data.collaborator_id).attr('data-filter', filterOn)
+
+                    })
+
+                    socket.on('collaboratorOff', (data) => {
+                        $('#collaboratorLogged_' + data.collaborator_id).html('offline');
+                        $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
+                        $('#collaboratorExec_' + data.collaborator_id).html(' ');
+                    })
+
+                </script>
+
+                <script>
+
+                    //OPÇÕES DE PROCESSOS
+                    $('#filters').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
+
+                    var processes = [];
+                    '<%collaborators.forEach(collaborator=> { %>'
+                    processes.push('<%=collaborator.process.process_name%>')
+                    '<%})%>'
+
+                    //FUNÇÃO PARA RETORNAR VALOR UNICO
+                    function unique(value, index, self) {
+                        return self.indexOf(value) === index;
+                    }
+
+                    //PARA CADA PROCESSO UNICO, INSERE NA LISTA
+                    processes.filter(unique).forEach(process => {
+                        $('#filters').append('<li class="small"><label> <input class="process" type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
+                    });
+
+
+                    //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
+                    $('#filters').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
+                    $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
+                    $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
+
+
+                    //OPÇOES DE STATUS ONLINE OU OFFLINE
+                    $('#filters').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
+                    $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
+                    $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
+                </script>
+
+                <script>
+
+                    //FILTRO BOTAO FILTRAR
+                    var getFilter = function (category) {
+                        var filter = $("#filters ." + category + ":checked").map(function () {
+                            return '[data-filter*="' + this.value + '"]';
+                        }).get().join(",");
+                        filter = (filter.length > 0) ? filter : "*";
+                        return filter;
+                    }
+
+                    $("#filters :checkbox").click(function () {
+                        var all = $(".col-xl-4");
+                        var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                        all.not(tgts).hide();
+                        tgts.show();
+                    });
+
+
+                    //FILTRO DA BARRA DE PESQUISA
+                    $(document).ready(function () {
+                        $("#anythingSearch").on("keyup", function () {
+                            var all = $(".col-xl-4");
+                            var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                            var value = $(this).val().toLowerCase();
+                            tgts.filter(function () {
+                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                            });
+                        });
+                    });
+
+                    document.getElementById("anythingSearch").addEventListener("search", function (event) {
+                        var all = $(".col-xl-4");
+                        var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                        var value = $(this).val().toLowerCase();
+                        tgts.filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                </script>
