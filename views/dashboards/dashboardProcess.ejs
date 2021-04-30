@@ -17,7 +17,7 @@
                                 data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
                                 <%=process.process_name%>
                             </button>
-                         
+
                             <div id="filterProcess" class="dropdown-menu dropdown-menu-right">
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                     <h5 class="display-6">
                         <%=collaborator.collaborator_name%>
                     </h5>
-                  
+
                     <div class="row page-title-header">
                         <div class="page-header mb-3">
                         </div>
@@ -83,10 +83,13 @@
 
                         <div id="chart1" class="col-xl-6">
                             <div class="card mb-4">
-                                <div id="processCounter" class="card-header mb-2">
+                                <div id="processCounter" class="card-header mb-2" style="display: inline-block;">
                                     <i class="fas fa-chart-bar mr-1"></i>
-                                </div>
+                                    <label class="mb-0" id="processCounterName">Contador</label>
+                                    <img id="imgMax" class="float-right" src="../../assets/img/arrow.png" width="16px"
+                                        style="margin-right: -1%;">
 
+                                </div>
                                 <canvas id="myAreaChart" width="82%" height="30"></canvas>
                                 <div class="card-footer text-center mt-2">
                                     <h2 id="processCounterValue" class="mb-0 mt-0 mx-auto"
@@ -579,7 +582,7 @@
                             sum_counter = sum_counter + element.counter;
                         })
 
-                        $('#processCounter').html('<i class="fas fa-chart-bar mr-1"></i>' + data.process_counter[0].process_counter)
+                        $('#processCounterName').html(data.process_counter[0].process_counter)
                         $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
 
                         myLineChart.update();
@@ -950,4 +953,16 @@
                 )
             }
 
+        </script>
+
+        <script>
+            $('#imgMax').hover(function () {
+                $(this).css('cursor', 'pointer');
+            });
+
+            var chartMaxSize = 0;
+            $('#imgMax').on('click', function () {
+                $('#chart1').toggleClass('col-xl-12');
+                $('#chart2').toggleClass('col-xl-12');
+            })
         </script>
