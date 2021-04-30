@@ -121,9 +121,6 @@
                     </div>
             </main>
             <%- include ('../partials/footer.ejs')%>
-        </div>
-
-        </html>
 
         <script src="/js/socket.io.js"></script>
 
@@ -142,25 +139,12 @@
                 event.stopPropagation();
             });
 
-            $(document).ready(function () {
-                $("#anythingSearch").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $(".col-xl-4").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-            });
-
-            document.getElementById("anythingSearch").addEventListener("search", function (event) {
-                var value = $(this).val().toLowerCase();
-                $(".col-xl-4").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
+            //Altera o ponteiro do mouse ao passar em cima do card
             $('.card-body').hover(function () {
                 $(this).css('cursor', 'pointer');
             });
 
+            //Redireciona a pagina ao clicar no card
             function redirect(process, id) {
                 window.location.href = "/dashboard/" + process + '/' + id;
             }
@@ -222,8 +206,9 @@
         </script>
 
         <script>
-            var getFilter = function (category) {
 
+            //FILTRO BOTAO FILTRAR
+            var getFilter = function (category) {
                 var filter = $("#filters ." + category + ":checked").map(function () {
                     return '[data-filter*="' + this.value + '"]';
                 }).get().join(",");
@@ -236,5 +221,27 @@
                 var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
                 all.not(tgts).hide();
                 tgts.show();
+            });
+
+
+            //FILTRO DA BARRA DE PESQUISA
+            $(document).ready(function () {
+                $("#anythingSearch").on("keyup", function () {
+                    var all = $(".col-xl-4");
+                    var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                    var value = $(this).val().toLowerCase();
+                    tgts.filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+
+            document.getElementById("anythingSearch").addEventListener("search", function (event) {
+                var all = $(".col-xl-4");
+                var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
+                var value = $(this).val().toLowerCase();
+                tgts.filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         </script>
