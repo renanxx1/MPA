@@ -202,6 +202,18 @@
 
         </script>
 
+<script>
+    $('#imgMax').hover(function () {
+        $(this).css('cursor', 'pointer');
+    });
+
+    var chartMaxSize = 0;
+    $('#imgMax').on('click', function () {
+        $('#chart1').toggleClass('col-xl-12');
+        $('#chart2').toggleClass('col-xl-12');
+        chartMaxSize++;
+    })
+</script>
 
         <script>
             //Função chamada para exibir dados do grafico de acordo com a data no date range
@@ -815,8 +827,7 @@
                 html2canvas(document.getElementById('container-fluid'), {
                     onrendered: function (canvas) {
                         var data = canvas.toDataURL();
-
-                        if (screen.width > 961) {
+                        if (screen.width > 961 && (chartMaxSize % 2 == 0)) {
                             var docDefinition = {
                                 pageMargins: [0, 15, 0, 0],
                                 content: [{
@@ -827,6 +838,18 @@
                                     alignment: 'center',
                                 },
                             };
+                        } else if (screen.width > 961 && (chartMaxSize % 2 == 1)) {
+                            var docDefinition = {
+                                pageMargins: [0, 15, 0, 0],
+                                content: [{
+                                    image: data,
+                                    width: 510,
+                                }],
+                                defaultStyle: {
+                                    alignment: 'center',
+                                },
+                            };
+
                         } else if (screen.width > 400 && screen.width < 961) {
                             var docDefinition = {
                                 pageMargins: [0, 0, 0, 0],
@@ -955,14 +978,4 @@
 
         </script>
 
-        <script>
-            $('#imgMax').hover(function () {
-                $(this).css('cursor', 'pointer');
-            });
-
-            var chartMaxSize = 0;
-            $('#imgMax').on('click', function () {
-                $('#chart1').toggleClass('col-xl-12');
-                $('#chart2').toggleClass('col-xl-12');
-            })
-        </script>
+      
