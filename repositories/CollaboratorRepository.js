@@ -9,8 +9,10 @@ class CollaboratorRepository {
 
     async findAll() {
         return await Collaborator.findAll({
+            raw: true,
+            nest: true,
             include: [{
-                all: true
+                model: Process
             }],
             where: {
                 status: true

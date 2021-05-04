@@ -6,6 +6,7 @@ class CollaboratorService {
     async collaboratorIndexGet() {
         try {
             var collaborators = await CollaboratorRepository.findAll();
+            console.log(collaborators)
             return collaborators;
 
         } catch (error) {
