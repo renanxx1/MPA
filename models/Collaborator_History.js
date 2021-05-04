@@ -9,7 +9,6 @@ const Collaborator_History = connection.define("collaboratorhistory", {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        unique: true
     },
     modelId: {
         type: Sequelize.INTEGER,
@@ -72,7 +71,7 @@ Collaborator_History.belongsTo(Process, {
 
 
 Collaborator_History.sync({
-    force: false
+    force: true
 });
 
 module.exports = Collaborator_History;
