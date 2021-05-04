@@ -31,7 +31,7 @@ async function renderDashboard(req, res, code) {
             statusCode: code,
         });
     } else {
-        // res.redirect('/')
+        res.redirect('/');
     }
 
 }
