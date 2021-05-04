@@ -54,7 +54,7 @@
                         </div>
                     </div>
 
-                    <div id="myDIV" class="row">
+                    <div id="myDIV" class="row" style="display:none">
                         <%if(collaborators==null){ %>
                             <h1>Sem colaboradores cadastrados no sistema.</h1>
                             <%}%>
@@ -156,6 +156,10 @@
                     function redirect(process, id) {
                         window.location.href = "/dashboard/" + process + '/' + id;
                     }
+
+                    //Exibe div principal
+                    $('#myDIV').show();
+
                 </script>
 
 
