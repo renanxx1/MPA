@@ -71,7 +71,7 @@ Collaborator_History.belongsTo(Process, {
 
 
 Collaborator_History.sync({
-    force: true
+    force: false
 });
 
 module.exports = Collaborator_History;
