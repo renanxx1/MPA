@@ -170,6 +170,7 @@
                     //Exibe div principal
                     $('#myDIV').show();
 
+                    //Função que carrega o loader no offline
                     setTimeout(function () {
                         '<%collaborators.forEach(collaborator=> { %>'
                         $('#spin_' + '<%=collaborator.id%>').remove();
