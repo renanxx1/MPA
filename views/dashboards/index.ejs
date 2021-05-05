@@ -52,7 +52,7 @@
                         </div>
                     </div>
 
-                    <div id="myDIV" class="row" style="display:none">
+                    <div id="myDIV" class="row" >
                         <%if(collaborators==null){ %>
                             <h1>Sem colaboradores cadastrados no sistema.</h1>
                             <%}%>
@@ -167,8 +167,6 @@
                         window.location.href = "/dashboard/" + process + '/' + id;
                     }
 
-                    //Exibe div principal
-                    $('#myDIV').show();
 
                     //Função que carrega o loader no offline
                     setTimeout(function () {
