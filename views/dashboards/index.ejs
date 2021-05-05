@@ -48,8 +48,6 @@
                                     <li class="small"><label> <input type="checkbox"> Offline</label></li> -->
                                 </ul>
 
-
-
                             </div>
                         </div>
                     </div>
@@ -73,13 +71,19 @@
                                                                 <div class="card-body"
                                                                     onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-                                                                    <div class="float-right text-center">
+                                                                    <div class="float-right text-center ">
+                                                                        <div id="spin_<%=collaborator.id%>"
+                                                                            class="spinner-border spinner-border-sm text-center">
+                                                                        </div>
+                                                                        <div id="br_<%=collaborator.id%>">
+                                                                        </div>
                                                                         <h6 id="collaboratorLogged_<%=collaborator.id%>"
-                                                                            class="" style="color: red">offline
+                                                                            class="h6"
+                                                                            style="display:none; color: red;">
+                                                                            offline
                                                                         </h6>
-                                                                        <img class="img-fluid " width="38px"
-                                                                            src="../../assets/img/prod.png"
-                                                                            style="margin-top: -6px;">
+                                                                        <img class="" width="38px"
+                                                                            src="../../assets/img/prod.png">
                                                                     </div>
 
 
@@ -107,14 +111,19 @@
 
                                                                     </h6>
                                                                 </div>
-                                                                <div class="card-footer text-center">
-                                                                    <h5 id="collaboratorExec_<%=collaborator.id%>"
-                                                                        class="text-center display-5">
+                                                                <div class="card-footer text-center" height="50px">
+                                                                    <h5 id="space_<%=collaborator.id%>">
                                                                         <b>
                                                                              
                                                                         </b>
                                                                     </h5>
-
+                                                                    <h5 id="collaboratorExec_<%=collaborator.id%>"
+                                                                        class="h5 text-center display-5"
+                                                                        style="display: none;">
+                                                                        <b>
+                                                                             
+                                                                        </b>
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -160,6 +169,17 @@
 
                     //Exibe div principal
                     $('#myDIV').show();
+
+                    setTimeout(function () {
+                        '<%collaborators.forEach(collaborator=> { %>'
+                        $('#spin_' + '<%=collaborator.id%>').remove();
+                        $('#space_' + '<%=collaborator.id%>').remove();
+                        $('#br_' + '<%=collaborator.id%>').remove();
+                        '<%})%>'
+
+                        $('.h6').show()
+                        $('.h5').show()
+                    }, 1000);
 
                 </script>
 
