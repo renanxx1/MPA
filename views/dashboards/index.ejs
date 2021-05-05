@@ -67,19 +67,20 @@
                                                     <%}%>
 
                                                         <div class="col-xl-4" id="div_<%=collaborator.id%>"
-                                                            style="display: flex;"
                                                             data-filter="<%=collaborator.process.process_name%> <%=collaborator.status%> Offline">
                                                             <div class="card mb-4">
 
                                                                 <div class="card-body"
                                                                     onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-                                                                    <h6 id="collaboratorLogged_<%=collaborator.id%>"
-                                                                        class="float-right" style="color: red">offline
-                                                                    </h6>
-                                                                    <img class="img-fluid float-right" width="13%"
-                                                                        src="../../assets/img/prod.png"
-                                                                        style="margin-top: 6%; margin-right:-12.5%">
+                                                                    <div class="float-right text-center">
+                                                                        <h6 id="collaboratorLogged_<%=collaborator.id%>"
+                                                                            class="" style="color: red">offline
+                                                                        </h6>
+                                                                        <img class="img-fluid " width="38px"
+                                                                            src="../../assets/img/prod.png"
+                                                                            style="margin-top: -6px;">
+                                                                    </div>
 
 
                                                                     <h6 id="collaborator"
