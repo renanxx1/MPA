@@ -52,7 +52,7 @@
               <input id="mainFunctionCounter" type="text" class="form-control input-sm text-center mx-auto mt-2"
                 value="<%=processAndCounter.processes_counter.counter%>" disabled>
               <button class="btn btn-dark btn-sm mx-auto mb-1"
-                onclick="counterAdd('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Adicionar</button>
+                onclick="addCounter('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Adicionar</button>
             </div>
 
           </div>
@@ -559,7 +559,7 @@
               '<%}%>'
             }
 
-            function counterAdd(process_id, collaborator_id) { //função do botão adicionar
+            function addCounter(process_id, collaborator_id) { //função do botão adicionar
               socket.emit('checkSession');
               $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
                 1); //incrementa no mainfunction contador da pagina
