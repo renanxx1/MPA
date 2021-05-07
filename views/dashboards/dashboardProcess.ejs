@@ -502,10 +502,12 @@
                                 } else if (context.dataIndex == 1) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
                                 }
-                                res.push(totalNumberOfSeconds);
                                 if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
                                     totalNumberOfSeconds = totalNumberOfSeconds / 2;
                                 }
+
+                                res.push(totalNumberOfSeconds);
+
                                 var hours = parseInt(totalNumberOfSeconds / 3600);
                                 var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
                                 var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
@@ -673,7 +675,7 @@
                             }
                             myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
                             myPieChart.update();
-                       
+
                             //Insere o valor da produtividade
                             var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
@@ -742,10 +744,13 @@
                                 myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
                                 myPieChart.update();
 
-                               //Insere o valor da produtividade
-                               var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
-                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
 
+                                //Só atualiza a produtividade se o tooltip nao estiver ativo
+                                if (myPieChart.$context.chart.tooltip.opacity == 0) {
+                                //Insere o valor da produtividade
+                                    var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                                    $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                                }
                             }
                         }
                     }
