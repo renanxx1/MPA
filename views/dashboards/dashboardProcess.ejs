@@ -811,6 +811,8 @@
             //Função ao alterar a data da pagina, zera os dados todos graficos
             $('#btnDate').bind('DOMNodeInserted', function (e) {
 
+                res=[];
+
                 myBarChart.data.labels = [];
                 myBarChart.data.datasets[0].data = [];
                 myBarChart.data.datasets[0].data1 = [];
