@@ -975,15 +975,15 @@
                         }
                         if (y == 11) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(myPieChart.data.datasets[0].data[0]));
+                                td.appendChild(document.createTextNode(res[res.length-1]));
                         }
                         if (y == 12) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(myPieChart.data.datasets[0].data[1]));
+                                td.appendChild(document.createTextNode(res[res.length-2]));
                         }
                         if (y == 13) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode((myPieChart.data.datasets[0].data[0] / myPieChart.data.datasets[0].data[1] * 100).toFixed(3)));
+                                td.appendChild(document.createTextNode(((res[res.length-2] / res[res.length-1])  * 100).toFixed(3)));
                         }
 
                         tr.appendChild(td); // Subo o td pra linha.
