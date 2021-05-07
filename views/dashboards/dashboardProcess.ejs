@@ -446,7 +446,7 @@
             // Pie Chart Example - GRAFICO 3
 
             var res = []; //variavel que pega o valor da label para depois calcular eficiencia
-
+            var doubleVal = false;
             var ctx = document.getElementById("myPieChart");
             var myPieChart = new Chart(ctx, {
                 type: 'pie',
@@ -472,7 +472,7 @@
                                     var totalNumberOfSeconds = tooltipItem.raw;
 
                                     if (tooltipItem.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
-                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2
+                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
                                     } else if (tooltipItem.dataIndex == 1) {
                                         totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
                                     }
@@ -496,7 +496,9 @@
                                 var totalNumberOfSeconds = value;
 
                                 if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
-                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2
+                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
+                                    doubleVal = true;
+
                                 } else if (context.dataIndex == 1) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
                                 }
@@ -640,19 +642,19 @@
 
                         $().dropdown('update')
                         var work_time = data.chronometers[0].sum_work_time * 3600;
-
                         myPieChart.data.labels.push('Tempo Total Executado', 'Horario de Trabalho');
                         myPieChart.data.datasets[0].data.push(soma, work_time + soma)
-
-                        if (soma > work_time / 2) {
-                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] * 2;
-                        }
-
                         myPieChart.update();
 
                         //Insere o valor da produtividade
-                        var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
-                        $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                        if (doubleVal != true) {
+                            var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                        } else {
+                            var productivity = ((res[0] / 2) / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                        }
+
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
                         $(document).on('click', 'li', function (event) {
@@ -661,7 +663,6 @@
 
                         //Botao de filtrar atividade no grafico de produtividade
                         $('.dropdown-menu li input').on('click', function (event) {
-
                             var index = myBarChart.data.labels.indexOf($(this).val());
                             var value = myBarChart.data.datasets[0].data[index];
 
@@ -671,10 +672,11 @@
                                 myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
                             }
                             myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
-
-                            var productivity = (myPieChart.data.datasets[0].data[0] / (myPieChart.data.datasets[0].data[1] - myPieChart.data.datasets[0].data[0])) * 100;
-                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                             myPieChart.update();
+                       
+                            //Insere o valor da produtividade
+                            var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
 
                         })
                     }
@@ -740,9 +742,9 @@
                                 myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
                                 myPieChart.update();
 
-                                //Insere o valor da produtividade
-                                var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
-                                $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                               //Insere o valor da produtividade
+                               var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
 
                             }
                         }
