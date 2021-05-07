@@ -116,7 +116,7 @@
 
                                 <canvas id="myPieChart" height="114,5"></canvas>
                                 <div class="card-footer text-center mt-2">
-                                    <h2 id="efficiencyValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
+                                    <h2 id="productivityValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
                                 </div>
                             </div>
@@ -444,7 +444,8 @@
 
             /*-----------------------------------------------------------------------------------------------------------*/
             // Pie Chart Example - GRAFICO 3
-            var cont = 0;
+
+            var res = []; //variavel que pega o valor da label para depois calcular eficiencia
 
             var ctx = document.getElementById("myPieChart");
             var myPieChart = new Chart(ctx, {
@@ -469,13 +470,21 @@
                                 },
                                 label: function (tooltipItem, data) {
                                     var totalNumberOfSeconds = tooltipItem.raw;
-                                    if (tooltipItem.dataIndex == 1) {
+
+                                    if (tooltipItem.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
+                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2
+                                    } else if (tooltipItem.dataIndex == 1) {
                                         totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
                                     }
+                                    if (tooltipItem.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
+                                        totalNumberOfSeconds = totalNumberOfSeconds / 2;
+                                    }
+
                                     var hours = parseInt(totalNumberOfSeconds / 3600);
                                     var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
                                     var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
                                     var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
                                     return result
                                 },
                             },
@@ -486,8 +495,14 @@
                             formatter: function (value, context) {
                                 var totalNumberOfSeconds = value;
 
-                                if (context.dataIndex == 1) {
+                                if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
+                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2
+                                } else if (context.dataIndex == 1) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
+                                }
+                                res.push(totalNumberOfSeconds);
+                                if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
+                                    totalNumberOfSeconds = totalNumberOfSeconds / 2;
                                 }
                                 var hours = parseInt(totalNumberOfSeconds / 3600);
                                 var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
@@ -622,14 +637,22 @@
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                             soma = soma + seconds;
                         })
+
                         $().dropdown('update')
                         var work_time = data.chronometers[0].sum_work_time * 3600;
-                        var efficiency = (soma / work_time) * 100;
 
                         myPieChart.data.labels.push('Tempo Total Executado', 'Horario de Trabalho');
                         myPieChart.data.datasets[0].data.push(soma, work_time + soma)
+
+                        if (soma > work_time / 2) {
+                            myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] * 2;
+                        }
+
                         myPieChart.update();
-                        $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
+
+                        //Insere o valor da produtividade
+                        var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                        $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
                         $(document).on('click', 'li', function (event) {
@@ -649,8 +672,8 @@
                             }
                             myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
 
-                            var efficiency = (myPieChart.data.datasets[0].data[0] / (myPieChart.data.datasets[0].data[1] - myPieChart.data.datasets[0].data[0])) * 100;
-                            $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
+                            var productivity = (myPieChart.data.datasets[0].data[0] / (myPieChart.data.datasets[0].data[1] - myPieChart.data.datasets[0].data[0])) * 100;
+                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                             myPieChart.update();
 
                         })
@@ -695,7 +718,6 @@
                             var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
 
                             //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
-
                             var hms = newDataChart.time;
                             var a = hms.split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
@@ -714,14 +736,13 @@
                             if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart.activity_id != null) {
                                 myPieChart.data.datasets[0].data[0]++;
                                 myPieChart.data.datasets[0].data[1]++;
-
                                 var work_time = newDataChart.work_time * 3600;
-
                                 myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
-
-                                var efficiency = (myPieChart.data.datasets[0].data[0] / (myPieChart.data.datasets[0].data[1] - myPieChart.data.datasets[0].data[0])) * 100;
-                                $('#efficiencyValue').html("Produtividade Total " + efficiency.toFixed(0) + "%");
                                 myPieChart.update();
+
+                                //Insere o valor da produtividade
+                                var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                                $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
 
                             }
                         }
