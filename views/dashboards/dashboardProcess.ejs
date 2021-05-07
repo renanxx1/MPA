@@ -688,6 +688,7 @@
 
 
             //Sempre que houver novos dados, atualiza o grafico diario
+            var cont = 0;
             socket.on("newDataAvailable", (newDataChart) => {
 
                 setTimeout(function () {
@@ -709,10 +710,11 @@
 
                             var backColor = []
                             var hoverColor = []
-                            myBarChart.data.labels.forEach((element) => { //cria um array para trocar a cor da barra do indice
+
+                            for (var i = 0; i < myBarChart.data.labels.length; i++) {
                                 backColor.push('rgba(2,117,216,1)');
-                                hoverColor.push('rgba(3,117,216,1)');
-                            })
+                                hoverColor.push('rgba(2,157,216,1)');
+                            }
 
                             //Altera cor da barra que esta rodando
                             myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
@@ -721,7 +723,6 @@
                             //Localiza o indice da barra que esta rodando
                             var index = myBarChart.data.labels.indexOf(newDataChart.activity_name);
 
-                            //se o id enviado no socket io for igual ao id da pagina, atualiza os dados
                             var hms = newDataChart.time;
                             var a = hms.split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
@@ -747,7 +748,7 @@
 
                                 //Só atualiza a produtividade se o tooltip nao estiver ativo
                                 if (myPieChart.$context.chart.tooltip.opacity == 0) {
-                                //Insere o valor da produtividade
+                                    //Insere o valor da produtividade
                                     var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
                                     $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                                 }
@@ -811,7 +812,7 @@
             //Função ao alterar a data da pagina, zera os dados todos graficos
             $('#btnDate').bind('DOMNodeInserted', function (e) {
 
-                res=[];
+                res = [];
 
                 myBarChart.data.labels = [];
                 myBarChart.data.datasets[0].data = [];
@@ -975,15 +976,15 @@
                         }
                         if (y == 11) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(res[res.length-1]));
+                                td.appendChild(document.createTextNode(res[res.length - 1]));
                         }
                         if (y == 12) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(res[res.length-2]));
+                                td.appendChild(document.createTextNode(res[res.length - 2]));
                         }
                         if (y == 13) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(((res[res.length-2] / res[res.length-1])  * 100).toFixed(3)));
+                                td.appendChild(document.createTextNode(((res[res.length - 2] / res[res.length - 1]) * 100).toFixed(3)));
                         }
 
                         tr.appendChild(td); // Subo o td pra linha.
