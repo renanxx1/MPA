@@ -1,11 +1,12 @@
 const DashboardRepository = require('../repositories/DashboardRepository');
 class DashboardService {
 
+    //Retorna dados para a pagina principal do sistema que lista todos colaboradores.
     async getIndex() {
         return DashboardRepository.findAllCollaborators();
     }
 
-
+    //Retorna dados do cabeçalho para a pagina de dashboard colaborador
     async getIndexDashboard(process, collaborator_id) {
         var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
         var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
@@ -18,7 +19,7 @@ class DashboardService {
         }
     }
 
-
+    //Retorna dados de grafico para a pagina de dashboard colaborador
     async getDashboardData(collaborator_id, process_id, startDate, endDate) {
         var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
         var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);

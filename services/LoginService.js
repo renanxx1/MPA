@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 class LoginService {
 
+    //Efetua a autenticação do usuario
     async authenticate(req, res) {
 
         var adminLogin = await LoginRepository.findLoginAdmin(req.body.login);
@@ -58,7 +59,6 @@ class LoginService {
     }
     
 }
-
 
 
 

@@ -3,18 +3,18 @@ const moment = require('moment');
 
 class CollectorService {
 
-    //FUNÇÃO PARA ATUALIZAR CRONOMETRO
+    //Atualiza um cronometro com os dados da atividade e colaboradaor
     async setChronometer(time, counter, activity_id, collaborator_id) {
         await CollectorRepository.setChronometer(time, counter, activity_id, collaborator_id);
     }
 
 
-    //FUNÇÃO PARA ATUALIZAR COUNTER
+    //Atualiza o countador do usuario
     async setCounter(counter, process_id, collaborator_id) {
         await CollectorRepository.setCounter(counter, process_id, collaborator_id);
     }
 
-
+    //Cria um checkpoint no sistema caso o usuario perca a conexao com uma atividade em execução
     async setCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         var check = await CollectorRepository.findCheckPoint(chronometer.id);
@@ -24,13 +24,13 @@ class CollectorService {
         }
     }
 
-
+    //Deleta o checkpoint criado
     async deleteCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         await CollectorRepository.deleteCheckPoint(chronometer.id);
     }
 
-
+    //Retorna os dados da pagina do coletor
     async getIndex(req, res) {
         try {
             //Consulta com os dados para a view
@@ -148,7 +148,7 @@ class CollectorService {
 
 }
 
-
+//Função utilizada no checkpoint para pegar a diferença de tempo do ultimo dado enviado pelo colaborador e o tempo em que ele retornou ao sistema
 async function getTimeDiff(time, timenow) {
     var timeS = time.split(':');
     var timenowS = timenow.split(':');
@@ -168,7 +168,7 @@ async function getTimeDiff(time, timenow) {
     }
 }
 
-
+//Função utilizada pelo checkpoint para pegar o tempo final
 function getFinalTime(time, timenow) {
     var timeS = time.split(':');
     var timenowS = timenow.split(':');

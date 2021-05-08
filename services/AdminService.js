@@ -4,6 +4,7 @@ const Admin = require('../models/Admin');
 
 class AdminService {
 
+    //Retorna dados para a pagina principal do admin
     async getIndex() {
         try {
             var admins = await AdminRepository.findAll();
@@ -15,7 +16,7 @@ class AdminService {
 
     }
 
-
+    //Cria um admin
     async setCreate(login, password) {
         try {
             var collaborator = await AdminRepository.findCollaboratorByLogin(login);
@@ -38,7 +39,7 @@ class AdminService {
         }
     }
 
-
+    //Deleta um admin
     async setDelete(id) {
         try {
             var admins = await AdminRepository.findAll();
@@ -50,7 +51,7 @@ class AdminService {
         }
     }
 
-
+    //Retorna dados para a pagina de atualizar admin
     async getUpdate(id) {
         try {
             var admin = await AdminRepository.findByPk(id);
@@ -61,7 +62,7 @@ class AdminService {
         }
     }
 
-
+    //Atualiza um admin
     async setUpdate(id, login, password) {
         try {
             var collaborator = await AdminRepository.findCollaboratorByLogin(login);

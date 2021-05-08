@@ -2,6 +2,7 @@ const ActivityRepository = require('../repositories/ActivityRepository');
 
 class ActivityService {
 
+    //Retorna dados para a pagina principal das atividades
     async getIndex() {
         try {
             var activities = await ActivityRepository.findAll();
@@ -12,7 +13,7 @@ class ActivityService {
         }
     }
 
-
+    //Retorna dados para a pagina de criar atividade
     async getCreate() {
         try {
             var processes = await ActivityRepository.findAllProcesses();
@@ -25,7 +26,7 @@ class ActivityService {
         }
     }
 
-
+    //Cria uma atividade
     async setCreate(activity_name, process_id, agroup, group_name) {
         try {
             var activityName = await ActivityRepository.findActivityByNameAndProcess(activity_name, process_id);
@@ -62,7 +63,7 @@ class ActivityService {
         }
     }
 
-
+    //Deleta uma atividade
     async setDelete(id) {
         try {
             var chronometerHasActivity = await ActivityRepository.findChronometer(id);
@@ -116,7 +117,7 @@ class ActivityService {
         }
     }
 
-
+    //Retorna dados para a pagina de atualizar atividades
     async getUpdate(id) {
         try {
             var processes = await ActivityRepository.findAllProcesses();
@@ -131,7 +132,7 @@ class ActivityService {
         }
     }
 
-
+    //Atualiza dados da atividade
     async setUpdate(activity_name, process_id, agroup, group_name, id) {
         try {
             var activity = await ActivityRepository.findOneIncludeAll(id);

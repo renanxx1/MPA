@@ -3,12 +3,13 @@ const ProcessRepository = require('../repositories/ProcessRepository');
 
 class ProcessService {
 
+    //Retorna dados para a pagina principal
     async getIndex() {
         var processes = await ProcessRepository.findAll();
         return processes;
     }
 
-
+    //Retorna dados para a pagina de criar processo
     async setCreate(process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByName(process_name);
         if (process == undefined) {
@@ -24,7 +25,7 @@ class ProcessService {
         }
     }
 
-
+    //Deleta um processo
     async setDelete(id) {
         var processHasActivity = await ProcessRepository.findActivitiesInProcess(id);
         var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(id);
@@ -43,23 +44,23 @@ class ProcessService {
         }
     }
 
-
+    //Retorna dados para a pagina de atualizar processos
     async getUpdate(id) {
         var process = await ProcessRepository.findByPk(id);
         return process;
     }
 
-
+    //Atualiza dados do processo
     async setUpdate(id, process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByNameNotSameId(id, process_name);
-     
+
         if (process == null) {
             if (process_counterCheck) {
                 await ProcessRepository.updateProcessAndCounterAndGoal(id, process_name, process_counter, process_goal);
                 return 1;
 
             } else {
-                await ProcessRepository.updateProcessAndCounterAndGoal(id, process_name,  null, null);
+                await ProcessRepository.updateProcessAndCounterAndGoal(id, process_name, null, null);
                 return 1;
             }
 
