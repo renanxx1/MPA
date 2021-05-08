@@ -1,3 +1,5 @@
+
+//Verifica se o usuario logado é admin ou colaborador
 function adminAuth(req, res, next) {
 
     try {
