@@ -14,7 +14,7 @@ class ChronometerRepository {
             })
     }
 
-    async updateChronometer(activity_id, time, counter, collaborator_id) {
+    async setChronometer(activity_id, time, counter, collaborator_id) {
         return await
             Activity_Chronometer.update({
                 time: time,

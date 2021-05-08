@@ -690,7 +690,6 @@
             //Sempre que houver novos dados, atualiza o grafico diario
             var cont = 0;
             socket.on("newDataAvailable", (newDataChart) => {
-                console.log(newDataChart)
 
                 setTimeout(function () {
                     if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {

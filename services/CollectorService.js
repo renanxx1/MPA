@@ -4,16 +4,16 @@ const moment = require('moment');
 class CollectorService {
 
     //FUNÇÃO PARA ATUALIZAR CRONOMETRO
-    async updateChronometer(time, counter, activity_id, collaborator_id) {
-        await CollectorRepository.updateChronometer(time, counter, activity_id, collaborator_id);
+    async setChronometer(time, counter, activity_id, collaborator_id) {
+        await CollectorRepository.setChronometer(time, counter, activity_id, collaborator_id);
     }
 
     //FUNÇÃO PARA ATUALIZAR COUNTER
-    async updateCounter(counter, process_id, collaborator_id) {
-        await CollectorRepository.updateCounter(counter, process_id, collaborator_id);
+    async setCounter(counter, process_id, collaborator_id) {
+        await CollectorRepository.setCounter(counter, process_id, collaborator_id);
     }
 
-    async checkPoint(activity_id) {
+    async setCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         var check = await CollectorRepository.findCheckPoint(chronometer.id);
 
@@ -22,12 +22,12 @@ class CollectorService {
         }
     }
 
-    async checkPointDelete(activity_id) {
+    async deleteCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         await CollectorRepository.deleteCheckPoint(chronometer.id);
     }
 
-    async collectorIndex(req, res) {
+    async getIndex(req, res) {
         try {
             //Consulta com os dados para a view
             var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);

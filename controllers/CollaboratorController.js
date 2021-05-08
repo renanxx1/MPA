@@ -2,16 +2,18 @@ const CollaboratorService = require('../services/CollaboratorService');
 
 class CollaboratorController {
 
-    async collaboratorIndexGet(req, res) {
+    async getIndex(req, res) {
         renderIndex(req, res, 200);
     }
 
-    async collaboratorCreateGet(req, res) {
+
+    async getCreate(req, res) {
         renderCreate(req, res, 200);
     }
 
-    async collaboratorCreatePost(req, res) {
-        var collaborator = await CollaboratorService.collaboratorCreatePost(req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelectId, req.body.inputWorkTime)
+
+    async setCreate(req, res) {
+        var collaborator = await CollaboratorService.setCreate(req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelectId, req.body.inputWorkTime)
         if (collaborator == 1) {
             renderCreate(req, res, 201);
         } else if (collaborator == 0) {
@@ -21,28 +23,31 @@ class CollaboratorController {
         }
     }
 
-    async collaboratorDeletePost(req, res) {
-        await CollaboratorService.collaboratorDeletePost(req.params.id);
+
+    async setDelete(req, res) {
+        await CollaboratorService.setDelete(req.params.id);
         res.redirect('/colaboradores');
     }
 
-    async collaboratorUpdateGet(req, res) {
+
+    async getUpdate(req, res) {
         var id = req.params.id;
         if (isNaN(id) || id == undefined) {
             res.redirect("/colaboradores");
         } else {
-            renderEdit(req, res, id, 200);
+            renderEdit(req.params.id, res, 200);
         }
     }
 
-    async collaboratorUpdatePost(req, res) {
-        var collaborator = await CollaboratorService.collaboratorUpdatePost(req.params.id, req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelect,  req.body.inputWorkTime);
+
+    async setUpdate(req, res) {
+        var collaborator = await CollaboratorService.setUpdate(req.params.id, req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelect, req.body.inputWorkTime);
         if (collaborator == 1) {
-            renderEdit(req, res, req.params.id, 201);
+            renderEdit(req.params.id, res, 201);
         } else if (collaborator == 0) {
-            renderEdit(req, res, req.params.id, 406);
+            renderEdit(req.params.id, res, 406);
         } else {
-            renderEdit(req, res, req.params.id, 406);
+            renderEdit(req.params.id, res, 406);
         }
     }
 
@@ -50,7 +55,7 @@ class CollaboratorController {
 
 
 async function renderIndex(req, res, code) {
-    var collaborators = await CollaboratorService.collaboratorIndexGet();
+    var collaborators = await CollaboratorService.getIndex();
     res.status(code).render('collaborators/index', {
         statusCode: code,
         collaborators: collaborators
@@ -58,15 +63,15 @@ async function renderIndex(req, res, code) {
 }
 
 async function renderCreate(req, res, code) {
-    var processes = await CollaboratorService.collaboratorCreateGet();
+    var processes = await CollaboratorService.getCreate();
     res.status(code).render('collaborators/create', {
         statusCode: code,
         processes: processes
     })
 }
 
-async function renderEdit(req, res, id, code) {
-    var get = await CollaboratorService.collaboratorUpdateGet(id);
+async function renderEdit(req, res, code) {
+    var get = await CollaboratorService.getUpdate(req);
     var processes = get.processes;
     var collaborator = get.collaborator;
     res.status(code).render('collaborators/edit', {

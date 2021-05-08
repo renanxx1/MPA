@@ -451,7 +451,7 @@
                 work_time: '<%=collaborator.work_time%>'
               });
 
-              socket.emit('checkPointDelete', { //deleta o checkpoint criado no banco de dados
+              socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
                 activity_id: '<%=checkPoint.activity_id%>'
               });
               $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
@@ -461,7 +461,7 @@
             //ao clicar no botao cancelar, deleta o checkpoint criado no banco de dados
             $('#checkButtonCancel').on('click', () => {
               '<%if(checkPoint!=null){ %>'
-              socket.emit('checkPointDelete', {
+              socket.emit('deleteCheckPoint', {
                 activity_id: '<%=checkPoint.activity_id%>'
               });
               '<%}%>'
@@ -470,7 +470,7 @@
             //ao clicar no botao fechar, deleta o checkpoint criado no banco de dados
             $('#checkButtonClose').on('click', () => {
               '<%if(checkPoint!=null){ %>'
-              socket.emit('checkPointDelete', {
+              socket.emit('deleteCheckPoint', {
                 activity_id: '<%=checkPoint.activity_id%>'
               });
               '<%}%>'
@@ -542,7 +542,7 @@
             function alterCounter(process_id, collaborator_id) {
               socket.emit('checkSession');
               var counterNewValue = $('#counterNewValue').val();
-              socket.emit('updateCounter', {
+              socket.emit('setCounter', {
                 counter: counterNewValue,
                 process_id: process_id,
                 collaborator_id: collaborator_id,
@@ -567,7 +567,7 @@
               $('#counterNewValue').val($('#mainFunctionCounter').val());
               var counterNewValue = $('#counterNewValue').val();
               var counter = parseInt($('#mainFunctionCounter').val());
-              socket.emit('updateCounter', {
+              socket.emit('setCounter', {
                 counter: counter,
                 process_id: process_id,
                 collaborator_id: collaborator_id
@@ -638,7 +638,7 @@
               $('#modalPlay_' + id).modal('hide');
               groupOptionClose(group);
 
-              socket.emit('checkPointDelete', {
+              socket.emit('deleteCheckPoint', {
                 activity_id: id
               });
 
@@ -653,7 +653,7 @@
               $('#modalOptions_' + $('#modalIdGroup').val()).modal('hide');
               idActivityGroup = null;
 
-              socket.emit('checkPointDelete', {
+              socket.emit('deleteCheckPoint', {
                 activity_id: $('#modalId').val()
               });
 

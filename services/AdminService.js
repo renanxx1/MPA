@@ -4,7 +4,7 @@ const Admin = require('../models/Admin');
 
 class AdminService {
 
-    async adminIndexGet() {
+    async getIndex() {
         try {
             var admins = await AdminRepository.findAll();
             return admins;
@@ -15,7 +15,7 @@ class AdminService {
 
     }
 
-    async adminCreatePost(login, password) {
+    async setCreate(login, password) {
         try {
             var collaborator = await AdminRepository.findCollaboratorByLogin(login);
             if (collaborator == null) {
@@ -37,7 +37,7 @@ class AdminService {
         }
     }
 
-    async adminDeletePost(id) {
+    async setDelete(id) {
         try {
             var admins = await AdminRepository.findAll();
             if (Object.keys(admins).length > 1) {
@@ -48,7 +48,7 @@ class AdminService {
         }
     }
 
-    async adminUpdateGet(id) {
+    async getUpdate(id) {
         try {
             var admin = await AdminRepository.findByPk(id);
             return admin;
@@ -59,7 +59,7 @@ class AdminService {
 
     }
 
-    async adminUpdatePost(id, login, password) {
+    async setUpdate(id, login, password) {
         try {
             var collaborator = await AdminRepository.findCollaboratorByLogin(login);
             var login_name = await AdminRepository.findOne(login, id);

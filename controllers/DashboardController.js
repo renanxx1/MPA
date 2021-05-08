@@ -2,18 +2,18 @@ const DashboardService = require('../services/DashboardService');
 
 class DashboardController {
 
-    async index(req, res) {
+    async getIndex(req, res) {
         renderIndex(req, res, 200);
     }
 
-    async dashboardIndex(req, res) {
+    async getDashboardIndex(req, res) {
         renderDashboard(req, res, 200);
     }
 }
 
 
 async function renderIndex(req, res, code) {
-    var collaborators = await DashboardService.dashboardGeneralIndexGet();
+    var collaborators = await DashboardService.getIndex();
     res.status(code).render('dashboards/index', {
         collaborators: collaborators,
         statusCode: code,
@@ -22,7 +22,7 @@ async function renderIndex(req, res, code) {
 
 
 async function renderDashboard(req, res, code) {
-    var get = await DashboardService.dashboardIndexGet(req.params.process, req.params.id);
+    var get = await DashboardService.getIndexDashboard(req.params.process, req.params.id);
     if (get != null) {
         res.status(code).render('dashboards/dashboardProcess', {
             collaborator: get.collaborator,

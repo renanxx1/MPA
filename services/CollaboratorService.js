@@ -3,10 +3,9 @@ const bcrypt = require('bcryptjs');
 
 class CollaboratorService {
 
-    async collaboratorIndexGet() {
+    async getIndex() {
         try {
             var collaborators = await CollaboratorRepository.findAll();
-            console.log(collaborators)
             return collaborators;
 
         } catch (error) {
@@ -15,7 +14,7 @@ class CollaboratorService {
 
     }
 
-    async collaboratorCreateGet() {
+    async getCreate() {
         try {
             var processes = await CollaboratorRepository.findAllProcesses();
             return processes;
@@ -26,7 +25,7 @@ class CollaboratorService {
 
     }
 
-    async collaboratorCreatePost(collaborator_name, login, password, process, work_time) {
+    async setCreate(collaborator_name, login, password, process, work_time) {
         try {
             var admin = await CollaboratorRepository.findAdminByLogin(login);
             if (admin == null) {
@@ -48,7 +47,7 @@ class CollaboratorService {
         }
     }
 
-    async collaboratorDeletePost(id) {
+    async setDelete(id) {
         try {
             var chronometerHasCollaborator = await CollaboratorRepository.findChronometer(id);
 
@@ -65,7 +64,7 @@ class CollaboratorService {
 
     }
 
-    async collaboratorUpdateGet(id) {
+    async getUpdate(id) {
         try {
             var processes = await CollaboratorRepository.findAllProcesses();
             var collaborator = await CollaboratorRepository.findByPk(id);
@@ -77,7 +76,7 @@ class CollaboratorService {
 
     }
 
-    async collaboratorUpdatePost(id, collaborator_name, login, password, process_id, work_time) {
+    async setUpdate(id, collaborator_name, login, password, process_id, work_time) {
         try {
             var admin = await CollaboratorRepository.findAdminByLogin(login);
             if (admin == null) {

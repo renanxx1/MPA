@@ -148,7 +148,7 @@ class CollectorRepository {
             })
     }
 
-    async updateChronometer(time, counter, activity_id, collaborator_id) {
+    async setChronometer(time, counter, activity_id, collaborator_id) {
         return await
             Activity_Chronometer.update({
                 time: time,
@@ -186,7 +186,7 @@ class CollectorRepository {
             })
     }
 
-    async updateCounter(counter, process_id, collaborator_id) {
+    async setCounter(counter, process_id, collaborator_id) {
         return await
             Process_Counter.update({
                 counter: counter

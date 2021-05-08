@@ -2,7 +2,7 @@ const ActivityRepository = require('../repositories/ActivityRepository');
 
 class ActivityService {
 
-    async activityIndex() {
+    async getIndex() {
         try {
             var activities = await ActivityRepository.findAll();
             return activities;
@@ -12,7 +12,7 @@ class ActivityService {
         }
     }
 
-    async activityCreateGet() {
+    async getCreate() {
         try {
             var processes = await ActivityRepository.findAllProcesses();
             var activities = await ActivityRepository.findAll();
@@ -24,7 +24,7 @@ class ActivityService {
         }
     }
 
-    async activityCreatePost(activity_name, process_id, agroup, group_name) {
+    async setCreate(activity_name, process_id, agroup, group_name) {
         try {
             var activityName = await ActivityRepository.findActivityByNameAndProcess(activity_name, process_id);
             if (activityName == null) {
@@ -60,7 +60,7 @@ class ActivityService {
         }
     }
 
-    async activityDeletePost(id) {
+    async setDelete(id) {
         try {
             var chronometerHasActivity = await ActivityRepository.findChronometer(id);
             if (chronometerHasActivity == null) {
@@ -113,7 +113,7 @@ class ActivityService {
         }
     }
 
-    async activityUpdateGet(id) {
+    async getUpdate(id) {
         try {
             var processes = await ActivityRepository.findAllProcesses();
             var groups = await ActivityRepository.findGroupAndActivity();
@@ -127,7 +127,7 @@ class ActivityService {
         }
     }
 
-    async activityUpdatePost(activity_name, process_id, agroup, group_name, id) {
+    async setUpdate(activity_name, process_id, agroup, group_name, id) {
         try {
             var activity = await ActivityRepository.findOneIncludeAll(id);
             var activityName = await ActivityRepository.findActivityByNameAndProcessAndId(activity_name, process_id, id);
@@ -205,7 +205,6 @@ class ActivityService {
                             return 1;
 
                         } else {
-                            console.log('C1.2')
                             await ActivityRepository.agroupActivityUpdate(activity_name, process_id, activityGroup.group_id, id);
                             return 1;
                         }

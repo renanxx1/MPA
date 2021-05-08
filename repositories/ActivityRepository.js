@@ -363,7 +363,6 @@ class ActivityRepository {
     }
 
     async noCheckActivityUpdateGroupNull(activity_name, groupNull, process_id, id) {
-        console.log(activity_name, groupNull, process_id, id)
         return await
             Activity.update({
                 activity_name: activity_name,

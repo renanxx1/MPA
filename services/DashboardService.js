@@ -1,12 +1,12 @@
 const DashboardRepository = require('../repositories/DashboardRepository');
 class DashboardService {
 
-    async dashboardGeneralIndexGet() {
+    async getIndex() {
         return DashboardRepository.findAllCollaborators();
     }
 
 
-    async dashboardIndexGet(process, collaborator_id) {
+    async getIndexDashboard(process, collaborator_id) {
         var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
         var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
         var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);

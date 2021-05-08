@@ -3,12 +3,12 @@ const ProcessRepository = require('../repositories/ProcessRepository');
 
 class ProcessService {
 
-    async processIndexGet() {
+    async getIndex() {
         var processes = await ProcessRepository.findAll();
         return processes;
     }
 
-    async processCreatePost(process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
+    async setCreate(process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByName(process_name);
         if (process == undefined) {
             if (process_counterCheck) {
@@ -23,7 +23,7 @@ class ProcessService {
         }
     }
 
-    async processDeletePost(id) {
+    async setDelete(id) {
         var processHasActivity = await ProcessRepository.findActivitiesInProcess(id);
         var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(id);
         var processHasActivityStatusFalse = await ProcessRepository.findActivitiesInProcessStatusFalse(id);
@@ -42,12 +42,12 @@ class ProcessService {
         }
     }
 
-    async processUpdateGet(id) {
+    async getUpdate(id) {
         var process = await ProcessRepository.findByPk(id);
         return process;
     }
 
-    async processUpdatePost(id, process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
+    async setUpdate(id, process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByNameNotSameId(id, process_name);
      
         if (process == null) {

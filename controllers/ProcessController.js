@@ -2,16 +2,16 @@ const ProcessService = require('../services/ProcessService');
 
 class ProcessController {
 
-    async processIndexGet(req, res) {
+    async getIndex(req, res) {
         renderIndex(req, res, 200);
     }
 
-    async processCreateGet(req, res) {
+    async getCreate(req, res) {
         renderCreate(req, res, 200);
     }
 
-    async processCreatePost(req, res) {
-        var process = await ProcessService.processCreatePost(req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox)
+    async setCreate(req, res) {
+        var process = await ProcessService.setCreate(req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox)
 
         if (process == 1) {
             renderCreate(req, res, 201);
@@ -20,8 +20,8 @@ class ProcessController {
         }
     }
 
-    async processDeletePost(req, res) {
-        var process = await ProcessService.processDeletePost(req.params.id);
+    async setDelete(req, res) {
+        var process = await ProcessService.setDelete(req.params.id);
 
         if (process == 1) {
             renderIndex(req, res, 200);
@@ -30,7 +30,7 @@ class ProcessController {
         }
     }
 
-    async processUpdateGet(req, res) {
+    async getUpdate(req, res) {
         var id = req.params.id
         if (isNaN(id) || id == undefined) {
             res.redirect("/processos");
@@ -39,8 +39,8 @@ class ProcessController {
         }
     }
 
-    async processUpdatePost(req, res) {
-        var process = await ProcessService.processUpdatePost(req.body.id, req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox);
+    async setUpdate(req, res) {
+        var process = await ProcessService.setUpdate(req.body.id, req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox);
         if (process == 1) {
             renderEdit(req, res, req.params.id, 201);
         } else {
@@ -50,7 +50,7 @@ class ProcessController {
 }
 
 async function renderIndex(req, res, code) {
-    var processes = await ProcessService.processIndexGet();
+    var processes = await ProcessService.getIndex();
     res.status(code).render('processes/index', {
         processes: processes,
         statusCode: code
@@ -64,7 +64,7 @@ async function renderCreate(req, res, code) {
 }
 
 async function renderEdit(req, res, id, code) {
-    var process = await ProcessService.processUpdateGet(id);
+    var process = await ProcessService.getUpdate(id);
     res.status(code).render('processes/edit', {
         process: process,
         statusCode: code
