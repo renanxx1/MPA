@@ -8,10 +8,12 @@ class CollectorService {
         await CollectorRepository.setChronometer(time, counter, activity_id, collaborator_id);
     }
 
+
     //FUNÇÃO PARA ATUALIZAR COUNTER
     async setCounter(counter, process_id, collaborator_id) {
         await CollectorRepository.setCounter(counter, process_id, collaborator_id);
     }
+
 
     async setCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
@@ -22,10 +24,12 @@ class CollectorService {
         }
     }
 
+
     async deleteCheckPoint(activity_id) {
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         await CollectorRepository.deleteCheckPoint(chronometer.id);
     }
+
 
     async getIndex(req, res) {
         try {
@@ -146,7 +150,6 @@ class CollectorService {
 
 
 async function getTimeDiff(time, timenow) {
-
     var timeS = time.split(':');
     var timenowS = timenow.split(':');
 
@@ -164,6 +167,7 @@ async function getTimeDiff(time, timenow) {
         return new Date(result * 1000).toISOString().substr(11, 8);
     }
 }
+
 
 function getFinalTime(time, timenow) {
     var timeS = time.split(':');

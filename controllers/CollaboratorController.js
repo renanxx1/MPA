@@ -62,6 +62,7 @@ async function renderIndex(req, res, code) {
     })
 }
 
+
 async function renderCreate(req, res, code) {
     var processes = await CollaboratorService.getCreate();
     res.status(code).render('collaborators/create', {
@@ -69,6 +70,7 @@ async function renderCreate(req, res, code) {
         processes: processes
     })
 }
+
 
 async function renderEdit(req, res, code) {
     var get = await CollaboratorService.getUpdate(req);
@@ -80,5 +82,6 @@ async function renderEdit(req, res, code) {
         processes: processes
     });
 }
+
 
 module.exports = new CollaboratorController();

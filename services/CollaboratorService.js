@@ -11,8 +11,8 @@ class CollaboratorService {
         } catch (error) {
             return error;
         }
-
     }
+
 
     async getCreate() {
         try {
@@ -22,8 +22,8 @@ class CollaboratorService {
         } catch (error) {
             return error;
         }
-
     }
+
 
     async setCreate(collaborator_name, login, password, process, work_time) {
         try {
@@ -41,11 +41,11 @@ class CollaboratorService {
             } else {
                 return -1;
             }
-
         } catch (error) {
             return error;
         }
     }
+
 
     async setDelete(id) {
         try {
@@ -61,8 +61,8 @@ class CollaboratorService {
         } catch (error) {
             return error;
         }
-
     }
+
 
     async getUpdate(id) {
         try {
@@ -73,8 +73,8 @@ class CollaboratorService {
         } catch (error) {
             return error;
         }
-
     }
+
 
     async setUpdate(id, collaborator_name, login, password, process_id, work_time) {
         try {
@@ -109,5 +109,6 @@ class CollaboratorService {
 
 
 }
+
 
 module.exports = new CollaboratorService();

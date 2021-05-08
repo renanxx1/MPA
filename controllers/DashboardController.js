@@ -6,6 +6,7 @@ class DashboardController {
         renderIndex(req, res, 200);
     }
 
+
     async getDashboardIndex(req, res) {
         renderDashboard(req, res, 200);
     }
@@ -77,7 +78,6 @@ io.on("connection", async function (socket) {
             return error;
         }
     })
-
 
 })
 

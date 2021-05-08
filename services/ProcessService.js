@@ -8,6 +8,7 @@ class ProcessService {
         return processes;
     }
 
+
     async setCreate(process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByName(process_name);
         if (process == undefined) {
@@ -23,11 +24,11 @@ class ProcessService {
         }
     }
 
+
     async setDelete(id) {
         var processHasActivity = await ProcessRepository.findActivitiesInProcess(id);
         var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(id);
         var processHasActivityStatusFalse = await ProcessRepository.findActivitiesInProcessStatusFalse(id);
-
 
         if (Object.keys(processHasActivity).length == 0 && processHasCollaborator == null && processHasActivityStatusFalse != null) {
             await ProcessRepository.updateProcessStatus(id);
@@ -42,10 +43,12 @@ class ProcessService {
         }
     }
 
+
     async getUpdate(id) {
         var process = await ProcessRepository.findByPk(id);
         return process;
     }
+
 
     async setUpdate(id, process_name, process_counter, process_counterCheck, process_goal, process_goalCheck) {
         var process = await ProcessRepository.findOneByNameNotSameId(id, process_name);
@@ -66,5 +69,6 @@ class ProcessService {
     }
 
 }
+
 
 module.exports = new ProcessService();

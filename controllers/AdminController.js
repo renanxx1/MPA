@@ -6,9 +6,11 @@ class AdminController {
         renderIndex(req, res, 200);
     }
 
+
     async getCreate(req, res) {
         renderCreate(req, res, 200);
     }
+
 
     async setCreate(req, res) {
         var admin = await AdminService.setCreate(req.body.login, req.body.password);
@@ -21,10 +23,12 @@ class AdminController {
         }
     }
 
+
     async setDelete(req, res) {
         await AdminService.setDelete(req.params.id);
         res.redirect('/admin')
     }
+
 
     async getUpdate(req, res) {
         var id = req.params.id;
@@ -35,6 +39,7 @@ class AdminController {
         }
     }
 
+
     async setUpdate(req, res) {
         var admin = await AdminService.setUpdate(req.body.id, req.body.login, req.body.password, req.body.gridRadios)
         if (admin == 1) {
@@ -44,9 +49,10 @@ class AdminController {
         } else {
             renderEdit(req.params.id, res, 409);
         }
-
     }
+
 }
+
 
 async function renderIndex(req, res, code) {
     var admins = await AdminService.getIndex();
@@ -56,12 +62,14 @@ async function renderIndex(req, res, code) {
     })
 }
 
+
 async function renderCreate(req, res, code) {
     res.status(code).render('admins/create', {
         statusCode: code
     });
 
 }
+
 
 async function renderEdit(req, res, code) {
     var admin = await AdminService.getUpdate(req);

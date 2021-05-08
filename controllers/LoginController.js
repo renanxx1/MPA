@@ -9,16 +9,20 @@ class LoginController {
         })
     }
 
+
     async logout(req, res) {
         req.session.user = null;
         res.redirect('/login')
     }
 
+
     async authenticate(req, res) {
         return await
             LoginService.authenticate(req, res);
     }
+
 }
+
 
 io.on("connection", async function (socket) {
 

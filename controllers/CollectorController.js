@@ -8,7 +8,6 @@ class CollectorController {
             sensitivity: 'base'
         })
         //Compara o processo da seção e o processo informado na url.
-
         if (resultProcess == 0) {
             renderIndex(req, res);
         } else {
@@ -17,6 +16,7 @@ class CollectorController {
     }
 
 }
+
 
 io.on("connection", async function (socket) {
     socket.on('update', (get) => {
@@ -36,6 +36,7 @@ io.on("connection", async function (socket) {
     })
 })
 
+
 async function renderIndex(req, res) {
     var get = await CollectorService.getIndex(req, res);
     
@@ -51,5 +52,6 @@ async function renderIndex(req, res) {
         internalIp: await internalIp
     })
 }
+
 
 module.exports = new CollectorController();

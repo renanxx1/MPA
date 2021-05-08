@@ -12,6 +12,7 @@ class ActivityService {
         }
     }
 
+
     async getCreate() {
         try {
             var processes = await ActivityRepository.findAllProcesses();
@@ -23,6 +24,7 @@ class ActivityService {
             return error;
         }
     }
+
 
     async setCreate(activity_name, process_id, agroup, group_name) {
         try {
@@ -59,6 +61,7 @@ class ActivityService {
             return error;
         }
     }
+
 
     async setDelete(id) {
         try {
@@ -113,6 +116,7 @@ class ActivityService {
         }
     }
 
+
     async getUpdate(id) {
         try {
             var processes = await ActivityRepository.findAllProcesses();
@@ -126,6 +130,7 @@ class ActivityService {
             return error;
         }
     }
+
 
     async setUpdate(activity_name, process_id, agroup, group_name, id) {
         try {
@@ -243,5 +248,8 @@ class ActivityService {
             return error;
         }
     }
+
 }
+
+
 module.exports = new ActivityService()

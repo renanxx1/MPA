@@ -15,6 +15,7 @@ class AdminService {
 
     }
 
+
     async setCreate(login, password) {
         try {
             var collaborator = await AdminRepository.findCollaboratorByLogin(login);
@@ -37,6 +38,7 @@ class AdminService {
         }
     }
 
+
     async setDelete(id) {
         try {
             var admins = await AdminRepository.findAll();
@@ -48,6 +50,7 @@ class AdminService {
         }
     }
 
+
     async getUpdate(id) {
         try {
             var admin = await AdminRepository.findByPk(id);
@@ -56,8 +59,8 @@ class AdminService {
         } catch (error) {
             return error;
         }
-
     }
+
 
     async setUpdate(id, login, password) {
         try {
@@ -92,6 +95,7 @@ class AdminService {
         }
     }
 }
+
 
 /* 
     async createAdminInitialProfile() {
