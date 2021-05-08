@@ -74,7 +74,7 @@ io.on("connection", async function (socket) {
                 });
             }
         } catch (error) {
-
+            return error;
         }
     })
 

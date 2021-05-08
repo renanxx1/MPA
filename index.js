@@ -5,6 +5,7 @@ global.io = require('socket.io')(http);
 global.internalIp = require('internal-ip').v4();
 const bodyParser = require('body-parser');
 var sharedsession = require("express-socket.io-session");
+
 var session = require("express-session")({
     secret: "my-secret",
     resave: false,
@@ -28,5 +29,5 @@ app.use('/', require('./routes/DashboardRouter'));
 app.use('/', require('./routes/NotFoundRouter'));
 
 http.listen(80, () => {
-    console.log("Servidor rodando! ");
+    console.log("Servidor rodando!");
 })

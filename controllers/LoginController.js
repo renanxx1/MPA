@@ -1,6 +1,5 @@
 const LoginRepository = require('../repositories/LoginRepository');
 const LoginService = require('../services/LoginService');
-const bcrypt = require('bcryptjs');
 
 class LoginController {
 

@@ -690,6 +690,7 @@
             //Sempre que houver novos dados, atualiza o grafico diario
             var cont = 0;
             socket.on("newDataAvailable", (newDataChart) => {
+                console.log(newDataChart)
 
                 setTimeout(function () {
                     if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
@@ -735,14 +736,16 @@
                             myBarChart.update()
                             /*-----------------------------------------------------------------------------------------------------------*/
 
-
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
                             if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart.activity_id != null) {
                                 myPieChart.data.datasets[0].data[0]++;
                                 myPieChart.data.datasets[0].data[1]++;
                                 var work_time = newDataChart.work_time * 3600;
-                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
+                       
+                                //atualiza o horario de trabalho com o work_time + tempo executado
+                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; 
+                            
                                 myPieChart.update();
 
 

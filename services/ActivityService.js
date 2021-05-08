@@ -108,7 +108,6 @@ class ActivityService {
                     }
                 }
             }
-
         } catch (error) {
             return error;
         }
@@ -145,12 +144,10 @@ class ActivityService {
 
                         //SE O ALVO NAO TIVER UM GRUPO, CRIA UM GRUPO E VINCULA
                         if (activityGroup.group == null) {
-                            console.log('0 ok')
                             await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(group_name, activity_name, process_id, id)
                             return 1;
                         } else {
                             //SE POSSUI UM GRUPO, APENAS VINCULA
-                            console.log('000 ok')
                             await ActivityRepository.agroupActivityUpdate(activity_name, process_id, activityGroup.group_id, id);
                             return 1;
                         }
@@ -162,26 +159,22 @@ class ActivityService {
 
                             //SE O GRUPO ALVO E NULL, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
                             if (activityGroup.group == null) {
-                                console.log('A ok')
                                 await ActivityRepository.noCheckGroupDelete(activity.group_id);
                                 await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(group_name, activity_name, process_id, id)
                                 return 1;
 
                                 //SE O GRUPO ATUAL E DIFERENTE DO GRUPO ALVO, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
                             } else if (activityGroup.group_id != activity.group_id && activityGroup.group != null) {
-                                console.log('A1 ok')
                                 await ActivityRepository.noCheckGroupDelete(activity.group_id);
                                 await ActivityRepository.agroupActivityUpdate(activity_name, process_id, activityGroup.group_id, id);
                                 return 1;
 
                             } else {
-                                console.log('A2 OK')
                                 await ActivityRepository.agroupUpdateActivityAndGroup(activity_name, process_id, activityGroup.group_id, id);
                                 return 1;
                             }
 
                         } else if (process_id != activity.process_id) {
-                            console.log('B0')
                             //SE O PROCESSO FOR DIFERENTE, ALTERA O PROCESSO
                             await ActivityRepository.noCheckGroupDelete(activity.group_id);
                             await ActivityRepository.agroupActivityUpdate(activity_name, process_id, null, id);
@@ -193,13 +186,11 @@ class ActivityService {
                         //CASO POSSUA MAIS DE UMA ATIVIDADE VINCULADA ENTRA NESSE ELSE IF
 
                         if (process_id == activity.process_id && activity_name != activity.activity_name || activity_name == activity.activity_name && activity.group_id == activityGroup.group_id) {
-                            console.log('c1')
                             await ActivityRepository.agroupUpdateActivityAndGroup(activity_name, process_id, activityGroup.group_id, id);
                             return 1;
 
                             //SE POSSUI MAIS DE UMA ATIVIDADE, NAO É POSSIVEL ALTERAR O PROCESSO OU O GRUPO, PERMITE ALTERAR APENAS O NOME DA ATIVIDADE
                         } else if (activity.group_id != activityGroup.group_id || process_id != activity.process_id) {
-                            console.log('c0')
                             return -1;
 
                         } else {
@@ -224,27 +215,22 @@ class ActivityService {
                 } else if (!agroup) {
 
                     if (activitiesLinked == undefined) {
-                        console.log('D')
                         await ActivityRepository.noCheckActivityUpdateGroupNull(activity_name, null, process_id, id);
                         return 1;
 
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
-                        console.log('D1')
                         await ActivityRepository.noCheckGroupDelete(activity.group_id);
                         await ActivityRepository.noCheckActivityUpdateGroupNull(activity_name, null, process_id, id);
                         return 1;
 
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        console.log('D2')
                         return -1;
 
                     } else if (activity.createdAt != activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        console.log('D3')
                         await ActivityRepository.noCheckActivityUpdateGroupNull(activity_name, null, process_id, id);
                         return 1;
 
                     } else {
-                        console.log('D4')
                         await ActivityRepository.noCheckActivityUpdateGroupNull(activity_name, null, process_id, id);
                         return 1;
                     }

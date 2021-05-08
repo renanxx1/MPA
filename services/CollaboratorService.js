@@ -78,7 +78,7 @@ class CollaboratorService {
     }
 
     async collaboratorUpdatePost(id, collaborator_name, login, password, process_id, work_time) {
-    /*     try { */
+        try {
             var admin = await CollaboratorRepository.findAdminByLogin(login);
             if (admin == null) {
                 var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(collaborator_name, login, id);
@@ -103,9 +103,9 @@ class CollaboratorService {
                 return -1;
             }
 
-    /*     } catch (error) {
+        } catch (error) {
             return error;
-        } */
+        }
     }
 
 

@@ -30,7 +30,6 @@ class ProcessController {
         }
     }
 
-
     async processUpdateGet(req, res) {
         var id = req.params.id
         if (isNaN(id) || id == undefined) {
@@ -48,9 +47,6 @@ class ProcessController {
             renderEdit(req, res, req.params.id, 406);
         }
     }
-
-
-
 }
 
 async function renderIndex(req, res, code) {

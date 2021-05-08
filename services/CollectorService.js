@@ -1,7 +1,7 @@
 const CollectorRepository = require('../repositories/CollectorRepository');
 const moment = require('moment');
 
-class CollectorController {
+class CollectorService {
 
     //FUNÇÃO PARA ATUALIZAR CRONOMETRO
     async updateChronometer(time, counter, activity_id, collaborator_id) {
@@ -45,9 +45,6 @@ class CollectorController {
                 }
                 await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id, collaborator.process_id);
             }
-
-            console.log(Object.keys(activities).length)
-            console.log(Object.keys(activitiesAndChronometers).length)
 
             //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
             if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
@@ -179,4 +176,4 @@ function getFinalTime(time, timenow) {
 }
 
 
-module.exports = new CollectorController();
+module.exports = new CollectorService();

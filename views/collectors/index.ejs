@@ -448,6 +448,7 @@
                 activity_name: '<%=checkPoint.activity_name%>',
                 time: '<%=checkPoint.timeFixed%>',
                 counter: '<%=checkPoint.counter%>',
+                work_time: '<%=collaborator.work_time%>'
               });
 
               socket.emit('checkPointDelete', { //deleta o checkpoint criado no banco de dados
