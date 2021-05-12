@@ -232,17 +232,8 @@
         </script>
 
         <script>
-            //Função para converter time de segundos para formato time: 00:00:00
-            function formatTime(secs) {
-                var hours = Math.floor(secs / (60 * 60));
-                var divisor_for_minutes = secs % (60 * 60);
-                var minutes = Math.floor(divisor_for_minutes / 60);
-                var divisor_for_seconds = divisor_for_minutes % 60;
-                var seconds = Math.ceil(divisor_for_seconds);
-                return +hours + ":" + minutes + ":" + seconds;
-            }
 
-            //Função para converter time para segundos
+            //Função para converter segundos para time 00:00:00
             function convert(time) {
                 var hrs = ~~(time / 3600);
                 var mins = ~~((time % 3600) / 60);
@@ -692,6 +683,7 @@
             socket.on("newDataAvailable", (newDataChart) => {
 
                 setTimeout(function () {
+
                     if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
                         if (newDataChart.process_id == $('#buttonProcess').val() && newDataChart.collaborator_id == '<%=collaborator.id%>') {
 
@@ -738,15 +730,21 @@
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
                             if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart.activity_id != null) {
+
+                                //Caso o dado esteja vindo de um checkpoint, pega a difença do tempo, converte para segundos e incrementa no grafico
+                                if (newDataChart.checkpoint) {
+                                    var diff = newDataChart.timeDiff.split(':')
+                                    var diffSeconds = (+diff[0]) * 60 * 60 + (+diff[1]) * 60 + (+diff[2]);
+                                    myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + diffSeconds;
+                                }
+
                                 myPieChart.data.datasets[0].data[0]++;
                                 myPieChart.data.datasets[0].data[1]++;
                                 var work_time = newDataChart.work_time * 3600;
-                       
-                                //atualiza o horario de trabalho com o work_time + tempo executado
-                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; 
-                            
-                                myPieChart.update();
 
+                                //atualiza o horario de trabalho com o work_time + tempo executado
+                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0];
+                                myPieChart.update();
 
                                 //Só atualiza a produtividade se o tooltip nao estiver ativo
                                 if (myPieChart.$context.chart.tooltip.opacity == 0) {

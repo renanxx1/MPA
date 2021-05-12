@@ -117,13 +117,14 @@ class CollectorService {
                 var timeFixed = await getFinalTime(timeDiff, timeSaved); //Soma a diferença de tempo com o tempo salvo no cronometro
 
                 checkPoint = {
-                    collaborator_id: await check.collaborator_id,
-                    process_id: await check.process_id,
-                    activity_id: await check.activity_id,
-                    activity_name: await activityCheckPoint.activity_name,
-                    group_id: await check.group_id,
-                    timeFixed: await timeFixed,
-                    counter: await check.counter
+                    collaborator_id:  check.collaborator_id,
+                    process_id:  check.process_id,
+                    activity_id:  check.activity_id,
+                    activity_name:  activityCheckPoint.activity_name,
+                    group_id:  check.group_id,
+                    timeFixed:  timeFixed,
+                    timeDiff:  timeDiff,
+                    counter:  check.counter
                 };
             } else {
                 checkPoint = null;

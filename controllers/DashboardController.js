@@ -63,6 +63,18 @@ io.on("connection", async function (socket) {
                     process_counter: data.process_counter,
                     process_counter_name: data.process_counter_name
                 })
+            }else if(data.checkpoint){
+                io.emit('newDataAvailable', {
+                    collaborator_id: data.collaborator_id,
+                    process_id: data.process_id,
+                    activity_id: data.activity_id,
+                    activity_name: data.activity_name,
+                    time: data.time,
+                    timeDiff: data.timeDiff,
+                    counter: data.counter,
+                    work_time: data.work_time,
+                    checkpoint: data.checkpoint
+                });
             } else {
                 io.emit('newDataAvailable', {
                     collaborator_id: data.collaborator_id,
