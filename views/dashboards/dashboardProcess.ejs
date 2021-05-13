@@ -455,8 +455,8 @@
                     aspectRatio: 2.63,
                     plugins: {
                         legend: {
-                        //    display: false
-                        reverse: true,
+                            //display: false,
+                            reverse: true,
                         },
                         tooltip: {
                             callbacks: {
@@ -827,6 +827,7 @@
 
                 myLineChart.data.labels = [];
                 myLineChart.data.datasets[0].data = [];
+                myLineChart.data.datasets[1].data = [];
 
                 myPieChart.data.labels = [];
                 myPieChart.data.datasets[0].data[0] = [];
@@ -971,12 +972,16 @@
                                 td.appendChild(document.createTextNode('<%=process.process_counter%>'));
                         }
                         if (y == 8) {
-                            if (x == 0)
-                                td.appendChild(document.createTextNode(myLineChart.data.datasets[0].data[0]));
+                            if (x == 0) {
+                                var reducer = (accumulator, currentValue) => accumulator + currentValue; //função para somar
+                                td.appendChild(document.createTextNode(myLineChart.data.datasets[0].data.reduce(reducer)));
+                            }
                         }
                         if (y == 9) {
-                            if (x == 0)
-                                td.appendChild(document.createTextNode(myLineChart.data.datasets[1].data[0]));
+                            if (x == 0) {
+                                var reducer = (accumulator, currentValue) => accumulator + currentValue; //função para somar
+                                td.appendChild(document.createTextNode(myLineChart.data.datasets[1].data.reduce(reducer)));
+                            }
                         }
                         if (y == 11) {
                             if (x == 0)
