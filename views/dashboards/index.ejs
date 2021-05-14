@@ -251,6 +251,7 @@
                     }
 
                     $("#filters :checkbox").click(function () {
+                        $("#anythingSearch").val('');
                         var all = $(".col-xl-4");
                         var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
                         all.not(tgts).hide();
