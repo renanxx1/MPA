@@ -503,8 +503,8 @@
                                 } else if (context.dataIndex == 1) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
                                     w_time.push(totalNumberOfSeconds);
-                                }else{
-                                   d_time.push(totalNumberOfSeconds);
+                                } else {
+                                    d_time.push(totalNumberOfSeconds);
                                 }
 
                                 if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
@@ -949,7 +949,7 @@
 
             //Relatorio do excel
             $("#excel").on("click", function () {
-             
+
                 table();
 
                 let dataTable = document.getElementById('datatable');
@@ -972,7 +972,11 @@
                             td.appendChild(document.createTextNode(myBarChart.data.datasets[0].data1[x]));
                         }
                         if (y == 3) {
-                            td.appendChild(document.createTextNode((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x]).toFixed(1)));
+                            if (isNaN((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x]).toFixed(1))) {
+                                td.appendChild(document.createTextNode(0));
+                            } else {
+                                td.appendChild(document.createTextNode((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x]).toFixed(1)));
+                            }
                         }
                         if (y == 4) {
                             td.appendChild(document.createTextNode('<%=process.process_name%>'));
