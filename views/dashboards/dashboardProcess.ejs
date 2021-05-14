@@ -437,6 +437,9 @@
             // Pie Chart Example - GRAFICO 3
 
             var res = []; //variavel que pega o valor da label para depois calcular eficiencia
+            var d_time = [];
+            var w_time = []
+            var label0 = false;
             var doubleVal = false;
             var ctx = document.getElementById("myPieChart");
             var myPieChart = new Chart(ctx, {
@@ -455,8 +458,11 @@
                     aspectRatio: 2.63,
                     plugins: {
                         legend: {
+                            onClick: function (e, legendItem) {
+                            },
                             //display: false,
                             reverse: true,
+
                         },
                         tooltip: {
                             callbacks: {
@@ -493,12 +499,17 @@
                                 if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
                                     doubleVal = true;
-
+                                    w_time.push(totalNumberOfSeconds);
                                 } else if (context.dataIndex == 1) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
+                                    w_time.push(totalNumberOfSeconds);
+                                }else{
+                                   d_time.push(totalNumberOfSeconds);
                                 }
+
                                 if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
                                     totalNumberOfSeconds = totalNumberOfSeconds / 2;
+                                    w_time.push(totalNumberOfSeconds);
                                 }
 
                                 res.push(totalNumberOfSeconds);
@@ -520,6 +531,7 @@
 
             //Ao carregar a pagina recebe o chartData atráves do socket.io
             socket.on("chartData", (data) => {
+
                 //Caso o dado recebido seja null, exibe uma div informando que dados não foram encontrados
                 if (data == null) {
                     $('#divNoData').show();
@@ -937,6 +949,7 @@
 
             //Relatorio do excel
             $("#excel").on("click", function () {
+             
                 table();
 
                 let dataTable = document.getElementById('datatable');
@@ -984,12 +997,14 @@
                             }
                         }
                         if (y == 11) {
-                            if (x == 0)
-                                td.appendChild(document.createTextNode(res[res.length - 1]));
+                            if (x == 0) {
+                                td.appendChild(document.createTextNode(w_time[w_time.length - 2]));
+                            }
                         }
                         if (y == 12) {
-                            if (x == 0)
-                                td.appendChild(document.createTextNode(res[res.length - 2]));
+                            if (x == 0) {
+                                td.appendChild(document.createTextNode(d_time[d_time.length - 1]));
+                            }
                         }
                         if (y == 13) {
                             if (x == 0)
