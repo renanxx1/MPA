@@ -90,7 +90,7 @@ async function renderEdit(req, res, code) {
         activity: activity,
         processes: processes,
         groups: groups,
-        id: id,
+        id: req,
         activities: activities
     });
 }

@@ -186,11 +186,11 @@ class ActivityRepository {
                     id: id
                 }
             });
-           await Group.destroy({
-                where: {
-                    id: group_id
-                }
-            })
+        await Group.destroy({
+            where: {
+                id: group_id
+            }
+        })
     };
 
 
@@ -396,6 +396,19 @@ class ActivityRepository {
             })
     }
 
+
+    async updateActivityAndDeleteGroup(id, group_id) {
+        Activity.update({
+            status: false,
+        }, {
+            where: { id: id }
+        })
+        await Group.destroy({
+            where: {
+                id: group_id
+            }
+        })
+    }
 }
 
 module.exports = new ActivityRepository();
