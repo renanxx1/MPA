@@ -75,15 +75,19 @@ class ActivityService {
                     return 1;
 
                 } else {
-                    var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
-                    if (Object.keys(groupHasActivity).length == 1) {
-                        await ActivityRepository.deleteActivityAndGroup(id, activity.group.id);
-                        return 1;
-                    } else if (Object.keys(groupHasActivity).length != 1) {
+                    if (activity.group.group_name == ("G_" + activity.activity_name)) {
+                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
+                        if (Object.keys(groupHasActivity).length == 1) {
+                            await ActivityRepository.deleteActivityAndGroup(id, activity.group.id);
+                            return 1;
+
+                        } else {
+                            return 0;
+                        }
+
+                    } else {
                         await ActivityRepository.deleteActivity(id);
                         return 1;
-                    } else {
-                        return 0;
                     }
                 }
 
@@ -94,15 +98,17 @@ class ActivityService {
                     return 1;
 
                 } else {
-                    var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
-                    if (Object.keys(groupHasActivity).length == 1) {
-                        await ActivityRepository.updateActivityAndDeleteGroup(id, activity.group.id);
-                        return 1;
-                    } else if (Object.keys(groupHasActivity).length != 1) {
+                    if (activity.group.group_name == ("G_" + activity.activity_name)) {
+                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
+                        if (Object.keys(groupHasActivity).length == 1) {
+                            await ActivityRepository.updateActivityStatus(id);
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else {
                         await ActivityRepository.updateActivityStatus(id);
                         return 1;
-                    } else {
-                        return 0;
                     }
                 }
             }
