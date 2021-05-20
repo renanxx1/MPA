@@ -13,13 +13,11 @@ class AdminController {
 
 
     async setCreate(req, res) {
-        var admin = await AdminService.setCreate(req.body.login, req.body.password);
+        var admin = await AdminService.setCreate(req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword);
         if (admin == 1) {
             renderCreate(req, res, 201);
         } else if (admin == 0) {
             renderCreate(req, res, 406);
-        } else {
-            renderCreate(req, res, 409);
         }
     }
 
@@ -41,7 +39,7 @@ class AdminController {
 
 
     async setUpdate(req, res) {
-        var admin = await AdminService.setUpdate(req.body.id, req.body.login, req.body.password, req.body.gridRadios)
+        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword)
         if (admin == 1) {
             renderEdit(req.params.id, res, 201);
         } else if (admin == 0) {

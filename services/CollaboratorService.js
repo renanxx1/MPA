@@ -6,7 +6,7 @@ class CollaboratorService {
     //Retorna dados para a pagina principal do colaborador
     async getIndex() {
         try {
-            var collaborators = await CollaboratorRepository.findAll();
+            var collaborators = await CollaboratorRepository.findAllCollaborator();
             return collaborators;
 
         } catch (error) {

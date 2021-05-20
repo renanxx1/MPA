@@ -29,7 +29,7 @@ const Collaborator = connection.define("collaborator", {
 
     work_time: {
         type: Sequelize.FLOAT,
-        allowNull: false
+        allowNull: true
     },
 
      session_id: {
@@ -43,12 +43,19 @@ const Collaborator = connection.define("collaborator", {
             return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
         }
     },
+
     updatedAt: {
         type: Sequelize.DATE,
         get() {
             return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
         }
     },
+
+    admin:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    },
+
     status: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -58,7 +65,7 @@ const Collaborator = connection.define("collaborator", {
 Collaborator.belongsTo(Process, {
     foreignKey: {
         name: 'process_id',
-        allowNull: false
+        allowNull: true
     }
 });
 

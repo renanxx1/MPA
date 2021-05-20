@@ -10,15 +10,18 @@ const Collaborator_History = connection.define("collaboratorhistory", {
         autoIncrement: true,
         primaryKey: true,
     },
+
     modelId: {
         type: Sequelize.INTEGER,
         allowNull: true
     },
+
     archivedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
         allowNull: false
     },
+    
     collaborator_name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -36,7 +39,7 @@ const Collaborator_History = connection.define("collaboratorhistory", {
 
     work_time: {
         type: Sequelize.FLOAT,
-        allowNull: false
+        allowNull: true
     },
 
     session_id: {
@@ -50,12 +53,19 @@ const Collaborator_History = connection.define("collaboratorhistory", {
             return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
         }
     },
+
     updatedAt: {
         type: Sequelize.DATE,
         get() {
             return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY HH:mm:ss');
         }
     },
+
+    admin:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    },
+
     status: {
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -65,7 +75,7 @@ const Collaborator_History = connection.define("collaboratorhistory", {
 Collaborator_History.belongsTo(Process, {
     foreignKey: {
         name: 'process_id',
-        allowNull: false
+        allowNull: true
     }
 });
 

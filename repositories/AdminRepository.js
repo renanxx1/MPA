@@ -1,4 +1,4 @@
-const Admin = require('../models/Admin');
+/* const Admin = require('../models/Admin');
 const Collaborator = require('../models/Collaborator');
 const { Op } = require("sequelize");
 
@@ -17,7 +17,7 @@ class AdminRepository {
         return await
             Admin.findOne({
                 where: {
-                    [Op.and]:[{
+                    [Op.and]: [{
                         login: login,
                         id: { [Op.not]: id },
                     }],
@@ -103,4 +103,4 @@ class AdminRepository {
 
 }
 
-module.exports = new AdminRepository();
+module.exports = new AdminRepository(); */

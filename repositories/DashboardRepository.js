@@ -18,7 +18,10 @@ class DashboardRepository {
             Collaborator.findAll({
                 include: [{
                     model: Process
-                }]
+                }],
+                where: {
+                    admin: false
+                }
             })
     }
 

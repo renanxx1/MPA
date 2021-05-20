@@ -23,6 +23,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID ADMIN</th>
+                                            <th>ADMINISTRADOR</th>
                                             <th>LOGIN</th>
                                             <th>SENHA</th>
                                             <th>AÇÕES</th>
@@ -32,7 +33,10 @@
                                         <%admins.forEach(admin=> { %>
                                             <tr>
                                                 <td>
-                                                    <%=admin.id %>
+                                                    <%=admin.id%>
+                                                </td>
+                                                <td>
+                                                    <%=admin.collaborator_name%>
                                                 </td>
                                                 <td>
                                                     <%=admin.login%>
@@ -48,11 +52,11 @@
                                                             </button> </a>
 
                                                         <form id="form" action="/admin/deletar/<%=admin.id%>"
-                                                            method="POST" onsubmit="enviarForm(event, this)">
+                                                            method="POST" onsubmit="sendForm(event, this)">
                                                             <button class="item mr-1" data-placement="top"
                                                                 title="Deletar" data-toggle="modal"
                                                                 data-target="#modalDelete"
-                                                                onclick="enviarLogin('<%=admin.login%>')"
+                                                                onclick="sendLogin('<%=admin.login%>')"
                                                                 target="_blank">
                                                                 <i class="zmdi zmdi-delete"></i>
                                                             </button>
@@ -79,12 +83,12 @@
             <%- include ('../partials/footer.ejs')%>
 
                 <script>
-                    function enviarLogin(login) {
+                    function sendLogin(login) {
                         $('#modal-title-id1').html('Deletar Administrador');
                         $('#modal-body-id1').html('VOCÊ CONFIRMA A DELEÇÃO DO LOGIN: <b>' + login + '</b>');
                     }
 
-                    function enviarForm(event, form) {
+                    function sendForm(event, form) {
                         event.preventDefault();
                         document.getElementById("btn-confirm").addEventListener("click", function () {
                             form.submit();

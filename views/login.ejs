@@ -5,20 +5,21 @@
 
       <!-- Icon -->
       <div class="fadeIn first mb-3 mt-4">
-        <img src="./assets/img/icon.png" id="icon" alt="User Icon" style="width: 35%;"/>
+        <img src="./assets/img/icon.png" id="icon" alt="User Icon" style="width: 35%;" />
       </div>
 
       <!-- Login Form -->
       <form id="form">
         <input type="text" class="fadeIn second" name="login" id="loginId" placeholder="login" required>
-        <input type="password" name="password" id="passwordIdLogin" class="fadeIn third" placeholder="password" required>
+        <input type="password" name="password" id="passwordIdLogin" class="fadeIn third" placeholder="password"
+          required>
         <input type="submit" class="fadeIn fourth " value="ACESSAR" id='login-button'><br>
         <a style="pointer-events: none; display: inline-block;" id="loading" href="" disabled> ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ
           ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ ㅤ</a>
       </form>
 
       <!-- Remind Passowrd -->
-   <!--    <div id="formFooter">
+      <!--    <div id="formFooter">
         <a class="underlineHover" id="recoverPass" href="#">Esqueceu a senha?</a>
       </div> -->
 
@@ -27,13 +28,13 @@
   <form id="formColletor" action="/collector/" method="post"></form>
   <script src="/js/jquery.min.js"></script>
   <script src="/js/scripts.js"></script>
- <script>
-      var url = "http://" + '<%=internalIp%>' + "/";
-        var url_atual = window.location.href;
-        if (url_atual.includes('localhost')) {
-          window.location.href = url;
-        }
- </script>
+  <script>
+    var url = "http://" + '<%=internalIp%>' + "/";
+    var url_atual = window.location.href;
+    if (url_atual.includes('localhost')) {
+      window.location.href = url;
+    }
+  </script>
 
   <script>
     $('#form').on('submit', function (e) {
@@ -80,4 +81,5 @@
     }
 
   </script>
+
   </html>
