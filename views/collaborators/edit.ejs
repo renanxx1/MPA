@@ -1,4 +1,6 @@
 <%- include ('../partials/header.ejs')%>
+<link rel="stylesheet" href="/assets/css/shared/style.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <%- include ('../partials/navbar.ejs')%>
         <div id="layoutSidenav_content">
             <main>
@@ -12,7 +14,16 @@
                     <div class="card" id="mainDiv" style="display:none">
                         <div class="card-body">
                             <h5 class="card-title">Edição de Colaborador</h5>
+                                <div class="btn-group btn-toggle float-right">
+                                    <button  id="buttonOn" class="btn btn-sm btn-primary"
+                                        data-toggle="tooltip" data-placement="bottom"
+                                        title="Exibir/Ocultar Tempo Ocioso">ON</button>
+                                    <button id="buttonOff"
+                                        class="btn btn-xs btn-default" data-toggle="tooltip"
+                                        data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
+                                </div>
                             <form action="/colaboradores/editar/<%=collaborator.id%>" method="POST">
+
                                 <div class="form-group">
                                     <label for="inputColaborador" class="mt-3">Nome do Colaborador <text
                                             style="color: red;">*</text>
@@ -72,7 +83,6 @@
                     </div>
                 </div>
             </main>
-
             <%- include ('../partials/footer.ejs')%>
                 <script>
 
