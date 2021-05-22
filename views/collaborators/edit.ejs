@@ -1,6 +1,5 @@
 <%- include ('../partials/header.ejs')%>
-<link rel="stylesheet" href="/assets/css/shared/style.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="/assets/css/shared/style2.css">
     <%- include ('../partials/navbar.ejs')%>
         <div id="layoutSidenav_content">
             <main>
@@ -14,14 +13,22 @@
                     <div class="card" id="mainDiv" style="display:none">
                         <div class="card-body">
                             <h5 class="card-title">Edição de Colaborador</h5>
-                                <div class="btn-group btn-toggle float-right">
-                                    <button  id="buttonOn" class="btn btn-sm btn-primary"
-                                        data-toggle="tooltip" data-placement="bottom"
-                                        title="Exibir/Ocultar Tempo Ocioso">ON</button>
-                                    <button id="buttonOff"
-                                        class="btn btn-xs btn-default" data-toggle="tooltip"
-                                        data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
+
+                            <div class="float-right" style="margin-top: -4%; ">
+                                <div class="mx-auto text-center">
+                                    <label>Administrador</label>
+                                    <br>
+                                    <div class="btn-group btn-toggle">
+                                        <button id="buttonAdminOn" class="btn btn-sm btn-default" data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Transformar este Colaborador em Administrador">SIM</button>
+                                        <button id="buttonAdminOff" class="btn btn-sm btn-dark" data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Transformar este Colaborador em Administrador">NAO</button>
+                                    </div>
                                 </div>
+                            </div>
+
                             <form action="/colaboradores/editar/<%=collaborator.id%>" method="POST">
 
                                 <div class="form-group">
@@ -52,18 +59,20 @@
                                     </select>
 
                                     <label for="inputWorkTime" class="mt-3">Horario de Trabalho <text
-                                        style="color: red;">*</text> <a type="button" class="item"
-                                        data-toggle="popover"
-                                        data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
-                                        <i class="zmdi zmdi-info"></i> </a>
-                                </label>
-                                    <input type="number" class="form-control" name="inputWorkTime" value="<%=collaborator.work_time%>"
-                                        placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4" step="0.5"
-                                        required>
-                                        
+                                            style="color: red;">*</text> <a type="button" class="item"
+                                            data-toggle="popover"
+                                            data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
+                                            <i class="zmdi zmdi-info"></i> </a>
+                                    </label>
+                                    <input type="number" class="form-control" name="inputWorkTime"
+                                        value="<%=collaborator.work_time%>" placeholder="Horas de trabalho no dia"
+                                        min="0" max="24" maxlength="4" step="0.5" required>
+
                                 </div>
                                 <button type="submit" class="btn btn-dark">Alterar</button>
                             </form>
+
+
                             <% if(statusCode==201){%>
                                 <div class="alert alert-success mt-3" role="alert">
                                     Alterado com sucesso!
@@ -82,22 +91,47 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLongTitle">ATENÇÃO!</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>
+                                    Ao selecionar a opção "SIM" este colaborador será transformado em Administrador.
+                                    <br>
+                                    Sera liberado o acesso ao Painel Administrativo / Dashboards e não poderá acessar a tela de coletor.
+                                </h5>
+                              
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
             </main>
             <%- include ('../partials/footer.ejs')%>
+
                 <script>
-
-                    $(function () { //Ativa o formulario
-                        $('#mainDiv').show();
-                        let $select1 = $('#processSelectId'),
-                            $options = $select1.find('option');
-
-                        //CARREGA AS INFORMAÇÕES DO BANCO NOS COMPONENTES
-                        $select1.prop('value', '<%=collaborator.process_id%>').prop(
-                            'selected', //Inicia o select de processo com o valor vindo do banco
-                            true)
-
+                    $(function () {
+                        $('[data-toggle="popover"]').popover();
                     })
-
+                    $('body').on('click', function (e) {
+                        $('[data-toggle=popover]').each(function () {
+                            // hide any open popovers when the anywhere else in the body is clicked
+                            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                $(this).popover('hide');
+                            }
+                        });
+                    });
                 </script>
 
                 <script>
@@ -116,5 +150,31 @@
 
                 </script>
 
+                <script>
+
+                    $(function () { //Ativa o formulario
+                        $('#mainDiv').show();
+                        let $select1 = $('#processSelectId'),
+                            $options = $select1.find('option');
+
+                        //CARREGA AS INFORMAÇÕES DO BANCO NOS COMPONENTES
+                        $select1.prop('value', '<%=collaborator.process_id%>').prop(
+                            'selected', //Inicia o select de processo com o valor vindo do banco
+                            true)
+
+                    })
+
+                </script>
+
+                <script>
+
+                    $('.btn-toggle').click(function () {
+                        $(this).find('.btn').toggleClass('btn-dark');
+                    });
+
+                    $('#buttonAdminOn').on('click', function () {
+                        $('#modalAdmin').modal().show()
+                    })
+                </script>
 
                 </html>

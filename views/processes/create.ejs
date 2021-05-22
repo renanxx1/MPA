@@ -16,19 +16,15 @@
                             <h5 class="card-title">Cadastro de Processos</h5>
                             <form action="/processos/criar" method="post">
 
-                                <div class="form-group mt-3">
+                                <div class="form-group">
                                     <label class="mt-1 mb-1">Nome do Processo <text>*</text> </label>
                                     <input class="form-control" name="processNameInput"
                                         placeholder="Digite o nome do processo" required>
-                                    <!-- 
-                                    <label class="mt-3">Descrição do Processo </label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
 
                                     <label class="mt-3 mb-1">Contador </label>
                                     <input class="form-control" name="process_counterInput" id="process_counterInputId"
                                         placeholder="Digite o nome da variavel que existe neste processo"
                                         maxlength="15" disabled>
-
 
                                     <div class="form-check mt-1">
                                         <input name="process_counterCheckBox" class="form-check-input" type="checkbox"
