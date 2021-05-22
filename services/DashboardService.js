@@ -11,7 +11,6 @@ class DashboardService {
         var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
         var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
         var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);
-
         if (process_name != null && collaborator != null) {
             return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory, process: process_name };
         } else {

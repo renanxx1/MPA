@@ -53,8 +53,8 @@
                     </div>
 
                     <div id="myDIV" class="row">
-                        <%if(collaborators==null){ %>
-                            <h1>Sem colaboradores cadastrados no sistema.</h1>
+                        <%if(collaborators[0]==null){ %>
+                            <h4 class="text-center mx-auto mt-4">Sem colaboradores cadastrados no sistema.</h4>
                             <%}%>
 
                                 <%collaborators.forEach(collaborator=> { %>

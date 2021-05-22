@@ -15,6 +15,7 @@ class DashboardController {
 
 async function renderIndex(req, res, code) {
     var collaborators = await DashboardService.getIndex();
+    console.log(collaborators)
     res.status(code).render('dashboards/index', {
         collaborators: collaborators,
         statusCode: code,

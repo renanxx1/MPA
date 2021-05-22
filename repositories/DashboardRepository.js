@@ -148,6 +148,7 @@ class DashboardRepository {
                 where: {
                     [Op.and]: [{
                         id: collaborator_id,
+                        admin: false,
                         status: true
                     }]
                 }
