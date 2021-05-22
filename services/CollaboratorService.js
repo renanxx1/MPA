@@ -28,10 +28,8 @@ class CollaboratorService {
     //Cria um colaborador
     async setCreate(collaborator_name, login, password, process, work_time) {
         try {
-            var admin = await CollaboratorRepository.findAdminByLogin(login);
-            if (admin == null) {
-                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaborator_name, login);
-                if (collaborator == undefined) {
+            var collaborator = await CollaboratorRepository.findOneByLoginOrName(login);
+                if (collaborator == null) {
                     var salt = bcrypt.genSaltSync(10);
                     var hash = bcrypt.hashSync(password, salt);
                     await CollaboratorRepository.createCollaborator(collaborator_name, login, hash, process, work_time);
@@ -39,9 +37,7 @@ class CollaboratorService {
                 } else {
                     return 0;
                 }
-            } else {
-                return -1;
-            }
+        
         } catch (error) {
             return error;
         }
@@ -79,9 +75,7 @@ class CollaboratorService {
     //Atualiza dados do colaborador
     async setUpdate(id, collaborator_name, login, password, process_id, work_time) {
         try {
-            var admin = await CollaboratorRepository.findAdminByLogin(login);
-            if (admin == null) {
-                var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(collaborator_name, login, id);
+                var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(login, id);
                 if (collaborator == null) {
                     if (password != '****') {
                         var salt = bcrypt.genSaltSync(10);
@@ -99,9 +93,7 @@ class CollaboratorService {
                     return 0;
                 }
 
-            } else {
-                return -1;
-            }
+         
 
         } catch (error) {
             return error;

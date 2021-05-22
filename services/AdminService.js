@@ -18,8 +18,7 @@ class AdminService {
     //Cria um admin
     async setCreate(admin_name, login, password) {
         try {
-            var collaborator = await CollaboratorRepository.findCollaboratorByLogin(admin_name, login);
-            console.log(collaborator)
+            var collaborator = await CollaboratorRepository.findOneByLoginOrName(login);
             if (collaborator == null) {
 
                 var salt = bcrypt.genSaltSync(10);
@@ -62,7 +61,7 @@ class AdminService {
     //Atualiza um admin
     async setUpdate(id, admin_name, login, password) {
         try {
-            var login_name = await CollaboratorRepository.findOneAdminOrCollaborator(admin_name, login, id);
+            var login_name = await CollaboratorRepository.findOneByNameOrLoginNotSameId(admin_name, login, id);
             if (login_name == null) {
                 var admin = await CollaboratorRepository.findByPk(id);
 

@@ -3,9 +3,7 @@ class DashboardService {
 
     //Retorna dados para a pagina principal do sistema que lista todos colaboradores.
     async getIndex() {
-        var d = await DashboardRepository.findAllCollaborators();
-        console.log(d)
-        return d;
+        return await DashboardRepository.findAllCollaborators();
     }
 
     //Retorna dados do cabeçalho para a pagina de dashboard colaborador

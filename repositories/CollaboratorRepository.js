@@ -36,19 +36,6 @@ class CollaboratorRepository {
         });
     }
 
-    async findCollaboratorByLogin(admin_name, login) {
-        return await
-            Collaborator.findOne({
-                where: {
-                    status: true,
-                    [Op.or]: [{
-                        login: login
-                    }, {
-                        collaborator_name: admin_name
-                    }]
-                }
-            })
-    }
 
     async findAllProcesses() {
         return await Process.findAll({
@@ -58,15 +45,10 @@ class CollaboratorRepository {
         });
     }
 
-    async findOneByLoginOrName(collaborator_name, login) {
+    async findOneByLoginOrName(login) {
         return await Collaborator.findOne({
             where: {
-                status: true,
-                [Op.or]: [{
                     login: login
-                }, {
-                    collaborator_name: collaborator_name
-                }]
             }
         })
     }
@@ -132,19 +114,6 @@ class CollaboratorRepository {
             })
     }
 
-    async findOneAdminOrCollaborator(admin_name, login, id) {
-        return await
-            Collaborator.findOne({
-                where: {
-                    id: { [Op.not]: id },
-                    [Op.or]: [
-                        { login: login },
-                        { collaborator_name: admin_name },
-                    ],
-                }
-            })
-    }
-
     async findOneByName(collaborator_name) {
         return await Collaborator.findOne({
             where: {
@@ -153,17 +122,13 @@ class CollaboratorRepository {
         })
     }
 
-    async findOneByNameOrLoginNotSameId(collaborator_name, login, id) {
+    async findOneByNameOrLoginNotSameId(login, id) {
         return await
             Collaborator.findOne({
                 where: {
-                    [Op.or]: [{
-                        collaborator_name: collaborator_name,
-                        login: login
-                    }],
                     [Op.and]: [{
+                        login: login,
                         id: { [Op.not]: id },
-                        status: true
                     }]
                 }
             })

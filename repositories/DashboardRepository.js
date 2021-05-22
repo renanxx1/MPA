@@ -1,11 +1,8 @@
-const Activity = require('../models/Activity');
-const Admin = require('../models/Admin');
 const sequelize = require('../database/database');
 const Collaborator = require('../models/Collaborator');
 const Collaborator_History = require('../models/Collaborator_History');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
 const Process = require('../models/Process');
-const Process_Counter = require('../models/Process_Counter');
 const {
     Op
 } = require("sequelize");
