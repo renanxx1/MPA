@@ -1,12 +1,13 @@
-const CollaboratorRepository = require('../repositories/CollaboratorRepository');
+const AdminRepository = require('../repositories/AdminRepository');
 const bcrypt = require('bcryptjs');
+const Admin = require('../models/Admin');
 
 class AdminService {
 
     //Retorna dados para a pagina principal do admin
     async getIndex() {
         try {
-            var admins = await CollaboratorRepository.findAllAdmin();
+            var admins = await AdminRepository.findAll();
             return admins;
 
         } catch (error) {
@@ -18,16 +19,19 @@ class AdminService {
     //Cria um admin
     async setCreate(admin_name, login, password) {
         try {
-            var collaborator = await CollaboratorRepository.findOneByLoginOrName(login);
+            var collaborator = await AdminRepository.findCollaboratorByLogin(login);
             if (collaborator == null) {
-
-                var salt = bcrypt.genSaltSync(10);
-                var hash = bcrypt.hashSync(password, salt);
-                await CollaboratorRepository.createAdmin(admin_name, login, hash);
-                return 1;
-
+                var admin = await AdminRepository.findAdminByLogin(login);
+                if (admin == undefined) {
+                    var salt = bcrypt.genSaltSync(10);
+                    var hash = bcrypt.hashSync(password, salt);
+                    await AdminRepository.createAdmin(admin_name, login, hash);
+                    return 1;
+                } else {
+                    return 0;
+                }
             } else {
-                return 0;
+                return -1;
             }
 
         } catch (error) {
@@ -38,9 +42,9 @@ class AdminService {
     //Deleta um admin
     async setDelete(id) {
         try {
-            var admins = await CollaboratorRepository.findAllAdmin();
+            var admins = await AdminRepository.findAll();
             if (Object.keys(admins).length > 1) {
-                await CollaboratorRepository.deleteAdmin(id);
+                await AdminRepository.deleteAdmin(id);
             }
         } catch (error) {
             return error;
@@ -50,7 +54,7 @@ class AdminService {
     //Retorna dados para a pagina de atualizar admin
     async getUpdate(id) {
         try {
-            var admin = await CollaboratorRepository.findByPk(id);
+            var admin = await AdminRepository.findByPk(id);
             return admin;
 
         } catch (error) {
@@ -59,39 +63,63 @@ class AdminService {
     }
 
     //Atualiza um admin
-    async setUpdate(id, admin_name, login, password) {
+    async setUpdate(id, admin_name, login, password, admin_on) {
         try {
-            var login_name = await CollaboratorRepository.findOneByNameOrLoginNotSameId(admin_name, login, id);
-            if (login_name == null) {
-                var admin = await CollaboratorRepository.findByPk(id);
+            var collaborator = await AdminRepository.findCollaboratorByLogin(login);
+            var admin = await AdminRepository.findOneByNameOrLoginNotSameId(login, id);
+            var changeToCollaborator = admin_on % 2;
+console.log(changeToCollaborator)
+            if (collaborator == null && admin == null) {
+                if (changeToCollaborator == 0) {
+                    if (password == "") {
+                        await AdminRepository.updateAdminLogin(admin_name, login, id);
+                        return 1;
 
-                if (password == "") {
-                    await CollaboratorRepository.updateAdminLogin(admin_name, login, id);
-                    admin = {
-                        id: id,
-                        login: login
+                    } else {
+                        var salt = bcrypt.genSaltSync(10);
+                        var hash = bcrypt.hashSync(password, salt);
+                        await AdminRepository.adminUpdatePassword(hash, id);
+                        return 1;
                     }
-                    return 1;
-
                 } else {
-                    var salt = bcrypt.genSaltSync(10);
-                    var hash = bcrypt.hashSync(password, salt);
-                    await CollaboratorRepository.adminUpdatePassword(hash, id);
-                    await CollaboratorRepository.updateAdminLogin(admin_name, login, id);
-                    admin = {
-                        id: id,
-                        login: login
+                console.log('if 1')
+
+                    if (password == "") {
+                        await AdminRepository.updateAdminLoginChangeToCollaborator(admin_name, login, id);
+                        return 2;
+
+                    } else {
+                        var salt = bcrypt.genSaltSync(10);
+                        var hash = bcrypt.hashSync(password, salt);
+                        await AdminRepository.adminUpdatePasswordChangeToAdmin(hash, id);
+                        return 2;
                     }
-                    return 1;
                 }
-            } else {
-                return 0;
+
+            }else {
+                return -1;
             }
+
         } catch (error) {
             return error;
         }
     }
 }
+
+
+/* 
+    async createAdminInitialProfile() {
+        var admins = await AdminRepository.findAll();
+        if (admins == null) {
+ 
+            var login = 'admin';
+            var password = 'admin';
+ 
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(password, salt);
+            await AdminRepository.createAdmin(login, hash);
+        }
+    } */
 
 
 module.exports = new AdminService();

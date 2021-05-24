@@ -39,11 +39,13 @@ class AdminController {
 
 
     async setUpdate(req, res) {
-        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword)
+        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword, req.body.inputAdminOnOff)
         if (admin == 1) {
             renderEdit(req.params.id, res, 201);
         } else if (admin == 0) {
             renderEdit(req.params.id, res, 406);
+        } else if (admin == 2) {
+            res.redirect('/colaborador')
         } else {
             renderEdit(req.params.id, res, 409);
         }

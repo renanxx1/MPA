@@ -6,7 +6,7 @@ class CollaboratorService {
     //Retorna dados para a pagina principal do colaborador
     async getIndex() {
         try {
-            var collaborators = await CollaboratorRepository.findAllCollaborator();
+            var collaborators = await CollaboratorRepository.findAll();
             return collaborators;
 
         } catch (error) {
@@ -28,8 +28,10 @@ class CollaboratorService {
     //Cria um colaborador
     async setCreate(collaborator_name, login, password, process, work_time) {
         try {
-            var collaborator = await CollaboratorRepository.findOneByLoginOrName(login);
-                if (collaborator == null) {
+            var admin = await CollaboratorRepository.findAdminByLogin(login);
+            if (admin == null) {
+                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaborator_name, login);
+                if (collaborator == undefined) {
                     var salt = bcrypt.genSaltSync(10);
                     var hash = bcrypt.hashSync(password, salt);
                     await CollaboratorRepository.createCollaborator(collaborator_name, login, hash, process, work_time);
@@ -37,7 +39,9 @@ class CollaboratorService {
                 } else {
                     return 0;
                 }
-        
+            } else {
+                return -1;
+            }
         } catch (error) {
             return error;
         }
@@ -73,10 +77,15 @@ class CollaboratorService {
     }
 
     //Atualiza dados do colaborador
-    async setUpdate(id, collaborator_name, login, password, process_id, work_time) {
+    async setUpdate(id, collaborator_name, login, password, process_id, work_time, admin_on) {
         try {
-                var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(login, id);
-                if (collaborator == null) {
+            var admin = await CollaboratorRepository.findAdminByLogin(login, id);
+            var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(login, id);
+            var changeToAdmin = admin_on % 2;
+
+            if (admin == null && collaborator == null) {
+
+                if (changeToAdmin == 0) {
                     if (password != '****') {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
@@ -90,8 +99,22 @@ class CollaboratorService {
                     }
 
                 } else {
-                    return 0;
+                    if (password != '****') {
+                        var salt = bcrypt.genSaltSync(10);
+                        var hash = bcrypt.hashSync(password, salt);
+
+                        await CollaboratorRepository.updateCollaboratorWithPasswordChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time);
+                        return 2;
+
+                    } else {
+                        await CollaboratorRepository.updateCollaboratorNoPasswordChangeToAdmin(id, collaborator_name, login, process_id, work_time);
+                        return 2;
+                    }
                 }
+
+            } else {
+                return -1;
+            }
 
         } catch (error) {
             return error;

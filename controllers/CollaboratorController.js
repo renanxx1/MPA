@@ -41,11 +41,13 @@ class CollaboratorController {
 
 
     async setUpdate(req, res) {
-        var collaborator = await CollaboratorService.setUpdate(req.params.id, req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelect, req.body.inputWorkTime);
+        var collaborator = await CollaboratorService.setUpdate(req.params.id, req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelect, req.body.inputWorkTime, req.body.inputAdminOnOff);
         if (collaborator == 1) {
             renderEdit(req.params.id, res, 201);
         } else if (collaborator == 0) {
             renderEdit(req.params.id, res, 406);
+        } else if (collaborator == 2) {
+           res.redirect('/admin')
         } else {
             renderEdit(req.params.id, res, 406);
         }

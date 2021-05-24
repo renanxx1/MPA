@@ -1,13 +1,12 @@
 const Collaborator = require('../models/Collaborator');
-const Collaborator_History = require('../models/Collaborator_History');
-//const Admin = require('../models/Admin');
+const Admin = require('../models/Admin');
 const Process = require('../models/Process');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
 const { Op } = require("sequelize");
 
 class CollaboratorRepository {
 
-    async findAllCollaborator() {
+    async findAll() {
         return await Collaborator.findAll({
             raw: true,
             nest: true,
@@ -15,27 +14,10 @@ class CollaboratorRepository {
                 model: Process
             }],
             where: {
-                [Op.and]:[{
-                    admin:false,
-                    status: true
-                }]
+                status: true
             }
         });
     }
-
-    async findAllAdmin() {
-        return await Collaborator.findAll({
-            raw: true,
-            nest: true,
-            where: {
-                [Op.and]: [{
-                    admin: true,
-                    status: true
-                }]
-            }
-        });
-    }
-
 
     async findAllProcesses() {
         return await Process.findAll({
@@ -45,15 +27,7 @@ class CollaboratorRepository {
         });
     }
 
-    async findOneByLoginOrName(login) {
-        return await Collaborator.findOne({
-            where: {
-                    login: login
-            }
-        })
-    }
-
-    async findOneByLoginOrNameAdmin(collaborator_name, login) {
+    async findOneByLoginOrName(collaborator_name, login) {
         return await Collaborator.findOne({
             where: {
                 status: true,
@@ -67,52 +41,35 @@ class CollaboratorRepository {
     }
 
     async findAdminByLogin(login) {
-        return await Collaborator.findOne({
-            where: {
-                [Op.and]: [{
-                    login: login,
-                    admin: true,
-                    status: true
-                }]
-            }
-        })
-    }
-
-
-    async findAdminByLogin(login) {
-        return await Collaborator.findOne({
+        return await Admin.findOne({
             where: {
                 login: login
             }
         })
     }
 
+    async findAdminByLogin(login) {
+        return await Admin.findOne({
+            where: {
+                [Op.and]: [{
+                    login: login,
+                }]
+            }
+        })
+    }
 
     async createCollaborator(collaborator_name, login, hash, process, work_time) {
-        return await
-            Collaborator.create({
-                collaborator_name: collaborator_name,
-                login: login,
-                password: hash,
-                process_id: process,
-                work_time: work_time,
-                admin: false,
-                status: true,
-            })
+        return await Collaborator.create({
+            collaborator_name: collaborator_name,
+            login: login,
+            password: hash,
+            process_id: process,
+            work_time: work_time,
+            status: true,
+        })
     }
 
-    async createAdmin(admin_name, login, hash) {
-        return await
-            Collaborator.create({
-                collaborator_name: admin_name,
-                login: login,
-                password: hash,
-                process_id: null,
-                work_time: null,
-                admin: true,
-                status: true,
-            })
-    }
+
 
     async findOneByName(collaborator_name) {
         return await Collaborator.findOne({
@@ -135,11 +92,6 @@ class CollaboratorRepository {
     }
 
     async findCollaboratorByPk(id) {
-        return await
-            Collaborator.findByPk(id);
-    }
-
-    async findByPk(id) {
         return await
             Collaborator.findByPk(id);
     }
@@ -171,35 +123,52 @@ class CollaboratorRepository {
         });
     }
 
-
-    async updateAdminLogin(admin_name, login, id) {
-        return await
+    async updateCollaboratorWithPasswordChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time) {
+        await
             Collaborator.update({
-                collaborator_name: admin_name,
+                collaborator_name: collaborator_name,
                 login: login,
+                password: hash,
+                process_id: process_id,
+                work_time: work_time,
+                status: false
             }, {
                 where: {
-                    [Op.and]: [{
-                        id: id,
-                        admin: true
-                    }]
+                    id: id
                 }
             });
+        await
+            Admin.create({
+                admin_name: collaborator_name,
+                login: login,
+                password: hash,
+                collaborator_id: id
+            })
     }
 
-    async adminUpdatePassword(hash, id) {
-        return await
-            Collaborator.update({
-                password: hash
-            }, {
-                where: {
-                    [Op.and]: [{
-                        id: id,
-                        admin: true
-                    }]
-                }
-            });
+    async updateCollaboratorNoPasswordChangeToAdmin(id, collaborator_name, login, process_id, work_time) {
+        await Collaborator.update({
+            collaborator_name: collaborator_name,
+            login: login,
+            process_id: process_id,
+            work_time: work_time,
+            status: false
+        }, {
+            where: {
+                id: id
+            }
+        });
+        var collaborator = await Collaborator.findByPk(id);
+        await
+            Admin.create({
+                admin_name: collaborator_name,
+                login: login,
+                password: collaborator.password,
+                collaborator_id: collaborator.id
+            })
     }
+
+
 
     async deleteCollaborator(id) {
         return await Collaborator.destroy({
@@ -208,21 +177,6 @@ class CollaboratorRepository {
             }
         })
     }
-
-    async deleteAdmin(id) {
-        return await
-            Collaborator.destroy({
-                where: {
-                    [Op.and]: [{
-                        id: id,
-                        admin: true,
-                        status: true
-                    }]
-                }
-            })
-
-    }
-
 
     async findByPk(id) {
         return await Collaborator.findByPk(id);
