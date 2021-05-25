@@ -39,13 +39,15 @@ class AdminController {
 
 
     async setUpdate(req, res) {
-        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword, req.body.inputAdminOnOff)
+       
+        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword, req.body.inputAdminOnOff, req.body.processSelect, req.body.inputWorkTime)
+console.log(admin)
         if (admin == 1) {
             renderEdit(req.params.id, res, 201);
         } else if (admin == 0) {
             renderEdit(req.params.id, res, 406);
         } else if (admin == 2) {
-            res.redirect('/colaborador')
+            res.redirect('/colaboradores')
         } else {
             renderEdit(req.params.id, res, 409);
         }
@@ -72,10 +74,13 @@ async function renderCreate(req, res, code) {
 
 
 async function renderEdit(req, res, code) {
-    var admin = await AdminService.getUpdate(req);
+    var get = await AdminService.getUpdate(req);
+    var admin = get.admin;
+    var processes = get.processes;
     res.status(code).render('admins/edit', {
         statusCode: code,
-        admin: admin
+        admin: admin,
+        processes: processes
     });
 }
 

@@ -25,7 +25,7 @@ class CollectorService {
     }
 
     //Deleta o checkpoint criado
-    async deleteCheckPoint(activity_id) {
+    async deleteCheckPoint(activity_id) {  //CORRIGIR CHECKPOINT***
         var chronometer = await CollectorRepository.findOneChronometer(activity_id);
         await CollectorRepository.deleteCheckPoint(chronometer.id);
     }

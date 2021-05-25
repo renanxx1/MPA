@@ -30,11 +30,8 @@ class CollaboratorRepository {
     async findOneByLoginOrName(collaborator_name, login) {
         return await Collaborator.findOne({
             where: {
-                status: true,
-                [Op.or]: [{
-                    login: login
-                }, {
-                    collaborator_name: collaborator_name
+                [Op.and]: [{
+                    login: login,
                 }]
             }
         })

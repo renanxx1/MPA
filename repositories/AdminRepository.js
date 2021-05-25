@@ -1,5 +1,6 @@
 const Admin = require('../models/Admin');
 const Collaborator = require('../models/Collaborator');
+const Process = require('../models/Process');
 const { Op } = require("sequelize");
 
 class AdminRepository {
@@ -11,6 +12,11 @@ class AdminRepository {
                     all: true
                 }]
             });
+    }
+
+    async findAllProcesses() {
+        return await
+            Process.findAll();
     }
 
     async findOne(login, id) {
@@ -45,6 +51,7 @@ class AdminRepository {
         })
     }
 
+
     async createAdmin(admin_name, login, hash) {
         return await
             Admin.create({
@@ -54,9 +61,24 @@ class AdminRepository {
             })
     }
 
-    async findOneByNameOrLoginNotSameId(login, id) {
-        return await
+    async findOneCollaboratorLoginNotSameId(login, id) {
+        var collaborator = await Admin.findByPk(id);
+        var result = await
             Collaborator.findOne({
+                where: {
+                    [Op.and]: [{
+                        login: login,
+                        id: { [Op.not]: collaborator.collaborator_id },
+                        status: true,
+                    }]
+                }
+            })
+        return result;
+    }
+
+    async findOneAdminLoginNotSameId(login, id) {
+        return await
+            Admin.findOne({
                 where: {
                     [Op.and]: [{
                         login: login,
@@ -89,48 +111,69 @@ class AdminRepository {
             });
     }
 
-    async updateAdminLoginChangeToCollaborator(admin_name, login, id) {
-        await
-            Admin.update({
-                admin_name: admin_name,
+    async updateAdminLoginChangeToCollaborator(admin_name, login, id, process_id, work_time) {
+        var admin = await Admin.findByPk(id);
+        if (admin.collaborator_id != null) {
+            await
+                Admin.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+            await Collaborator.update({
+                collaborator_name: admin_name,
                 login: login,
-                status: false
+                status: true,
             }, {
                 where: {
-                    id: id
+                    id: admin.collaborator_id
                 }
-            });
-        var admin = await Admin.findByPk(id);
-        await Collaborator.update({
-            collaborator_name: admin_name,
-            login: login,
-            status: true,
-            where: {
-                id: admin.collaborator_id
-            }
-        })
-    }
+            })
+            return 1;
 
-    async adminUpdatePasswordChangeToAdmin(hash, id) {
-        await
-            Admin.update({
-                password: hash,
-                status: false
-            }, {
-                where: {
-                    id: id
-                }
-            });
-        var admin = await Admin.findByPk(id);
-        await Collaborator.update({
-            collaborator_name: admin_name,
-            login: login,
-            status: true,
-            where: {
-                id: admin.collaborator_id
-            }
-        })
+        } else if (admin.collaborator_id == null) {
+            await
+                Admin.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+
+            await Collaborator.create({
+                collaborator_name: admin_name,
+                login: login,
+                password: admin.password,
+                process_id: process_id,
+                work_time: work_time,
+                status: true,
+            })
+
+            return 2;
+        } else {
+            return 0;
+        }
     }
+    /* 
+        async adminUpdatePasswordChangeToAdmin(hash, id) {
+            await
+                Admin.update({
+                    password: hash,
+                    status: false
+                }, {
+                    where: {
+                        id: id
+                    }
+                });
+            var admin = await Admin.findByPk(id);
+            await Collaborator.update({
+                collaborator_name: admin_name,
+                login: login,
+                status: true,
+                where: {
+                    id: admin.collaborator_id
+                }
+            })
+        } */
 
     async deleteAdmin(id) {
         return await

@@ -1,6 +1,5 @@
 const AdminRepository = require('../repositories/AdminRepository');
 const bcrypt = require('bcryptjs');
-const Admin = require('../models/Admin');
 
 class AdminService {
 
@@ -55,7 +54,8 @@ class AdminService {
     async getUpdate(id) {
         try {
             var admin = await AdminRepository.findByPk(id);
-            return admin;
+            var processes = await AdminRepository.findAllProcesses();
+            return { admin: admin, processes: processes }
 
         } catch (error) {
             return error;
@@ -63,14 +63,39 @@ class AdminService {
     }
 
     //Atualiza um admin
-    async setUpdate(id, admin_name, login, password, admin_on) {
+    async setUpdate(id, admin_name, login, password, admin_on, process_id, work_time) {
+      
         try {
-            var collaborator = await AdminRepository.findCollaboratorByLogin(login);
-            var admin = await AdminRepository.findOneByNameOrLoginNotSameId(login, id);
             var changeToCollaborator = admin_on % 2;
-console.log(changeToCollaborator)
-            if (collaborator == null && admin == null) {
-                if (changeToCollaborator == 0) {
+            if (changeToCollaborator == 1) {
+                var checkCol = await AdminRepository.findOneCollaboratorLoginNotSameId(login, id);
+                var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(login, id);
+
+                if (checkAdm == null && checkCol == null) {
+                    if (password == "") {
+                        var res = await AdminRepository.updateAdminLoginChangeToCollaborator(admin_name, login, id, process_id, work_time);
+                        if(res==0){
+                            return 0;
+                        }else{
+                            return 2;
+                        }
+                    } else { //CORRIGIR ABAIXO
+                        var salt = bcrypt.genSaltSync(10);
+                        var hash = bcrypt.hashSync(password, salt);
+                        await AdminRepository.adminUpdatePasswordChangeToAdmin(hash, id);
+                        return 2;
+
+                    }
+                } else {
+                    return 0;
+                }
+
+            } /* else {
+
+                var collaborator = await AdminRepository.findCollaboratorByLogin(login);
+                var admin = await AdminRepository.findOneAdminLoginNotSameId(login, id);
+
+                if (collaborator == null && admin == null) {
                     if (password == "") {
                         await AdminRepository.updateAdminLogin(admin_name, login, id);
                         return 1;
@@ -82,23 +107,10 @@ console.log(changeToCollaborator)
                         return 1;
                     }
                 } else {
-                console.log('if 1')
+                    return 0;
+                } */
 
-                    if (password == "") {
-                        await AdminRepository.updateAdminLoginChangeToCollaborator(admin_name, login, id);
-                        return 2;
-
-                    } else {
-                        var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(password, salt);
-                        await AdminRepository.adminUpdatePasswordChangeToAdmin(hash, id);
-                        return 2;
-                    }
-                }
-
-            }else {
-                return -1;
-            }
+        /*     } */
 
         } catch (error) {
             return error;
