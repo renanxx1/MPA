@@ -101,9 +101,6 @@ class CollectorService {
                     groupActivities.push(activity)
                 };
             }
-
-            console.log(groupMainActivities)
-            console.log(groupActivities)
         }
 
         //Cria no banco de dados um checkpoint com os dados da activity, colaborador, etc.
