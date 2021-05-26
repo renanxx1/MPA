@@ -104,8 +104,8 @@ class CollectorRepository {
     async findGroups(process_id) {
         return await
             Activity.findAll({
-                raw: true,
-                nest: true,
+            /*     raw: true,
+                nest: true, */
                 include: [{
                     model: Group
                 }],
