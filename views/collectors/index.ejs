@@ -266,7 +266,6 @@
 
 
                                 <%groupActivities.forEach((groupActivity)=> { %>
-
                                   <div class="modal fade" id="modalPlay_<%=groupActivity.id%>" tabindex="5"
                                     role="dialog" aria-hidden="true" data-backdrop="static">
                                     <div class="modal-dialog modal-dialog-centered text-center" role="document">
@@ -455,7 +454,8 @@
               });
 
               socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
-                activity_id: '<%=checkPoint.activity_id%>'
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
               });
               $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
               '<%}%>'
@@ -465,7 +465,8 @@
             $('#checkButtonCancel').on('click', () => {
               '<%if(checkPoint!=null){ %>'
               socket.emit('deleteCheckPoint', {
-                activity_id: '<%=checkPoint.activity_id%>'
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
               });
               '<%}%>'
             })
@@ -474,7 +475,8 @@
             $('#checkButtonClose').on('click', () => {
               '<%if(checkPoint!=null){ %>'
               socket.emit('deleteCheckPoint', {
-                activity_id: '<%=checkPoint.activity_id%>'
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
               });
               '<%}%>'
             })
@@ -624,7 +626,8 @@
 
               setTimeout(function () {
                 socket.emit('checkPoint', {
-                  activity_id: id
+                  activity_id: id,
+                  collaborator_id: '<%=collaborator.id%>'
                 });
               }, 1000);
 
@@ -642,7 +645,8 @@
               groupOptionClose(group);
 
               socket.emit('deleteCheckPoint', {
-                activity_id: id
+                activity_id: id,
+                collaborator_id: '<%=collaborator.id%>'
               });
 
             }
@@ -657,7 +661,8 @@
               idActivityGroup = null;
 
               socket.emit('deleteCheckPoint', {
-                activity_id: $('#modalId').val()
+                activity_id: $('#modalId').val(),
+                collaborator_id: '<%=collaborator.id%>'
               });
 
               startChronometer(null); //Inicia o tempo ocioso

@@ -28,11 +28,11 @@ io.on("connection", async function (socket) {
     })
 
     socket.on('checkPoint', (get) => {
-        CollectorService.setCheckPoint(get.activity_id);
+        CollectorService.setCheckPoint(get.activity_id, get.collaborator_id);
     })
 
     socket.on('deleteCheckPoint', (get) => {
-        CollectorService.deleteCheckPoint(get.activity_id);
+        CollectorService.deleteCheckPoint(get.activity_id, get.collaborator_id);
     })
 })
 

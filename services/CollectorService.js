@@ -15,8 +15,8 @@ class CollectorService {
     }
 
     //Cria um checkpoint no sistema caso o usuario perca a conexao com uma atividade em execução
-    async setCheckPoint(activity_id) {
-        var chronometer = await CollectorRepository.findOneChronometer(activity_id);
+    async setCheckPoint(activity_id, collaborator_id) {
+        var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
         var check = await CollectorRepository.findCheckPoint(chronometer.id);
 
         if (check == null || check == undefined) {
@@ -25,8 +25,8 @@ class CollectorService {
     }
 
     //Deleta o checkpoint criado
-    async deleteCheckPoint(activity_id) {  //CORRIGIR CHECKPOINT***
-        var chronometer = await CollectorRepository.findOneChronometer(activity_id);
+    async deleteCheckPoint(activity_id, collaborator_id) {  
+        var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
         await CollectorRepository.deleteCheckPoint(chronometer.id);
     }
 
@@ -102,6 +102,7 @@ class CollectorService {
                         groupActivities.push(activity)
                     };
                 })
+              
             }
 
             //Cria no banco de dados um checkpoint com os dados da activity, colaborador, etc.

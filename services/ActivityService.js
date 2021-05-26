@@ -35,17 +35,20 @@ class ActivityService {
                 if (agroup) {
                     var activityGroup = await ActivityRepository.findActivityGroupByName(group_name, process_id)
                     var group = await ActivityRepository.findGroupByName(group_name);
-
+console.log('if geral')
                     if (group == null && !activityGroup.group) {
                         await ActivityRepository.agroupableUpdateActivityAndCreateGroup(group_name, activity_name, process_id);
+                        console.log('if 1')
                         return 1;
-
+                      
                     } else if (group == null && activityGroup.group.id) {
                         await ActivityRepository.agroupActivityAndCreate(activityGroup.group.id, activity_name, process_id);
+                        console.log('if 2')
                         return 1;
 
                     } else {
                         await ActivityRepository.agroupActivityAndCreate(activityGroup.group.id, activity_name, process_id);
+                        console.log('if 3')
                         return 1;
                     }
 

@@ -104,6 +104,8 @@ class CollectorRepository {
     async findGroups(process_id) {
         return await
             Activity.findAll({
+                raw: true,
+                nest: true,
                 include: [{
                     model: Group
                 }],
@@ -164,12 +166,13 @@ class CollectorRepository {
             })
     }
 
-    async findOneChronometer(activity_id) {
+    async findOneChronometer(activity_id, collaborator_id) {
         return await Activity_Chronometer.findOne({
             where: {
                 [Op.and]: [{
                     activity_id: activity_id,
-                    createdAt: moment().format('YYYY-MM-DD')
+                    createdAt: moment().format('YYYY-MM-DD'),
+                    collaborator_id: collaborator_id
                 }]
             }
         })
