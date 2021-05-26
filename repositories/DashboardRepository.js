@@ -49,7 +49,6 @@ class DashboardRepository {
                 where: {
                     [Op.and]: [{
                         id: collaborator_id,
-                        status: true
                     }]
                 }
             })
@@ -148,7 +147,6 @@ class DashboardRepository {
                 where: {
                     [Op.and]: [{
                         id: collaborator_id,
-                        status: true
                     }]
                 }
             })
@@ -212,7 +210,6 @@ class DashboardRepository {
                 where: {
                     [Op.and]: [{
                         id: collaborator_id,
-                        status: true
                     }]
                 }
             })

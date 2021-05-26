@@ -44,9 +44,7 @@ class AdminRepository {
     async findCollaboratorByLogin(login) {
         return await Collaborator.findOne({
             where: {
-                [Op.and]: [{
                     login: login,
-                }]
             }
         })
     }
@@ -100,9 +98,11 @@ class AdminRepository {
             });
     }
 
-    async adminUpdatePassword(hash, id) {
+    async adminUpdatePassword(admin_name, login, hash, id) {
         return await
             Admin.update({
+                admin_name: admin_name,
+                login: login,
                 password: hash
             }, {
                 where: {
@@ -153,6 +153,51 @@ class AdminRepository {
             return 0;
         }
     }
+
+    async adminUpdatePasswordChangeToAdmin(admin_name, login, hash, id, process_id, work_time) {
+        var admin = await Admin.findByPk(id);
+        if (admin.collaborator_id != null) {
+            await
+                Admin.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+            await Collaborator.update({
+                collaborator_name: admin_name,
+                login: login,
+                password: hash,
+                status: true,
+            }, {
+                where: {
+                    id: admin.collaborator_id
+                }
+            })
+            return 1;
+
+        } else if (admin.collaborator_id == null) {
+            await
+                Admin.destroy({
+                    where: {
+                        id: id
+                    }
+                });
+
+            await Collaborator.create({
+                collaborator_name: admin_name,
+                login: login,
+                password: hash,
+                process_id: process_id,
+                work_time: work_time,
+                status: true,
+            })
+
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
     /* 
         async adminUpdatePasswordChangeToAdmin(hash, id) {
             await

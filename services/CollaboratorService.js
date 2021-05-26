@@ -86,7 +86,7 @@ class CollaboratorService {
             if (admin == null && collaborator == null) {
 
                 if (changeToAdmin == 0) {
-                    if (password != '****') {
+                    if (password != '') {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
 
@@ -99,7 +99,7 @@ class CollaboratorService {
                     }
 
                 } else {
-                    if (password != '****') {
+                    if (password != '') {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
 

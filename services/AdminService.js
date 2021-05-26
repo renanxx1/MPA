@@ -30,7 +30,7 @@ class AdminService {
                     return 0;
                 }
             } else {
-                return -1;
+                return 0;
             }
 
         } catch (error) {
@@ -64,7 +64,7 @@ class AdminService {
 
     //Atualiza um admin
     async setUpdate(id, admin_name, login, password, admin_on, process_id, work_time) {
-      
+
         try {
             var changeToCollaborator = admin_on % 2;
             if (changeToCollaborator == 1) {
@@ -74,15 +74,15 @@ class AdminService {
                 if (checkAdm == null && checkCol == null) {
                     if (password == "") {
                         var res = await AdminRepository.updateAdminLoginChangeToCollaborator(admin_name, login, id, process_id, work_time);
-                        if(res==0){
+                        if (res == 0) {
                             return 0;
-                        }else{
+                        } else {
                             return 2;
                         }
-                    } else { //CORRIGIR ABAIXO
+                    } else {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
-                        await AdminRepository.adminUpdatePasswordChangeToAdmin(hash, id);
+                        await AdminRepository.adminUpdatePasswordChangeToAdmin(admin_name, login, hash, id, process_id, work_time);
                         return 2;
 
                     }
@@ -90,7 +90,7 @@ class AdminService {
                     return 0;
                 }
 
-            } /* else {
+            } else {
 
                 var collaborator = await AdminRepository.findCollaboratorByLogin(login);
                 var admin = await AdminRepository.findOneAdminLoginNotSameId(login, id);
@@ -103,14 +103,13 @@ class AdminService {
                     } else {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
-                        await AdminRepository.adminUpdatePassword(hash, id);
+                        await AdminRepository.adminUpdatePassword(admin_name, login, hash, id);
                         return 1;
                     }
                 } else {
                     return 0;
-                } */
-
-        /*     } */
+                }
+            }
 
         } catch (error) {
             return error;
