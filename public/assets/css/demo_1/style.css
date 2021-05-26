@@ -972,5 +972,10 @@ fieldset:disabled a.btn {
   #dashboard-vmap .jvectormap-zoomin,
   #dashboard-vmap .jvectormap-zoomout {
     display: none; }
-
+  
+    .scrollable-menu {
+      height: auto;
+      max-height: 200px;
+      overflow-x: hidden;
+  }
 /*# sourceMappingURL=style.css.map */
