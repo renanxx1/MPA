@@ -1,7 +1,7 @@
 const Admin = require('../models/Admin');
-const { Op } = require("sequelize");
 const Collaborator = require('../models/Collaborator');
 const Process = require('../models/Process');
+const { Op } = require("sequelize");
 
 class LoginRepository {
 

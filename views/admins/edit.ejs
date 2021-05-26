@@ -93,50 +93,51 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="modalDataToChange" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Informe os dados solicitados.
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <div class="input-field col s12">
-                                        <label class=""><b>Processo </b><text style="color: red;">*</text> </label>
-                                        <select class="custom-select" id="modalSelect" required>
-
-                                            <option value="" selected disabled>Selecione o processo</option>
-                                            <%processes.forEach(process=> { %>
-                                                <option value="<%=process.id%>" name='optionProcess'>
-                                                    <%=process.process_name%>
-                                                </option>
-                                                <%})%>
-
-                                        </select>
-
-                                        <label for="inputWorkTime" class="mt-3"><b>Horario de Trabalho </b><text
-                                                style="color: red;">*</text> <a type="button" class="item"
-                                                data-toggle="popover"
-                                                data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
-                                                <i class="zmdi zmdi-info"></i> </a>
-                                        </label>
-                                        <input type="number" class="form-control" id="modalWorkTime"
-                                            placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4"
-                                            step="0.5" required>
+                    <form id="form2">
+                        <div class="modal fade" id="modalDataToChange" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Informe os dados solicitados.
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-dark" id="btnChange">Confirmar
-                                        Alteração</button>
+                                    <div class="modal-body text-center">
+                                        <div class="input-field col s12">
+                                            <label class=""><b>Processo </b><text style="color: red;">*</text> </label>
+                                            <select class="custom-select" id="modalSelect" required>
+
+                                                <option value="" selected disabled>Selecione o processo</option>
+                                                <%processes.forEach(process=> { %>
+                                                    <option value="<%=process.id%>" name='optionProcess'>
+                                                        <%=process.process_name%>
+                                                    </option>
+                                                    <%})%>
+
+                                            </select>
+
+                                            <label for="inputWorkTime" class="mt-3"><b>Horario de Trabalho </b><text
+                                                    style="color: red;">*</text> <a type="button" class="item"
+                                                    data-toggle="popover"
+                                                    data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
+                                                    <i class="zmdi zmdi-info"></i> </a>
+                                            </label>
+                                            <input type="number" class="form-control" id="modalWorkTime"
+                                                placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4"
+                                                step="0.5" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-dark" id="btnChange">Confirmar
+                                            Alteração</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
 
                     <br>
             </main>
@@ -171,7 +172,7 @@
 
 
                     function sendForm(event, form) {
-                        if (count % 2 == 1) {
+                        if (count % 2 == 1 && '<%=admin.collaborator_id%>' == '') {
                             event.preventDefault();
                             $('#modalDataToChange').modal().show();
                         } else {
@@ -181,11 +182,14 @@
                         }
                     }
 
-                    $('#btnChange').on('click', function () {
+
+                    $("#form2").submit(function (event) {
+                        event.preventDefault();
                         $('#processSelectId').val($('#modalSelect').val());
                         $('#inputWorkTimeId').val($('#modalWorkTime').val());
                         $('#form').submit();
-                    })
+                    });
+
 
 
                 </script>
