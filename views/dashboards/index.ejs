@@ -52,7 +52,7 @@
                         </div>
                     </div>
 
-                    <div id="myDIV" class="row">
+                    <div id="myDIV" class="row" >
                         <%if(collaborators[0]==null){ %>
                             <h4 class="text-center mx-auto mt-4">Sem colaboradores cadastrados no sistema.</h4>
                             <%}%>
@@ -64,7 +64,7 @@
                                                 <%collaborator.status='Desativado' %>
                                                     <%}%>
 
-                                                        <div class="col-xl-4" id="div_<%=collaborator.id%>"
+                                                        <div class="col-xl-4 parent" id="div_<%=collaborator.id%>"
                                                             data-filter="<%=collaborator.process.process_name%> <%=collaborator.status%> Offline">
                                                             <div class="card mb-4">
 

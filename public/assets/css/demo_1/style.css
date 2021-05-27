@@ -978,4 +978,9 @@ fieldset:disabled a.btn {
       max-height: 200px;
       overflow-x: hidden;
   }
+
+
+  .parent { display: -ms-flex; display: -webkit-flex; display: flex; }
+.parent>div { flex:1; }
+
 /*# sourceMappingURL=style.css.map */
