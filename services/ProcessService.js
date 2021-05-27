@@ -13,7 +13,7 @@ class ProcessService {
     async setCreate(processData) {
         var process = await ProcessRepository.findOneByName(processData.process_name);
         if (process == undefined) {
-            if (process_counterCheck) {
+            if (processData.process_counterCheck) {
                 await ProcessRepository.createProcessAndCounterAndGoal(processData.process_name, processData.process_counter, processData.process_goal);
                 return 1;
             } else {
@@ -45,8 +45,8 @@ class ProcessService {
     }
 
     //Retorna dados para a pagina de atualizar processos
-    async getUpdate(processData) {
-        var process = await ProcessRepository.findByPk(processData.id);
+    async getUpdate(id) {
+        var process = await ProcessRepository.findByPk(id);
         return process;
     }
 
@@ -55,7 +55,7 @@ class ProcessService {
         var process = await ProcessRepository.findOneByNameNotSameId(processData.id, processData.process_name);
 
         if (process == null) {
-            if (process_counterCheck) {
+            if (processData.process_counterCheck) {
                 await ProcessRepository.updateProcessAndCounterAndGoal(processData.id, processData.process_name, processData.process_counter, processData.process_goal);
                 return 1;
 

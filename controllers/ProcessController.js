@@ -46,7 +46,7 @@ class ProcessController {
         if (isNaN(id) || id == undefined) {
             res.redirect("/processos");
         } else {
-            renderEdit(req, res, id, 200);
+            renderEdit(id, res, 200);
         }
     }
 
@@ -63,9 +63,9 @@ class ProcessController {
 
         var process = await ProcessService.setUpdate(processData);
         if (process == 1) {
-            renderEdit(req, res, req.params.id, 201);
+            renderEdit(req.params.id, res, 201);
         } else {
-            renderEdit(req, res, req.params.id, 406);
+            renderEdit(req.params.id, res, 406);
         }
     }
 
@@ -88,7 +88,7 @@ async function renderCreate(req, res, code) {
 }
 
 
-async function renderEdit(req, res, id, code) {
+async function renderEdit(id, res, code) {
     var process = await ProcessService.getUpdate(id);
     res.status(code).render('processes/edit', {
         process: process,
