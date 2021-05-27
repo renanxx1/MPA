@@ -110,7 +110,8 @@
                                             class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
 
-                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
+                                    <ul id="filterList"
+                                        class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
                                     </ul>
                                 </div>
 
@@ -125,7 +126,6 @@
 
                         <div class="col-xl-12">
                             <div class="card mb-4">
-
                                 <div class="card-header mb-2">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Tempo das Atividades
@@ -299,6 +299,12 @@
                 },
                 plugins: [ChartDataLabels],
                 options: {
+                    layout: {
+                        padding: {
+                            right: 6,
+                            top: 13
+                        },
+                    },
                     responsive: true,
                     plugins: {
                         legend: {
@@ -513,7 +519,7 @@
                                 }
 
                                 if (context.dataIndex == 0 && totalNumberOfSeconds == 0) {
-                                 return null;
+                                    return null;
                                 }//caso nao tenha sido executado nenhuma atividade, retorna null
 
                                 res.push(totalNumberOfSeconds);
@@ -667,7 +673,7 @@
                             var productivity = ((res[0] / 2) / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                         }
-                        if(res[1]==undefined){ //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
+                        if (res[1] == undefined) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
                             $('#productivityValue').html("Produtividade Total " + 0 + "%");
                         }
 
