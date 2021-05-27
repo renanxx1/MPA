@@ -13,10 +13,15 @@ class AdminController {
 
 
     async setCreate(req, res) {
-        var admin = await AdminService.setCreate(req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword);
-        if (admin == 1) {
+        var adminData = {
+            admin_name: req.body.inputAdministrator,
+            login: req.body.inputLogin,
+            password: req.body.inputPassword
+        }
+        var result = await AdminService.setCreate(adminData);
+        if (result == 1) {
             renderCreate(req, res, 201);
-        } else if (admin == 0) {
+        } else if (result == 0) {
             renderCreate(req, res, 406);
         }
     }
@@ -33,23 +38,32 @@ class AdminController {
         if (isNaN(id) || id == undefined) {
             res.redirect("/admin");
         } else {
-            renderEdit(req.params.id, res, 200);
+            renderEdit(id, res, 200);
         }
     }
 
 
     async setUpdate(req, res) {
-       
-        var admin = await AdminService.setUpdate(req.body.id, req.body.inputAdministrator, req.body.inputLogin, req.body.inputPassword, req.body.inputAdminOnOff, req.body.processSelect, req.body.inputWorkTime)
-console.log(admin)
-        if (admin == 1) {
-            renderEdit(req.params.id, res, 201);
-        } else if (admin == 0) {
-            renderEdit(req.params.id, res, 406);
-        } else if (admin == 2) {
+        var adminData = {
+            id: req.body.id,
+            admin_name: req.body.inputAdministrator,
+            login: req.body.inputLogin,
+            password: req.body.inputPassword,
+            admin_on: req.body.inputAdminOnOff,
+            process_id: req.body.processSelect,
+            work_time: req.body.inputWorkTime
+        }
+
+        var result = await AdminService.setUpdate(adminData);
+
+        if (result == 1) {
+            renderEdit(adminData.id, res, 201);
+        } else if (result == 0) {
+            renderEdit(adminData.id, res, 406);
+        } else if (result == 2) {
             res.redirect('/colaboradores')
         } else {
-            renderEdit(req.params.id, res, 409);
+            renderEdit(adminData.id, res, 409);
         }
     }
 

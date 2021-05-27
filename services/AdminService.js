@@ -16,15 +16,15 @@ class AdminService {
     }
 
     //Cria um admin
-    async setCreate(admin_name, login, password) {
+    async setCreate(adminData) {
         try {
-            var collaborator = await AdminRepository.findCollaboratorByLogin(login);
+            var collaborator = await AdminRepository.findCollaboratorByLogin(adminData.login);
             if (collaborator == null) {
-                var admin = await AdminRepository.findAdminByLogin(login);
+                var admin = await AdminRepository.findAdminByLogin(adminData.login);
                 if (admin == undefined) {
                     var salt = bcrypt.genSaltSync(10);
-                    var hash = bcrypt.hashSync(password, salt);
-                    await AdminRepository.createAdmin(admin_name, login, hash);
+                    var hash = bcrypt.hashSync(adminData.password, salt);
+                    await AdminRepository.createAdmin(adminData.admin_name, adminData.login, adminData.hash);
                     return 1;
                 } else {
                     return 0;
@@ -63,17 +63,17 @@ class AdminService {
     }
 
     //Atualiza um admin
-    async setUpdate(id, admin_name, login, password, admin_on, process_id, work_time) {
+    async setUpdate(adminData) {
 
         try {
             var changeToCollaborator = admin_on % 2;
             if (changeToCollaborator == 1) {
-                var checkCol = await AdminRepository.findOneCollaboratorLoginNotSameId(login, id);
-                var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(login, id);
+                var checkCol = await AdminRepository.findOneCollaboratorLoginNotSameId(adminData.login, adminData.id);
+                var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(adminData.login, adminData.id);
 
                 if (checkAdm == null && checkCol == null) {
                     if (password == "") {
-                        var res = await AdminRepository.updateAdminLoginChangeToCollaborator(admin_name, login, id, process_id, work_time);
+                        var res = await AdminRepository.updateAdminLoginChangeToCollaborator(adminData.admin_name, adminData.login, adminData.id, adminData.process_id, adminData.work_time);
                         if (res == 0) {
                             return 0;
                         } else {

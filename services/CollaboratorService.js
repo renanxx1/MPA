@@ -26,15 +26,15 @@ class CollaboratorService {
     }
 
     //Cria um colaborador
-    async setCreate(collaborator_name, login, password, process, work_time) {
+    async setCreate(collaboratorData) {
         try {
-            var admin = await CollaboratorRepository.findAdminByLogin(login);
+            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.login);
             if (admin == null) {
-                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaborator_name, login);
+                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaboratorData.collaborator_name, collaboratorData.login);
                 if (collaborator == undefined) {
                     var salt = bcrypt.genSaltSync(10);
-                    var hash = bcrypt.hashSync(password, salt);
-                    await CollaboratorRepository.createCollaborator(collaborator_name, login, hash, process, work_time);
+                    var hash = bcrypt.hashSync(collaboratorData.password, salt);
+                    await CollaboratorRepository.createCollaborator(collaboratorData.collaborator_name, collaboratorData.login, hash, collaboratorData.process_id, collaboratorData.work_time);
                     return 1;
                 } else {
                     return 0;
@@ -77,11 +77,11 @@ class CollaboratorService {
     }
 
     //Atualiza dados do colaborador
-    async setUpdate(id, collaborator_name, login, password, process_id, work_time, admin_on) {
+    async setUpdate(collaboratorData) {
         try {
-            var admin = await CollaboratorRepository.findAdminByLogin(login, id);
-            var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(login, id);
-            var changeToAdmin = admin_on % 2;
+            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.login, collaboratorData.id);
+            var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(collaboratorData.login, collaboratorData.id);
+            var changeToAdmin = collaboratorData.admin_on % 2;
 
             if (admin == null && collaborator == null) {
 
@@ -90,24 +90,24 @@ class CollaboratorService {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(password, salt);
 
-                        await CollaboratorRepository.updateCollaboratorWithPassword(id, collaborator_name, login, hash, process_id, work_time);
+                        await CollaboratorRepository.updateCollaboratorWithPassword(collaboratorData.id, collaboratorData.collaborator_name, collaboratorData.login, hash, collaboratorData.process_id, collaboratorData.work_time);
                         return 1;
 
                     } else {
-                        await CollaboratorRepository.updateCollaboratorNoPassword(id, collaborator_name, login, process_id, work_time);
+                        await CollaboratorRepository.updateCollaboratorNoPassword(collaboratorData.id, collaboratorData.collaborator_name, collaboratorData.login, collaboratorData.process_id, collaboratorData.work_time);
                         return 1;
                     }
 
                 } else {
                     if (password != '') {
                         var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(password, salt);
+                        var hash = bcrypt.hashSync(collaboratorData.password, salt);
 
-                        await CollaboratorRepository.updateCollaboratorWithPasswordChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time);
+                        await CollaboratorRepository.updateCollaboratorWithPasswordChangeToAdmin(collaboratorData.id, collaboratorData.collaborator_name, collaboratorData.login, hash, collaboratorData.process_id, collaboratorData.work_time);
                         return 2;
 
                     } else {
-                        await CollaboratorRepository.updateCollaboratorNoPasswordChangeToAdmin(id, collaborator_name, login, process_id, work_time);
+                        await CollaboratorRepository.updateCollaboratorNoPasswordChangeToAdmin(collaboratorData.id, collaboratorData.collaborator_name, collaboratorData.login, collaboratorData.process_id, collaboratorData.work_time);
                         return 2;
                     }
                 }

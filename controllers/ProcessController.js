@@ -13,9 +13,16 @@ class ProcessController {
 
 
     async setCreate(req, res) {
-        var process = await ProcessService.setCreate(req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox)
+        var processData = {
+            process_name: req.body.processNameInput,
+            process_counter: req.body.process_counterInput,
+            process_counterCheck: req.body.process_counterCheckBox,
+            process_goal: req.body.processGoalInput,
+            process_goalCheck: req.body.processGoalCheckBox
+        }
 
-        if (process == 1) {
+        var result = await ProcessService.setCreate(processData)
+        if (result == 1) {
             renderCreate(req, res, 201);
         } else {
             renderCreate(req, res, 406);
@@ -24,9 +31,9 @@ class ProcessController {
 
 
     async setDelete(req, res) {
-        var process = await ProcessService.setDelete(req.params.id);
+        var result = await ProcessService.setDelete(req.params.id);
 
-        if (process == 1) {
+        if (result == 1) {
             renderIndex(req, res, 200);
         } else {
             renderIndex(req, res, 406);

@@ -13,8 +13,16 @@ class CollaboratorController {
 
 
     async setCreate(req, res) {
-        var collaborator = await CollaboratorService.setCreate(req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelectId, req.body.inputWorkTime)
-        if (collaborator == 1) {
+        var collaboratorData = {
+            collaborator_name: req.body.inputCollaborator,
+            login: req.body.inputLogin,
+            password: req.body.inputPassword,
+            process_id: req.body.processSelectId,
+            work_time: req.body.inputWorkTime
+        }
+
+        var result = await CollaboratorService.setCreate(collaboratorData);
+        if (result == 1) {
             renderCreate(req, res, 201);
         } else if (collaborator == 0) {
             renderCreate(req, res, 406);
@@ -35,21 +43,31 @@ class CollaboratorController {
         if (isNaN(id) || id == undefined) {
             res.redirect("/colaboradores");
         } else {
-            renderEdit(req.params.id, res, 200);
+            renderEdit(id, res, 200);
         }
     }
 
 
     async setUpdate(req, res) {
-        var collaborator = await CollaboratorService.setUpdate(req.params.id, req.body.inputCollaborator, req.body.inputLogin, req.body.inputPassword, req.body.processSelect, req.body.inputWorkTime, req.body.inputAdminOnOff);
-        if (collaborator == 1) {
-            renderEdit(req.params.id, res, 201);
-        } else if (collaborator == 0) {
-            renderEdit(req.params.id, res, 406);
-        } else if (collaborator == 2) {
-           res.redirect('/admin')
+        var collaboratorData = {
+            id: req.params.id,
+            collaborator_name: req.body.inputCollaborator,
+            login: req.body.inputLogin,
+            password: req.body.inputPassword,
+            process_id: req.body.processSelect,
+            work_time: req.body.inputWorkTime,
+            admin_on: req.body.inputAdminOnOff
+        }
+        
+        var result = await CollaboratorService.setUpdate(collaboratorData);
+        if (result == 1) {
+            renderEdit(collaboratorData.id, res, 201);
+        } else if (result == 0) {
+            renderEdit(collaboratorData.id, res, 406);
+        } else if (result == 2) {
+            res.redirect('/admin')
         } else {
-            renderEdit(req.params.id, res, 406);
+            renderEdit(collaboratorData.id, res, 406);
         }
     }
 

@@ -31,119 +31,119 @@ class CollectorService {
     }
 
     //Retorna os dados da pagina do coletor
-    async getIndex(req, res) {
-        //  try {
-        //Consulta com os dados para a view
-        var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);
-        var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.process_id, req.session.user.id);
-        var activities = await CollectorRepository.findActivityByProcessId(req.session.user.process_id);
-        var activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id)
-        var groups = await CollectorRepository.findGroups(req.session.user.process_id);
-        var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
-        var mainFunction;
+    async getIndex(req) {
+        try {
+            //Consulta com os dados para a view
+            var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);
+            var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.process_id, req.session.user.id);
+            var activities = await CollectorRepository.findActivityByProcessId(req.session.user.process_id);
+            var activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id)
+            var groups = await CollectorRepository.findGroups(req.session.user.process_id);
+            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
+            var mainFunction;
 
-        //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
-        if (activitiesAndChronometers[0] == null && idleTime == null) {
-            for await (var activity of activities) {
-                await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id, collaborator.process_id);
+            //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
+            if (activitiesAndChronometers[0] == null && idleTime == null) {
+                for await (var activity of activities) {
+                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, activity.id, collaborator.id, collaborator.process_id);
+                }
+                await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id, collaborator.process_id);
             }
-            await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, null, collaborator.id, collaborator.process_id);
-        }
 
-        //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
-        if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
-            var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id)
-            var newActivities = [];
+            //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
+            if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
+                var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id)
+                var newActivities = [];
 
-            //Verifica se possui algum ID diferente das atividades cadastradas no banco vs ID de cronometros ja criado
-            activities.forEach((first) => {
-                var find = activitiesAndChroIds.find((second) =>
-                    first.id == second.activity_id
-                )
-                if (!find) newActivities.push(first);
-            })
+                //Verifica se possui algum ID diferente das atividades cadastradas no banco vs ID de cronometros ja criado
+                activities.forEach((first) => {
+                    var find = activitiesAndChroIds.find((second) =>
+                        first.id == second.activity_id
+                    )
+                    if (!find) newActivities.push(first);
+                })
 
-            //Cria os cronometros no banco de dados
-            for await (var newActivity of newActivities) {
-                await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, newActivity.id, collaborator.id, collaborator.process_id);
+                //Cria os cronometros no banco de dados
+                for await (var newActivity of newActivities) {
+                    await CollectorRepository.createChronometer("00:00:00", collaborator.work_time, 0, newActivity.id, collaborator.id, collaborator.process_id);
+                }
             }
-        }
 
-        //Caso não possua contador da função principal, estara criando no BD e retornando para a view.
-        if (collaborator.process.process_counter != null && processAndCounter == null) {
-            await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id, collaborator.process.daily_goal);
-            processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.process.id, collaborator.id);
-            mainFunction = true;
-        } else if (processAndCounter) {
-            mainFunction = true;
-        } else {
-            mainFunction = false;
-        }
-        activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id); //atualiza a variavel que envia para a view
+            //Caso não possua contador da função principal, estara criando no BD e retornando para a view.
+            if (collaborator.process.process_counter != null && processAndCounter == null) {
+                await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id, collaborator.process.daily_goal);
+                processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.process.id, collaborator.id);
+                mainFunction = true;
+            } else if (processAndCounter) {
+                mainFunction = true;
+            } else {
+                mainFunction = false;
+            }
+            activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id); //atualiza a variavel que envia para a view
 
-        //Verifica se possui grupo de atividades criado
-        if (groups) {
-            var groupMainActivities = []; //Caso possua grupo, separa as atividades do grupo e armazena nesssas variaveis
-            var groupActivities = [];
+            //Verifica se possui grupo de atividades criado
+            if (groups) {
+                var groupMainActivities = []; //Caso possua grupo, separa as atividades do grupo e armazena nesssas variaveis
+                var groupActivities = [];
 
-            for await(var activity of activitiesAndChronometers){
-                var find = groups.find(a2 =>
-                    activity.group_id != null && a2.group.createdAt == activity.createdAt
-                )
-                if (find) {
-                    groupMainActivities.push(find)
+                for await (var activity of activitiesAndChronometers) {
+                    var find = groups.find(a2 =>
+                        activity.group_id != null && a2.group.createdAt == activity.createdAt
+                    )
+                    if (find) {
+                        groupMainActivities.push(find)
+                    };
+
+                    var find2 = groups.find(a2 =>
+                        activity.group_id != null && activity.createdAt != a2.group.createdAt
+                    )
+                    if (find2) {
+                        groupActivities.push(activity)
+                    };
+                }
+            }
+
+            //Cria no banco de dados um checkpoint com os dados da activity, colaborador, etc.
+            var check = await CollectorRepository.findCheckPointByCollaborator(req.session.user.id);
+            var checkPoint = null;
+            if (check != null) {
+                var activityCheckPoint = await CollectorRepository.findOneActivity(check.activity_id);
+                var timeSaved = await check.time;
+                var newUpdateAtTime = await check.updatedAt.slice(11, 20)
+                var newActualTime = await moment().format('DD/MM/YYYY HH:mm:ss').slice(11, 20)
+
+                var timeDiff = await getTimeDiff(newUpdateAtTime, newActualTime); //Pega a diferença de tempo
+                var timeFixed = await getFinalTime(timeDiff, timeSaved); //Soma a diferença de tempo com o tempo salvo no cronometro
+
+                checkPoint = {
+                    collaborator_id: check.collaborator_id,
+                    process_id: check.process_id,
+                    activity_id: check.activity_id,
+                    activity_name: activityCheckPoint.activity_name,
+                    group_id: check.group_id,
+                    timeFixed: timeFixed,
+                    timeDiff: timeDiff,
+                    counter: check.counter
                 };
-
-                var find2 = groups.find(a2 =>
-                    activity.group_id != null && activity.createdAt != a2.group.createdAt
-                )
-                if (find2) {
-                    groupActivities.push(activity)
-                };
+            } else {
+                checkPoint = null;
             }
+            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
+
+            return {
+                activitiesAndChronometers: activitiesAndChronometers,
+                idleTime: idleTime,
+                collaborator: collaborator,
+                processAndCounter: processAndCounter,
+                groupMainActivities: groupMainActivities,
+                groupActivities: groupActivities,
+                checkPoint: checkPoint,
+                mainFunction: mainFunction
+            }
+
+        } catch (error) {
+            return error;
         }
-
-        //Cria no banco de dados um checkpoint com os dados da activity, colaborador, etc.
-        var check = await CollectorRepository.findCheckPointByCollaborator(req.session.user.id);
-        var checkPoint = null;
-        if (check != null) {
-            var activityCheckPoint = await CollectorRepository.findOneActivity(check.activity_id);
-            var timeSaved = await check.time;
-            var newUpdateAtTime = await check.updatedAt.slice(11, 20)
-            var newActualTime = await moment().format('DD/MM/YYYY HH:mm:ss').slice(11, 20)
-
-            var timeDiff = await getTimeDiff(newUpdateAtTime, newActualTime); //Pega a diferença de tempo
-            var timeFixed = await getFinalTime(timeDiff, timeSaved); //Soma a diferença de tempo com o tempo salvo no cronometro
-
-            checkPoint = {
-                collaborator_id: check.collaborator_id,
-                process_id: check.process_id,
-                activity_id: check.activity_id,
-                activity_name: activityCheckPoint.activity_name,
-                group_id: check.group_id,
-                timeFixed: timeFixed,
-                timeDiff: timeDiff,
-                counter: check.counter
-            };
-        } else {
-            checkPoint = null;
-        }
-        var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
-
-        return {
-            activitiesAndChronometers: activitiesAndChronometers,
-            idleTime: idleTime,
-            collaborator: collaborator,
-            processAndCounter: processAndCounter,
-            groupMainActivities: groupMainActivities,
-            groupActivities: groupActivities,
-            checkPoint: checkPoint,
-            mainFunction: mainFunction
-        }
-        /* 
-                } catch (error) {
-                    return error;
-                } */
     }
 
 }

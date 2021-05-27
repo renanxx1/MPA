@@ -18,7 +18,7 @@ class LoginController {
 
     async authenticate(req, res) {
         return await
-            LoginService.authenticate(req, res);
+            LoginService.authenticate(req.body.login, req.body.password);
     }
 
 }

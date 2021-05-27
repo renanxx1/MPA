@@ -13,8 +13,15 @@ class ActivityController {
 
 
     async setCreate(req, res) {
-        var activity = await ActivityService.setCreate(req.body.activityNameInput, req.body.processSelect, req.body.agroupCheckBox, req.body.groupSelect);
-        if (activity == 1) {
+        var activityData = {
+            activity_name: req.body.activityNameInput,
+            process_id: req.body.processSelect,
+            agroup: req.body.agroupCheckBox,
+            group_name: req.body.groupSelect
+        }
+
+        var result = await ActivityService.setCreate(activityData);
+        if (result == 1) {
             renderCreate(req, res, 201);
         } else {
             renderCreate(req, res, 406);
@@ -23,8 +30,8 @@ class ActivityController {
 
 
     async setDelete(req, res) {
-        var activity = await ActivityService.setDelete(req.params.id);
-        if (activity == 1) {
+        var result = await ActivityService.setDelete(req.params.id);
+        if (result == 1) {
             renderIndex(req, res, 201);
         } else {
             renderIndex(req, res, 406);
@@ -37,19 +44,27 @@ class ActivityController {
         if (isNaN(id) || id == undefined) {
             res.redirect("/atividades");
         } else {
-            renderEdit(req.params.id, res, 200);
+            renderEdit(id, res, 200);
         }
     }
 
 
     async setUpdate(req, res) {
-        var activity = await ActivityService.setUpdate(req.body.activityNameInput, req.body.processSelect, req.body.agroupCheckBox, req.body.groupSelect, req.params.id);
-        if (activity == 1) {
-            renderEdit(req.params.id, res, 201);
+        var activityData = {
+            id: req.params.id,
+            activity_name: req.body.activityNameInput,
+            process_id: req.body.processSelect,
+            agroup: req.body.agroupCheckBox,
+            group_name: req.body.groupSelect,
+        }
+
+        var result = await ActivityService.setUpdate(activityData);
+        if (result == 1) {
+            renderEdit(activityData.id, res, 201);
         } else if (activity == 0) {
-            renderEdit(req.params.id, res, 406);
+            renderEdit(activityData.id, res, 406);
         } else {
-            renderEdit(req.params.id, res, 409);
+            renderEdit(activityData.id, res, 409);
         }
     }
 
