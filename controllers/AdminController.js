@@ -73,7 +73,7 @@ class AdminController {
 
 async function renderIndex(req, res, code) {
     var admins = await AdminService.getIndex();
-    res.status(code).render('admins/index', {
+    res.status(code).render('admins/AdminIndex', {
         statusCode: code,
         admins: admins
     })
@@ -81,7 +81,7 @@ async function renderIndex(req, res, code) {
 
 
 async function renderCreate(req, res, code) {
-    res.status(code).render('admins/create', {
+    res.status(code).render('admins/AdminCreate', {
         statusCode: code
     });
 
@@ -92,7 +92,7 @@ async function renderEdit(req, res, code) {
     var get = await AdminService.getUpdate(req);
     var admin = get.admin;
     var processes = get.processes;
-    res.status(code).render('admins/edit', {
+    res.status(code).render('admins/AdminEdit', {
         statusCode: code,
         admin: admin,
         processes: processes

@@ -74,7 +74,7 @@ class ProcessController {
 
 async function renderIndex(req, res, code) {
     var processes = await ProcessService.getIndex();
-    res.status(code).render('processes/index', {
+    res.status(code).render('processes/ProcessIndex', {
         processes: processes,
         statusCode: code
     });
@@ -82,7 +82,7 @@ async function renderIndex(req, res, code) {
 
 
 async function renderCreate(req, res, code) {
-    res.status(code).render('processes/create', {
+    res.status(code).render('processes/ProcessCreate', {
         statusCode: code
     });
 }
@@ -90,7 +90,7 @@ async function renderCreate(req, res, code) {
 
 async function renderEdit(id, res, code) {
     var process = await ProcessService.getUpdate(id);
-    res.status(code).render('processes/edit', {
+    res.status(code).render('processes/ProcessEdit', {
         process: process,
         statusCode: code
     });

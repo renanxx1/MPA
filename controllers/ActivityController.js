@@ -72,7 +72,7 @@ class ActivityController {
 
 async function renderIndex(req, res, code) {
     var activities = await ActivityService.getIndex();
-    res.status(code).render('activities/index', {
+    res.status(code).render('activities/ActivityIndex', {
         activities: activities,
         statusCode: code
     })
@@ -85,7 +85,7 @@ async function renderCreate(req, res, code) {
     var groups = get.groups;
     var activities = get.activities;
 
-    res.status(code).render('activities/create', {
+    res.status(code).render('activities/ActivityCreate', {
         statusCode: code,
         processes: processes,
         groups: groups,
@@ -100,7 +100,7 @@ async function renderEdit(req, res, code) {
     var groups = get.groups;
     var activities = get.activities;
 
-    res.status(code).render('activities/edit', {
+    res.status(code).render('activities/ActivityEdit', {
         statusCode: code,
         activity: activity,
         processes: processes,
