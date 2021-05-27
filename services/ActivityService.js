@@ -75,7 +75,7 @@ class ActivityService {
                     return 1;
 
                 } else {
-                    if (activity.group.activityData.group_name == ("G_" + activity.activity_name)) {
+                    if (activity.group.group_name == ("G_" + activity.activity_name)) {
                         var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
                         if (Object.keys(groupHasActivity).length == 1) {
                             await ActivityRepository.deleteActivityAndGroup(id, activity.group.id);
