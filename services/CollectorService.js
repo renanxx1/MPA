@@ -5,29 +5,47 @@ class CollectorService {
 
     //Atualiza um cronometro com os dados da atividade e colaboradaor
     async setChronometer(time, counter, activity_id, collaborator_id) {
-        await CollectorRepository.setChronometer(time, counter, activity_id, collaborator_id);
+        try {
+            await CollectorRepository.setChronometer(time, counter, activity_id, collaborator_id);
+        } catch (error) {
+            return error;
+        }
     }
 
 
     //Atualiza o countador do usuario
     async setCounter(counter, process_id, collaborator_id) {
-        await CollectorRepository.setCounter(counter, process_id, collaborator_id);
+        try {
+            await CollectorRepository.setCounter(counter, process_id, collaborator_id);
+        } catch (error) {
+            return error;
+        }
     }
 
     //Cria um checkpoint no sistema caso o usuario perca a conexao com uma atividade em execução
     async setCheckPoint(activity_id, collaborator_id) {
-        var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
-        var check = await CollectorRepository.findCheckPoint(chronometer.id);
+        try {
 
-        if (check == null || check == undefined) {
-            await CollectorRepository.createCheckPoint(chronometer.collaborator_id, chronometer.id, chronometer.process_id);
+            var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
+            var check = await CollectorRepository.findCheckPoint(chronometer.id);
+
+            if (check == null || check == undefined) {
+                await CollectorRepository.createCheckPoint(chronometer.collaborator_id, chronometer.id, chronometer.process_id);
+            }
+
+        } catch (error) {
+            return error;
         }
     }
 
     //Deleta o checkpoint criado
     async deleteCheckPoint(activity_id, collaborator_id) {
-        var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
-        await CollectorRepository.deleteCheckPoint(chronometer.id);
+        try {
+            var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
+            await CollectorRepository.deleteCheckPoint(chronometer.id);
+        } catch (error) {
+            return error;
+        }
     }
 
     //Retorna os dados da pagina do coletor

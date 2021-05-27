@@ -40,7 +40,7 @@ io.on("connection", async function (socket) {
 async function renderIndex(req, res) {
     var get = await CollectorService.getIndex(req);
     
-    res.render('collectors/index', {
+    res.render('collectors/CollectorIndex', {
         activitiesAndChronometers: get.activitiesAndChronometers,
         idleTime: get.idleTime,
         collaborator: get.collaborator,

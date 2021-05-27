@@ -85,7 +85,7 @@
                             <div class="card mb-4">
                                 <div id="processCounter" class="card-header mb-2" style="display: inline-block;">
                                     <i class="fas fa-chart-bar mr-1"></i>
-                                    <label class="mb-0" id="processCounterName">Contador</label>
+                                    <label class="mb-0" id="processCounterName">Contador Variavel</label>
                                     <img id="imgMax" class="float-right" src="../../assets/img/arrow.png" width="16px"
                                         style="margin-right: -1%;">
 
@@ -110,7 +110,8 @@
                                             class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
 
-                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
+                                    <ul id="filterList"
+                                        class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
                                     </ul>
                                 </div>
 
@@ -125,7 +126,6 @@
 
                         <div class="col-xl-12">
                             <div class="card mb-4">
-
                                 <div class="card-header mb-2">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     Tempo das Atividades
@@ -299,6 +299,12 @@
                 },
                 plugins: [ChartDataLabels],
                 options: {
+                    layout: {
+                        padding: {
+                            right: 6,
+                            top: 13
+                        },
+                    },
                     responsive: true,
                     plugins: {
                         legend: {
@@ -399,6 +405,27 @@
                 options: {
                     responsive: true,
                     plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    console.log(tooltipItem.dataset.label)
+                                    if (tooltipItem.datasetIndex == 1) {
+                                        return 'Meta: ' + tooltipItem.raw
+                                    } else {
+                                        return tooltipItem.dataset.label[tooltipItem.dataIndex] + ": " + tooltipItem.raw
+                                    }
+
+
+                                    /*     labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
+                                            8));
+                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex])
+                                    labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
+                                        8))
+                                    return labelOptions; */
+                                },
+                            },
+                        },
+
                         legend: {
                             display: false
                         },
@@ -513,7 +540,7 @@
                                 }
 
                                 if (context.dataIndex == 0 && totalNumberOfSeconds == 0) {
-                                 return null;
+                                    return null;
                                 }//caso nao tenha sido executado nenhuma atividade, retorna null
 
                                 res.push(totalNumberOfSeconds);
@@ -625,15 +652,19 @@
                     //CARREGANDO DADOS NO GRAFICO DE LINHAS - 2
                     if (data.process_counter[0] != null) {
                         var sum_counter = 0;
+                        myLineChart.data.datasets[0].label = [];
+                        var i = 0;
                         data.process_counter.forEach(element => {
                             myLineChart.data.labels.push(convertDate(element.createdAt));
                             myLineChart.data.datasets[0].data.push(element.counter);
                             myLineChart.data.datasets[1].data.push(element.daily_goal);
+                            myLineChart.data.datasets[0].label.push(data.process_counter[i].process_counter);
                             sum_counter = sum_counter + element.counter;
+                            i++;
                         })
 
-                        $('#processCounterName').html(data.process_counter[0].process_counter)
-                        $('#processCounterValue').html("Total " + data.process_counter[0].process_counter + " " + sum_counter)
+                        //  $('#processCounterName').html(data.process_counter[0].process_counter)
+                        $('#processCounterValue').html("Total Produzido" + " " + sum_counter)
 
                         myLineChart.update();
                     }
@@ -667,9 +698,9 @@
                             var productivity = ((res[0] / 2) / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                         }
-                        if(res[1]==undefined){ //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
-                            $('#productivityValue').html("Produtividade Total " + 0 + "%");
-                        }
+                        if (myPieChart.data.datasets[0].data[0] == 0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
+                                $('#productivityValue').html("Produtividade Total " + 0 + "%");
+                            } 
 
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
@@ -692,7 +723,12 @@
 
                             //Insere o valor da produtividade
                             var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
-                            $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+
+                            if (myPieChart.data.datasets[0].data[0] == 0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
+                                $('#productivityValue').html("Produtividade Total " + 0 + "%");
+                            } else {
+                                $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                            }
 
                         })
                     }
@@ -788,11 +824,13 @@
             //Caso o colaborador deslogue e o administrador esteja na pagina diaria, visualizando os dados, chama essa função atualizando os graficos
             socket.on('collaboratorOff', (data) => {
                 if (data.collaborator_id == '<%=collaborator.id%>') {
-                    for (var i = 0; i < myBarChart.data.labels.length; i++) {
-                        myBarChart.data.datasets[0].backgroundColor[i] = 'rgb(2,117,216,1)';
-                        myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgb(2,117,216,1)';
-                    }
-                    myBarChart.update()
+                    setTimeout(function () {
+                        for (var i = 0; i < myBarChart.data.labels.length; i++) {
+                            myBarChart.data.datasets[0].backgroundColor[i] = 'rgba(2,117,216,1)';
+                            myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgba(2,157,216,1)';
+                        }
+                        myBarChart.update()
+                    }, 1000)
                 }
             })
 

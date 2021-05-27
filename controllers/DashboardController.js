@@ -15,7 +15,7 @@ class DashboardController {
 
 async function renderIndex(req, res, code) {
     var collaborators = await DashboardService.getIndex();
-    res.status(code).render('dashboards/index', {
+    res.status(code).render('dashboards/DashboardIndex', {
         collaborators: collaborators,
         statusCode: code,
     });
@@ -25,7 +25,7 @@ async function renderIndex(req, res, code) {
 async function renderDashboard(req, res, code) {
     var get = await DashboardService.getIndexDashboard(req.params.process, req.params.id);
     if (get != null) {
-        res.status(code).render('dashboards/dashboardProcess', {
+        res.status(code).render('dashboards/DashboardCollaborator', {
             collaborator: get.collaborator,
             collaboratorProcessHistory: get.collaboratorProcessHistory,
             process: get.process,

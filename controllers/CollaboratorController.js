@@ -74,7 +74,7 @@ class CollaboratorController {
 
 async function renderIndex(req, res, code) {
     var collaborators = await CollaboratorService.getIndex();
-    res.status(code).render('collaborators/index', {
+    res.status(code).render('collaborators/CollaboratorIndex', {
         statusCode: code,
         collaborators: collaborators
     })
@@ -83,7 +83,7 @@ async function renderIndex(req, res, code) {
 
 async function renderCreate(req, res, code) {
     var processes = await CollaboratorService.getCreate();
-    res.status(code).render('collaborators/create', {
+    res.status(code).render('collaborators/CollaboratorCreate', {
         statusCode: code,
         processes: processes
     })
@@ -94,7 +94,7 @@ async function renderEdit(req, res, code) {
     var get = await CollaboratorService.getUpdate(req);
     var processes = get.processes;
     var collaborator = get.collaborator;
-    res.status(code).render('collaborators/edit', {
+    res.status(code).render('collaborators/CollaboratorEdit', {
         statusCode: code,
         collaborator: collaborator,
         processes: processes
