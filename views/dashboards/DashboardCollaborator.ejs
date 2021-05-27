@@ -794,11 +794,13 @@
             //Caso o colaborador deslogue e o administrador esteja na pagina diaria, visualizando os dados, chama essa função atualizando os graficos
             socket.on('collaboratorOff', (data) => {
                 if (data.collaborator_id == '<%=collaborator.id%>') {
+                 setTimeout(function(){
                     for (var i = 0; i < myBarChart.data.labels.length; i++) {
-                        myBarChart.data.datasets[0].backgroundColor[i] = 'rgb(2,117,216,1)';
-                        myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgb(2,117,216,1)';
+                        myBarChart.data.datasets[0].backgroundColor[i] = 'rgba(2,117,216,1)';
+                        myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgba(2,157,216,1)';
                     }
                     myBarChart.update()
+                 },1000)
                 }
             })
 
