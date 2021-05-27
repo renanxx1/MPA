@@ -21,7 +21,7 @@ class ProcessController {
             process_goalCheck: req.body.processGoalCheckBox
         }
 
-        var result = await ProcessService.setCreate(processData)
+        var result = await ProcessService.setCreate(processData);
         if (result == 1) {
             renderCreate(req, res, 201);
         } else {
