@@ -86,9 +86,9 @@ class CollaboratorService {
             if (admin == null && collaborator == null) {
 
                 if (changeToAdmin == 0) {
-                    if (password != '') {
+                    if (collaboratorData.password != '') {
                         var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(password, salt);
+                        var hash = bcrypt.hashSync(collaboratorData.password, salt);
 
                         await CollaboratorRepository.updateCollaboratorWithPassword(collaboratorData.id, collaboratorData.collaborator_name, collaboratorData.login, hash, collaboratorData.process_id, collaboratorData.work_time);
                         return 1;
@@ -99,7 +99,7 @@ class CollaboratorService {
                     }
 
                 } else {
-                    if (password != '') {
+                    if (collaboratorData.password != '') {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(collaboratorData.password, salt);
 
@@ -116,9 +116,9 @@ class CollaboratorService {
                 return -1;
             }
 
-        } catch (error) {
+         } catch (error) {
             return error;
-        }
+        }  
     }
 
 

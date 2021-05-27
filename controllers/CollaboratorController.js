@@ -66,9 +66,7 @@ class CollaboratorController {
             renderEdit(collaboratorData.id, res, 406);
         } else if (result == 2) {
             res.redirect('/admin')
-        } else {
-            renderEdit(collaboratorData.id, res, 406);
-        }
+        } 
     }
 
 }

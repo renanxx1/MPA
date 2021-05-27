@@ -24,7 +24,7 @@ class AdminService {
                 if (admin == undefined) {
                     var salt = bcrypt.genSaltSync(10);
                     var hash = bcrypt.hashSync(adminData.password, salt);
-                    await AdminRepository.createAdmin(adminData.admin_name, adminData.login, adminData.hash);
+                    await AdminRepository.createAdmin(adminData.admin_name, adminData.login, hash);
                     return 1;
                 } else {
                     return 0;
@@ -66,13 +66,13 @@ class AdminService {
     async setUpdate(adminData) {
 
         try {
-            var changeToCollaborator = admin_on % 2;
+            var changeToCollaborator = adminData.admin_on % 2;
             if (changeToCollaborator == 1) {
                 var checkCol = await AdminRepository.findOneCollaboratorLoginNotSameId(adminData.login, adminData.id);
                 var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(adminData.login, adminData.id);
 
                 if (checkAdm == null && checkCol == null) {
-                    if (password == "") {
+                    if (adminData.password == "") {
                         var res = await AdminRepository.updateAdminLoginChangeToCollaborator(adminData.admin_name, adminData.login, adminData.id, adminData.process_id, adminData.work_time);
                         if (res == 0) {
                             return 0;
@@ -81,8 +81,8 @@ class AdminService {
                         }
                     } else {
                         var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(password, salt);
-                        await AdminRepository.adminUpdatePasswordChangeToAdmin(admin_name, login, hash, id, process_id, work_time);
+                        var hash = bcrypt.hashSync(adminData.password, salt);
+                        await AdminRepository.adminUpdatePasswordChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
                         return 2;
 
                     }
@@ -92,18 +92,18 @@ class AdminService {
 
             } else {
 
-                var collaborator = await AdminRepository.findCollaboratorByLogin(login);
-                var admin = await AdminRepository.findOneAdminLoginNotSameId(login, id);
+                var collaborator = await AdminRepository.findCollaboratorByLogin(adminData.login);
+                var admin = await AdminRepository.findOneAdminLoginNotSameId(adminData.login, adminData.id);
 
                 if (collaborator == null && admin == null) {
-                    if (password == "") {
-                        await AdminRepository.updateAdminLogin(admin_name, login, id);
+                    if (adminData.password == "") {
+                        await AdminRepository.updateAdminLogin(adminData.admin_name, adminData.login, adminData.id);
                         return 1;
 
                     } else {
                         var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(password, salt);
-                        await AdminRepository.adminUpdatePassword(admin_name, login, hash, id);
+                        var hash = bcrypt.hashSync(adminData.password, salt);
+                        await AdminRepository.adminUpdatePassword(adminData.admin_name, adminData.login, hash, adminData.id);
                         return 1;
                     }
                 } else {

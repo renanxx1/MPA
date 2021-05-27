@@ -18,6 +18,7 @@ class AdminController {
             login: req.body.inputLogin,
             password: req.body.inputPassword
         }
+        
         var result = await AdminService.setCreate(adminData);
         if (result == 1) {
             renderCreate(req, res, 201);

@@ -75,7 +75,7 @@ class ActivityService {
                     return 1;
 
                 } else {
-                    if (activity.group.activityData.group_name == ("G_" + activity.activityData.activity_name)) {
+                    if (activity.group.activityData.group_name == ("G_" + activity.activity_name)) {
                         var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
                         if (Object.keys(groupHasActivity).length == 1) {
                             await ActivityRepository.deleteActivityAndGroup(id, activity.group.id);
@@ -98,7 +98,7 @@ class ActivityService {
                     return 1;
 
                 } else {
-                    if (activity.group.activityData.group_name == ("G_" + activity.activityData.activity_name)) {
+                    if (activity.group.activityData.group_name == ("G_" + activity.activity_name)) {
                         var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
                         if (Object.keys(groupHasActivity).length == 1) {
                             await ActivityRepository.updateActivityStatus(id);
@@ -135,55 +135,55 @@ class ActivityService {
     //Atualiza dados da atividade
     async setUpdate(activityData) {
         try {
-            var activity = await ActivityRepository.findOneIncludeAll(id);
-            var activityName = await ActivityRepository.findActivityByNameAndProcessAndId(activityData.activity_name, activityData.process_id, id);
+            var activity = await ActivityRepository.findOneIncludeAll(activityData.id);
+            var activityName = await ActivityRepository.findActivityByNameAndProcessAndId(activityData.activity_name, activityData.process_id, activityData.id);
             var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id);
 
             //VERIFICAÇÃO PRINCIPAL: NÃO PODE CADASTRAR ATIVIDADES COM NOMES IGUAIS OU VINCULAR A ATIVIDADE EM SI MESMA
             if (activityName == null && activityData.activity_name != activityData.group_name) {
 
                 if (activityData.agroup) {
-                    var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id)
+                    var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id);
 
                     //SE É UMA ATIVIDADE COMUM, QUE NAO PERTENCE A GRUPO
                     if (activitiesLinked == undefined) {
 
                         //SE O ALVO NAO TIVER UM GRUPO, CRIA UM GRUPO E VINCULA
                         if (activityGroup.group == null) {
-                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, id)
+                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id);
                             return 1;
                         } else {
                             //SE POSSUI UM GRUPO, APENAS VINCULA
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, id);
+                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
                             return 1;
                         }
 
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) { //SE FOR UMA ATIVIDADE PRINCIPAL DO GRUPO E NAO POSSUIR OUTRA ATIVIDADE VINCULADA
 
                         //SE O NOME DA ATIVIDADE SEJA DIFERENTE OU
-                        if (activityData.process_id == activity.activityData.process_id && activityData.activity_name != activity.activityData.activity_name || activityData.activity_name == activity.activityData.activity_name) {
+                        if (activityData.process_id == activity.process_id && activityData.activity_name != activity.activity_name || activityData.activity_name == activity.activity_name) {
 
                             //SE O GRUPO ALVO E NULL, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
                             if (activityGroup.group == null) {
                                 await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                                await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, id)
+                                await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
                                 return 1;
 
                                 //SE O GRUPO ATUAL E DIFERENTE DO GRUPO ALVO, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
                             } else if (activityGroup.group_id != activity.group_id && activityGroup.group != null) {
                                 await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                                await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, id);
+                                await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
                                 return 1;
 
                             } else {
-                                await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, id);
+                                await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
                                 return 1;
                             }
 
-                        } else if (activityData.process_id != activity.activityData.process_id) {
+                        } else if (activityData.process_id != activity.process_id) {
                             //SE O PROCESSO FOR DIFERENTE, ALTERA O PROCESSO
                             await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, null, id);
+                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, null, activityData.id);
                             return 1;
                             //  }
                         }
@@ -191,12 +191,12 @@ class ActivityService {
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
                         //CASO POSSUA MAIS DE UMA ATIVIDADE VINCULADA ENTRA NESSE ELSE IF
 
-                        if (activityData.process_id == activity.activityData.process_id && activityData.activity_name != activity.activityData.activity_name || activityData.activity_name == activity.activityData.activity_name && activity.group_id == activityGroup.group_id) {
-                            await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, id);
+                        if (activityData.process_id == activity.process_id && activityData.activity_name != activity.activity_name || activityData.activity_name == activity.activity_name && activity.group_id == activityGroup.group_id) {
+                            await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
                             return 1;
 
                             //SE POSSUI MAIS DE UMA ATIVIDADE, NAO É POSSIVEL ALTERAR O PROCESSO OU O GRUPO, PERMITE ALTERAR APENAS O NOME DA ATIVIDADE
-                        } else if (activity.group_id != activityGroup.group_id || activityData.process_id != activity.activityData.process_id) {
+                        } else if (activity.group_id != activityGroup.group_id || activityData.process_id != activity.process_id) {
                             return -1;
 
                         } else {
@@ -207,11 +207,11 @@ class ActivityService {
 
                         //CASO SEJA UMA ATIVIDADE NÃO PRINCIPAL DO GRUPO
                         if (activityGroup.group == null) {
-                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, id)
+                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
                             return 1;
 
                         } else {
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, id);
+                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
                             return 1;
                         }
 
@@ -220,23 +220,23 @@ class ActivityService {
                 } else if (!activityData.agroup) {
 
                     if (activitiesLinked == undefined) {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, id);
+                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
                         return 1;
 
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
                         await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, id);
+                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
                         return 1;
 
                     } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
                         return -1;
 
                     } else if (activity.createdAt != activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, id);
+                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
                         return 1;
 
                     } else {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, id);
+                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
                         return 1;
                     }
                 }

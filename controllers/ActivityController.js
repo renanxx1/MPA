@@ -61,7 +61,7 @@ class ActivityController {
         var result = await ActivityService.setUpdate(activityData);
         if (result == 1) {
             renderEdit(activityData.id, res, 201);
-        } else if (activity == 0) {
+        } else if (result == 0) {
             renderEdit(activityData.id, res, 406);
         } else {
             renderEdit(activityData.id, res, 409);
