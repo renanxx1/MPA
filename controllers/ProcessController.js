@@ -52,7 +52,16 @@ class ProcessController {
 
 
     async setUpdate(req, res) {
-        var process = await ProcessService.setUpdate(req.body.id, req.body.processNameInput, req.body.process_counterInput, req.body.process_counterCheckBox, req.body.processGoalInput, req.body.processGoalCheckBox);
+            var processData = {
+                id: req.body.id,
+                process_name: req.body.processNameInput,
+                process_counter: req.body.process_counterInput,
+                process_counterCheck: req.body.process_counterCheckBox,
+                process_goal: req.body.processGoalInput,
+                process_goalCheck: req.body.processGoalCheckBox
+        }
+
+        var process = await ProcessService.setUpdate(processData);
         if (process == 1) {
             renderEdit(req, res, req.params.id, 201);
         } else {
