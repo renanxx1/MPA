@@ -26,17 +26,17 @@ class ProcessService {
     }
 
     //Deleta um processo
-    async setDelete(processData) {
-        var processHasActivity = await ProcessRepository.findActivitiesInProcess(processData.id);
-        var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(processData.id);
-        var processHasActivityStatusFalse = await ProcessRepository.findActivitiesInProcessStatusFalse(processData.id);
+    async setDelete(id) {
+        var processHasActivity = await ProcessRepository.findActivitiesInProcess(id);
+        var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(id);
+        var processHasActivityStatusFalse = await ProcessRepository.findActivitiesInProcessStatusFalse(id);
 
         if (Object.keys(processHasActivity).length == 0 && processHasCollaborator == null && processHasActivityStatusFalse != null) {
-            await ProcessRepository.updateProcessStatus(processData.id);
+            await ProcessRepository.updateProcessStatus(id);
             return 1;
 
         } else if (Object.keys(processHasActivity).length == 0 && processHasCollaborator == null) {
-            await ProcessRepository.deleteProcess(processData.id);
+            await ProcessRepository.deleteProcess(id);
             return 1;
 
         } else {
