@@ -3,31 +3,45 @@ class DashboardService {
 
     //Retorna dados para a pagina principal do sistema que lista todos colaboradores.
     async getIndex() {
-        return await DashboardRepository.findAllCollaborators();
+        try {
+            return await DashboardRepository.findAllCollaborators();
+        } catch (error) {
+            return error;
+        }
     }
 
     //Retorna dados do cabeçalho para a pagina de dashboard colaborador
     async getIndexDashboard(process, collaborator_id) {
-        var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
-        var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
-        var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);
-        if (process_name != null && collaborator != null) {
-            return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory, process: process_name };
-        } else {
-            return null;
+        try {
+
+            var collaborator = await DashboardRepository.findCollaborator(collaborator_id);
+            var collaboratorProcessHistory = await DashboardRepository.findCollaboratorAndProcessHistory(process, collaborator_id);
+            var process_name = await DashboardRepository.findProcessByName(process, collaborator_id);
+            if (process_name != null && collaborator != null) {
+                return { collaborator: collaborator, collaboratorProcessHistory: collaboratorProcessHistory, process: process_name };
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            return error
         }
     }
 
     //Retorna dados de grafico para a pagina de dashboard colaborador
     async getDashboardData(collaborator_id, process_id, startDate, endDate) {
-        var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
-        var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);
-        var idleTime = await DashboardRepository.findIdleTime(collaborator_id, process_id, startDate, endDate);
+        try {
+            var chronometers = await DashboardRepository.findAllActivitiesAndChronometers(collaborator_id, process_id, startDate, endDate);
+            var process_counter = await DashboardRepository.findAllProcessAndCounter(collaborator_id, process_id, startDate, endDate);
+            var idleTime = await DashboardRepository.findIdleTime(collaborator_id, process_id, startDate, endDate);
 
-        if (chronometers[0] == null && process_counter[0] == null && idleTime[0] == null) {
-            return null;
-        } else {
-            return { chronometers: chronometers, idleTime: idleTime, process_counter: process_counter };
+            if (chronometers[0] == null && process_counter[0] == null && idleTime[0] == null) {
+                return null;
+            } else {
+                return { chronometers: chronometers, idleTime: idleTime, process_counter: process_counter };
+            }
+        } catch (error) {
+            return error;
         }
     }
 

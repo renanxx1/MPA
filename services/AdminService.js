@@ -118,19 +118,4 @@ class AdminService {
 }
 
 
-/* 
-    async createAdminInitialProfile() {
-        var admins = await AdminRepository.findAll();
-        if (admins == null) {
- 
-            var login = 'admin';
-            var password = 'admin';
- 
-            var salt = bcrypt.genSaltSync(10);
-            var hash = bcrypt.hashSync(password, salt);
-            await AdminRepository.createAdmin(login, hash);
-        }
-    } */
-
-
 module.exports = new AdminService();
