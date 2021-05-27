@@ -4,7 +4,7 @@ const LoginService = require('../services/LoginService');
 class LoginController {
 
     async login(req, res) {
-        res.render('/logins/LoginIndex', {
+        res.render('logins/LoginIndex', {
             internalIp: await internalIp
         })
     }
