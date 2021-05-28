@@ -408,24 +408,14 @@
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem, data) {
-                                    console.log(tooltipItem.dataset.label)
                                     if (tooltipItem.datasetIndex == 1) {
                                         return 'Meta: ' + tooltipItem.raw
                                     } else {
                                         return tooltipItem.dataset.label[tooltipItem.dataIndex] + ": " + tooltipItem.raw
                                     }
-
-
-                                    /*     labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
-                                            8));
-                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex])
-                                    labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
-                                        8))
-                                    return labelOptions; */
                                 },
                             },
                         },
-
                         legend: {
                             display: false
                         },
@@ -521,7 +511,6 @@
                             color: 'black',
                             formatter: function (value, context) {
                                 var totalNumberOfSeconds = value;
-
 
                                 if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
                                     totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
@@ -699,8 +688,14 @@
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                         }
                         if (myPieChart.data.datasets[0].data[0] == 0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
-                                $('#productivityValue').html("Produtividade Total " + 0 + "%");
-                            } 
+                            $('#productivityValue').html("Produtividade Total " + 0 + "%");
+                        }
+
+                        var grp = myLineChart.data.datasets[0].label.reduce((r, c, i, a) => {
+                            r[c] = [...r[c] || [], c]
+                            r[c] = (a[i + 1] != c && r[c].length == 1) ? r[c][0] : r[c]
+                            return r
+                        }, {})
 
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
@@ -710,6 +705,13 @@
 
                         //Botao de filtrar atividade no grafico de produtividade
                         $('.dropdown-menu li input').on('click', function (event) {
+
+                            var group = Object.values(grp);
+
+                            group.forEach(v => {
+                                console.log(v)
+                            })
+
                             var index = myBarChart.data.labels.indexOf($(this).val());
                             var value = myBarChart.data.datasets[0].data[index];
 
@@ -849,7 +851,7 @@
 
                 dataChart(0);
                 socket.on("chartDataIdle", (data) => {
-                    var idle_time = convertToTimeFormat(data.idleTime[0].total_time_idle)
+                    var idle_time = convertToTimeFormat(data.idleTime[0].total_time_idle);
 
                     if (index != -1) {
                         myBarChart.data.datasets[0].data.splice(index, 1);
@@ -912,9 +914,9 @@
 
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.71/vfs_fonts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+        <script src="/js/pdfmake.min.js"></script>
+        <script src="/js/vfs_fonts.js"></script>
+        <script src="/js/html2canvas.min.js"></script>
 
         <script>
 
@@ -985,9 +987,8 @@
         </script>
 
 
-        <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/excellentexport@3.4.3/dist/excellentexport.min.js"></script>
-        <script src="http://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+        <script type="text/javascript" src="/js/excellentexport.min.js"></script>
+        <script src="/js/require.js"></script>
 
 
         <script>
@@ -1047,19 +1048,18 @@
                         }
                         if (y == 11) {
                             if (x == 0) {
-                                td.appendChild(document.createTextNode(w_time[w_time.length - 2]));
+                                td.appendChild(document.createTextNode(w_time[0]));
                             }
                         }
                         if (y == 12) {
                             if (x == 0) {
-                                td.appendChild(document.createTextNode(d_time[d_time.length - 1]));
+                                td.appendChild(document.createTextNode(d_time[0]));
                             }
                         }
                         if (y == 13) {
                             if (x == 0)
-                                td.appendChild(document.createTextNode(((res[res.length - 2] / res[res.length - 1]) * 100).toFixed(3)));
+                                td.appendChild(document.createTextNode(((d_time[0] / w_time[0]) * 100).toFixed(3)));
                         }
-
                         tr.appendChild(td); // Subo o td pra linha.
                         y++;
                     }
