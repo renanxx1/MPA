@@ -50,14 +50,15 @@ class CollectorService {
 
     //Retorna os dados da pagina do coletor
     async getIndex(req) {
-        try {
+       try {
             //Consulta com os dados para a view
             var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);
-            var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.process_id, req.session.user.id);
+            var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.id, req.session.user.process_id);
             var activities = await CollectorRepository.findActivityByProcessId(req.session.user.process_id);
-            var activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id)
+            var activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id, req.session.user.process_id)
             var groups = await CollectorRepository.findGroups(req.session.user.process_id);
-            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
+            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id, req.session.user.process_id);
+
             var mainFunction;
 
             //Caso não possua cronometros ja criado nesse dia, efetua um forEach em todas atividades vinculadas a este colaborador e cria.
@@ -70,7 +71,7 @@ class CollectorService {
 
             //Caso tenha sido inserida uma nova atividade no sistema, atualiza na pagina / Deleções permanecem até o proximo dia
             if ((Object.keys(activities).length) != Object.keys(activitiesAndChronometers).length) {
-                var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id)
+                var activitiesAndChroIds = await CollectorRepository.findAllActivitiesAndChronometersOnlyId(req.session.user.id, req.session.user.process_id)
                 var newActivities = [];
 
                 //Verifica se possui algum ID diferente das atividades cadastradas no banco vs ID de cronometros ja criado
@@ -90,14 +91,14 @@ class CollectorService {
             //Caso não possua contador da função principal, estara criando no BD e retornando para a view.
             if (collaborator.process.process_counter != null && processAndCounter == null) {
                 await CollectorRepository.createCounter(0, collaborator.process.process_counter, collaborator.process.id, collaborator.id, collaborator.process.daily_goal);
-                processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.process.id, collaborator.id);
+                processAndCounter = await CollectorRepository.findProcessAndCounter(collaborator.id, collaborator.process.id);
                 mainFunction = true;
             } else if (processAndCounter) {
                 mainFunction = true;
             } else {
                 mainFunction = false;
             }
-            activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id); //atualiza a variavel que envia para a view
+            activitiesAndChronometers = await CollectorRepository.findAllActivitiesAndChronometers(req.session.user.id, req.session.user.process_id); //atualiza a variavel que envia para a view
 
             //Verifica se possui grupo de atividades criado
             if (groups) {
@@ -122,7 +123,7 @@ class CollectorService {
             }
 
             //Cria no banco de dados um checkpoint com os dados da activity, colaborador, etc.
-            var check = await CollectorRepository.findCheckPointByCollaborator(req.session.user.id);
+            var check = await CollectorRepository.findCheckPointByCollaborator(req.session.user.id, req.session.user.process_id);
             var checkPoint = null;
             if (check != null) {
                 var activityCheckPoint = await CollectorRepository.findOneActivity(check.activity_id);
@@ -146,7 +147,7 @@ class CollectorService {
             } else {
                 checkPoint = null;
             }
-            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id);
+            var idleTime = await CollectorRepository.findIdleTime(req.session.user.id, req.session.user.process_id);
 
             return {
                 activitiesAndChronometers: activitiesAndChronometers,
@@ -161,7 +162,7 @@ class CollectorService {
 
         } catch (error) {
             return error;
-        }
+        } 
     }
 
 }

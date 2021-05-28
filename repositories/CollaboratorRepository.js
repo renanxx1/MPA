@@ -165,6 +165,16 @@ class CollaboratorRepository {
             })
     }
 
+    async updateSessionCollaborator(collaborator_id) {
+        return await
+            Collaborator.update({
+                session_id: null
+            }, {
+                where: {
+                    id: collaborator_id
+                }
+            })
+    }
 
 
     async deleteCollaborator(id) {

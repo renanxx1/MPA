@@ -71,7 +71,7 @@ class CollectorRepository {
             })
     }
 
-    async findAllActivitiesAndChronometers(collaborator_id) {
+    async findAllActivitiesAndChronometers(collaborator_id, process_id) {
         return await
             Activity.findAll({
                 include: [{
@@ -79,6 +79,7 @@ class CollectorRepository {
                     where: {
                         [Op.and]: [{
                             collaborator_id: collaborator_id,
+                            process_id: process_id,
                             createdAt: moment().format('YYYY-MM-DD'),
                         }],
                     }
@@ -86,7 +87,7 @@ class CollectorRepository {
             })
     }
 
-    async findIdleTime(collaborator_id) {
+    async findIdleTime(collaborator_id, process_id) {
         return await
             Activity_Chronometer.findOne({
                 raw: true,
@@ -95,6 +96,7 @@ class CollectorRepository {
                     [Op.and]: [{
                         activity_id: null,
                         collaborator_id: collaborator_id,
+                        process_id: process_id,
                         createdAt: moment().format('YYYY-MM-DD'),
                     }],
                 }
@@ -104,8 +106,6 @@ class CollectorRepository {
     async findGroups(process_id) {
         return await
             Activity.findAll({
-            /*     raw: true,
-                nest: true, */
                 include: [{
                     model: Group
                 }],
@@ -120,7 +120,7 @@ class CollectorRepository {
             })
     }
 
-    async findAllActivitiesAndChronometersOnlyId(collaborator_id) {
+    async findAllActivitiesAndChronometersOnlyId(collaborator_id, process_id) {
         return await
             Activity_Chronometer.findAll({
                 attributes: ['activity_id'],
@@ -128,6 +128,7 @@ class CollectorRepository {
                 where: {
                     [Op.and]: [{
                         collaborator_id: collaborator_id,
+                        process_id: process_id,
                         createdAt: moment().format('YYYY-MM-DD'),
                         activity_id: {
                             [Op.not]: null
@@ -205,7 +206,7 @@ class CollectorRepository {
     }
 
 
-    async findProcessAndCounter(process_id, collaborator_id) {
+    async findProcessAndCounter(collaborator_id, process_id) {
         return await
             Process.findOne({
                 where: {
@@ -237,7 +238,7 @@ class CollectorRepository {
         return check;
     }
 
-    async findCheckPointByCollaborator(collaborator_id) {
+    async findCheckPointByCollaborator(collaborator_id, process_id) {
         return await
             Activity_Chronometer.findOne({
                 include: [{
@@ -245,6 +246,7 @@ class CollectorRepository {
                     where: {
                         [Op.and]: [{
                             collaborator_id: collaborator_id,
+                            process_id: process_id,
                             createdAt: moment().format('YYYY-MM-DD')
                         }]
                     }
