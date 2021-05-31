@@ -132,7 +132,16 @@ class DashboardRepository {
                     raw: true,
                     nest: true,
                 });
+    }
 
+    async findAndSumProcessCounter(collaborator_id, process_id, startDate, endDate) {
+        return await
+            sequelize.query('SELECT SUM(COUNTER) as total_counter, SUM(daily_goal) as total_daily_goal, process_counter FROM processes_counters WHERE collaborator_id = ? AND process_id = ? AND createdAt BETWEEN ? AND ? GROUP BY process_counter'
+                , {
+                    replacements: [collaborator_id, process_id, startDate, endDate], type: sequelize.QueryTypes.SELECT,
+                    raw: true,
+                    nest: true,
+                });
     }
 
     async findCollaborator(collaborator_id) {
