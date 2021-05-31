@@ -294,7 +294,6 @@
                         borderColor: "rgba(2,117,216,1)",
                         data: [],
                         data1: [],
-                        hoverBackgroundColor: []
                     }],
                 },
                 plugins: [ChartDataLabels],
@@ -768,8 +767,7 @@
                                 backColor.push('rgba(2,117,216,1)');
                                 hoverColor.push('rgba(2,157,216,1)');
                             }
-
-                            //Altera cor da barra que esta rodando
+                            //Altera cor de todas as barras
                             myBarChart.data.datasets[0].hoverBackgroundColor = hoverColor;
                             myBarChart.data.datasets[0].backgroundColor = backColor;
 
@@ -782,8 +780,8 @@
 
                             myBarChart.data.datasets[0].data1[index] = newDataChart.counter;
                             myBarChart.data.datasets[0].data[index] = seconds;
-                            myBarChart.data.datasets[0].backgroundColor[index] = 'rgb(70, 952, 0)';
-                            myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'lime';
+                            myBarChart.data.datasets[0].backgroundColor[index] = 'LawnGreen';
+                            myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'Lime';
 
                             myBarChart.update()
                             /*-----------------------------------------------------------------------------------------------------------*/
