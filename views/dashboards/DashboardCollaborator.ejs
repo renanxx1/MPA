@@ -316,7 +316,7 @@
                                     var labelOptions = [];
                                     labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
                                         8));
-                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex])
+                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex]);
                                     labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
                                         8))
                                     return labelOptions;
@@ -1074,7 +1074,7 @@
                     date = $('#btnDate').html()
                 }
 
-                $(this).attr('download', "Relatorio - " + '<%=process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date + '.xls');
+                $(this).attr('download', "Relatorio - " + '<%=process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date);
                 return ExcellentExport.excel(this, 'datatable', 'Relatório ' + '<%=collaborator.process.process_name%>');
 
             })
