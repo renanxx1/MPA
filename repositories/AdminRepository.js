@@ -16,7 +16,11 @@ class AdminRepository {
 
     async findAllProcesses() {
         return await
-            Process.findAll();
+            Process.findAll({
+                where:{
+                    status:true
+                }
+            });
     }
 
     async findOne(login, id) {
