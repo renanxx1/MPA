@@ -1,4 +1,5 @@
 <%- include ('../partials/header.ejs')%>
+    <link rel="stylesheet" href="/assets/css/shared/style2.css">
     <%- include ('../partials/navbar.ejs')%>
         <div id="layoutSidenav_content">
             <main>
@@ -11,29 +12,27 @@
                     </ol>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Cadastro de Administrador</h5>
+
                             <form action="/admin/criar" method="POST">
                                 <div class="form-group">
-                                    <label class="mt-3">Nome do Administrador</label><text
-                                    style="color: red;"> *</text>
-                                    <input type="login" class="form-control" name="inputAdministrator" placeholder="Digite o nome do administrador"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Login</label><text
-                                    style="color: red;"> *</text>
-                                    <input type="login" class="form-control" name="inputLogin" placeholder="Digite o login"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Senha</label><text
-                                    style="color: red;"> *</text>
+                                    <h5 class="card-title">Cadastro de Administrador</h5>
+
+                                    <label class="mt-1">Nome do Administrador</label><text style="color: red;"> *</text>
+                                    <input type="login" class="form-control" name="inputAdministrator"
+                                        placeholder="Digite o nome do administrador" required>
+
+                                    <label class='mt-3'>Login</label><text style="color: red;"> *</text>
+                                    <input type="login" class="form-control" name="inputLogin"
+                                        placeholder="Digite o login" required>
+
+                                    <label class="mt-3">Senha</label><text style="color: red;"> *</text>
                                     <input type="password" class="form-control" name="inputPassword"
                                         placeholder="Digite uma senha" required>
                                 </div>
-                                <button type="submit" class="btn btn-dark">Cadastrar</button>
+                                <button type="submit" class="btn btn-dark mt-1">Cadastrar</button>
                             </form>
 
+                            
                             <% if(statusCode==201){%>
                                 <div class="alert alert-success mt-3" role="alert">
                                     Cadastrado com sucesso!
@@ -44,16 +43,10 @@
                                             Erro: Login já cadastrado no sistema.
                                         </div>
                                         <% } %>
-                                       <!--      <% if(statusCode==409){%>
-                                                <div class="alert alert-danger mt-3" role="alert">
-                                                    Erro: Nome já cadastrado.
-                                                </div>
-                                                <% } %> -->
-
                         </div>
                     </div>
+                </div>
             </main>
-
             <%- include ('../partials/footer.ejs')%>
 
                 </html>
