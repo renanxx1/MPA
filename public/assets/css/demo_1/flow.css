@@ -112,12 +112,10 @@ body {
 }
 
 .logo {
-    flex: 1;
     font-family: "Courgette", cursive;
     font-size: 2.2rem;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.5);
-    margin: 0 2rem;
     transition: color 150ms;
     text-align: center;
     white-space: nowrap;
@@ -317,6 +315,7 @@ body {
     content: '...';
 }
 
+
 /*
 
 The following rule will only run if your browser supports CSS grid.
@@ -334,7 +333,6 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
     .masthead {
         display: grid;
-        grid-template-columns: auto 1fr auto;
         grid-column-gap: 2rem;
     }
 

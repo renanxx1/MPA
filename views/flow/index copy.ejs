@@ -1,0 +1,128 @@
+<%- include ('../partials/header.ejs')%>
+	<link rel="stylesheet" href="/assets/css/demo_1/flow.css">
+	<!-- Masthead -->
+	<header class="masthead">
+		<h1 class="logo mx-auto">FLUXO</h1>
+	</header>
+
+	<section class="board-info-bar">
+
+		<div class="board-controls">
+			<div class="board-search">
+				<input type="search" class="board-search-input" aria-label="Board Search">
+				<i class="fas fa-search search-icon" aria-hidden="true"></i>
+			</div>
+		</div>
+
+		<button class="menu-btn btn"><i class="fas fa-ellipsis-h menu-btn-icon" aria-hidden="true"></i>Show
+			Menu</button>
+	</section>
+
+	<section class="lists-container">
+
+		<div class="list">
+
+			<h3 class="list-title">Tasks to Do</h3>
+
+			<ul class="list-items" id="process">
+				<li>Complete mock-up for client website</li>
+				<li>Email mock-up to client for feedback</li>
+			</ul>
+
+			<button class="add-card-btn btn" onclick="addCard()" id="addBtn">Add a card</button>
+
+		</div> 
+
+ 		<div class="list">
+			<h3 class="list-title">Completed Tasks</h3>
+			<ul class="list-items">
+				<li>Clear email inbox</li>
+				<li>Finalise requirements for client web design</li>
+			</ul>
+			<button class="add-card-btn btn" id="">Add a card</button>
+		</div> 
+		<div class="list">
+			<h3 class="list-title">Topics/Concepts to Revise</h3>
+			<ul class="list-items">
+				<li>HTML Elements</li>
+			</ul>
+
+			<button class="add-card-btn btn">Add a card</button>
+
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Topics/Concepts to Learn</h3>
+			<ul class="list-items">
+				<li>HTML 5.2 New Features</li>
+				<li>Responsive Images (picture element, srcset/sizes etc.)</li>
+				<li>Serverless</li>
+			</ul>
+
+			<button class="add-card-btn btn">Add a card</button>
+
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Useful Websites for Learning</h3>
+			<ul class="list-items">
+				<li>Code Academy</li>
+				<li>CodePen</li>
+			</ul>
+
+			<button class="add-card-btn btn">Add a card</button>
+
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Web Dev YouTube Channels</h3>
+			<ul class="list-items">
+				<li>Adam Khoury</li>
+				<li>Brad Hussey</li>
+			</ul>
+
+			<button class="add-card-btn btn">Add a card</button>
+
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">CodePen Ideas</h3>
+			<ul class="list-items">
+				<li>Something cool with CSS Grid</li>
+				<li>Something cool with CSS Flexbox</li>
+			</ul>
+			<button class="add-card-btn btn">Add a card</button>
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Practise Website Ideas</h3>
+			<ul class="list-items">
+				<li>Airsoft/Paintballing Centre</li>
+				<li>Bar/Pub</li>
+			</ul>
+			<button class="add-card-btn btn">Add a card</button>
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">JavaScript Project Ideas</h3>
+			<ul class="list-items">
+				<li>Analog Clock</li>
+				<li>Basic Quiz</li>
+			</ul>
+
+			<button class="add-card-btn btn">Add a card</button>
+
+		</div> -->
+
+		<button class="add-list-btn btn">Add a list</button>
+
+	</section>
+
+	<script>
+		function addCard() {
+			$('#process').append('<li> aa</li>');
+		}
+
+	
+
+	</script>
