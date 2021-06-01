@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 var sharedsession = require("express-socket.io-session");
 
 var session = require("express-session")({
-    secret: "my-secret",
-    resave: false,
+    secret: "MPA-secret",
+    resave: true,
     saveUninitialized: false
 });
 
