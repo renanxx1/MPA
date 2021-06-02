@@ -24,7 +24,7 @@ class CollaboratorController {
         var result = await CollaboratorService.setCreate(collaboratorData);
         if (result == 1) {
             renderCreate(req, res, 201);
-        } else if (collaborator == 0) {
+        } else if (result == 0) {
             renderCreate(req, res, 406);
         } else {
             renderCreate(req, res, 409);
@@ -58,15 +58,15 @@ class CollaboratorController {
             work_time: req.body.inputWorkTime,
             admin_on: req.body.inputAdminOnOff
         }
-        
+
         var result = await CollaboratorService.setUpdate(collaboratorData);
         if (result == 1) {
             renderEdit(collaboratorData.id, res, 201);
-        } else if (result == 0) {
-            renderEdit(collaboratorData.id, res, 406);
         } else if (result == 2) {
             res.redirect('/admin')
-        } 
+        } else {
+            renderEdit(collaboratorData.id, res, 406);
+        }
     }
 
 }

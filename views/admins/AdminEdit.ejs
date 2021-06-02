@@ -14,28 +14,29 @@
                         <div class="card-body">
 
 
+
+                            <h5 class="card-title">Edição Administrador</h5>
+                            <div class="float-right" style="margin-top: -4%; ">
+                                <div class="mx-auto text-center">
+                                    <label>Colaborador</label>
+                                    <br>
+                                    <div class="btn-group btn-toggle">
+                                        <button class="btn btn-sm btn-default" data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Transformar este Administrador em Colaborador">SIM</button>
+                                        <button class="btn btn-sm btn-dark" data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Transformar este Administrador em Colaborador">NAO</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <form id="form" action="/admin/editar/<%=admin.id%>" method="POST">
+
                                 <input type="hidden" id="adminOnOff" name="inputAdminOnOff" value="0">
                                 <input type="hidden" id="processSelectId" name="processSelect" value="0">
                                 <input type="hidden" id="inputWorkTimeId" name="inputWorkTime" value="0">
                                 <div class="form-group">
-
-                                    <h5 class="card-title">Edição Administrador</h5>
-
-                                    <div class="float-right" style="margin-top: -4%; ">
-                                        <div class="mx-auto text-center">
-                                            <label>Colaborador</label>
-                                            <br>
-                                            <div class="btn-group btn-toggle">
-                                                <button class="btn btn-sm btn-default" data-toggle="tooltip"
-                                                    data-placement="bottom"
-                                                    title="Transformar este Administrador em Colaborador">SIM</button>
-                                                <button class="btn btn-sm btn-dark" data-toggle="tooltip"
-                                                    data-placement="bottom"
-                                                    title="Transformar este Administrador em Colaborador">NAO</button>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <label class="mt-1">Nome do Administrador</label><text style="color: red;"> *</text>
                                     <input type="login" class="form-control" name="inputAdministrator"
@@ -161,18 +162,15 @@
                 </script>
 
                 <script>
-
                     var count = 0;
                     $('.btn-toggle').click(function () {
                         count++;
                         $(this).find('.btn').toggleClass('btn-dark');
                         if (count % 2 == 1) {
-                            $('#modalAdmin').modal().show()
+                            $('#modalAdmin').modal().show();
                         }
                         $('#adminOnOff').val(count);
                     });
-
-
                     function sendForm(event, form) {
                         if (count % 2 == 1 && '<%=admin.collaborator_id%>' == '') {
                             event.preventDefault();
@@ -183,15 +181,10 @@
                             });
                         }
                     }
-
-
                     $("#form2").submit(function (event) {
                         event.preventDefault();
                         $('#processSelectId').val($('#modalSelect').val());
                         $('#inputWorkTimeId').val($('#modalWorkTime').val());
                         $('#form').submit();
                     });
-
-
-
                 </script>
