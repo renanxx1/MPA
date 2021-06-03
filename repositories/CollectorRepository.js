@@ -53,7 +53,6 @@ class CollectorRepository {
                 where: {
                     [Op.and]: [{
                         id: activity_id,
-                        status: true
                     }]
                 }
             })
