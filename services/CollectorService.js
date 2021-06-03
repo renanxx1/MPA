@@ -50,7 +50,7 @@ class CollectorService {
 
     //Retorna os dados da pagina do coletor
     async getIndex(req) {
-      /*  try { */
+       try {
             //Consulta com os dados para a view
             var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);
             var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.id, req.session.user.process_id);
@@ -160,9 +160,9 @@ class CollectorService {
                 mainFunction: mainFunction
             }
 
-    /*     } catch (error) {
+        } catch (error) {
             return error;
-        }  */
+        } 
     }
 
 }
