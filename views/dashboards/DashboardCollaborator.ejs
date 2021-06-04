@@ -599,8 +599,10 @@
 
                     //Caso tenha cronometro e não tenho process counter, oculta o grafico do process counter
                     if (data.chronometers[0] != null && data.process_counter[0] == null) {
+                        console.log('IF2')
                         $('#chart1').hide();
-                        $('#chart2').toggleClass('col-xl-12');
+                        $('#chart2').addClass('col-xl-12');
+
                         if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
                             var d1 = data.chronometers[0].min_date.split("-");
                             var d2 = data.chronometers[0].max_date.split("-");
