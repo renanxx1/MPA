@@ -73,8 +73,8 @@ class CollaboratorRepository {
 
 
     async updateCollaborator(id, collaborator_name, login, hash, process_id, work_time) {
-        if(hash != null){
-             await Collaborator.update({
+        if (hash != null) {
+            await Collaborator.update({
                 collaborator_name: collaborator_name,
                 login: login,
                 password: hash,
@@ -85,7 +85,7 @@ class CollaboratorRepository {
                     id: id
                 }
             });
-        }else{
+        } else {
             await Collaborator.update({
                 collaborator_name: collaborator_name,
                 login: login,
@@ -100,12 +100,31 @@ class CollaboratorRepository {
     }
 
     async updateCollaboratorChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time) {
-        if(hash!=null){
+        if (hash != null) {
             await
-            Collaborator.update({
+                Collaborator.update({
+                    collaborator_name: collaborator_name,
+                    login: login,
+                    password: hash,
+                    process_id: process_id,
+                    work_time: work_time,
+                    status: false
+                }, {
+                    where: {
+                        id: id
+                    }
+                });
+            await
+                Admin.create({
+                    admin_name: collaborator_name,
+                    login: login,
+                    password: hash,
+                    collaborator_id: id
+                })
+        } else {
+            await Collaborator.update({
                 collaborator_name: collaborator_name,
                 login: login,
-                password: hash,
                 process_id: process_id,
                 work_time: work_time,
                 status: false
@@ -114,34 +133,14 @@ class CollaboratorRepository {
                     id: id
                 }
             });
-        await
-            Admin.create({
-                admin_name: collaborator_name,
-                login: login,
-                password: hash,
-                collaborator_id: id
-            })
-        }else{
+            var collaborator = await Collaborator.findByPk(id);
             await
-            Collaborator.update({
-                collaborator_name: collaborator_name,
-                login: login,
-                password: hash,
-                process_id: process_id,
-                work_time: work_time,
-                status: false
-            }, {
-                where: {
-                    id: id
-                }
-            });
-        await
-            Admin.create({
-                admin_name: collaborator_name,
-                login: login,
-                password: hash,
-                collaborator_id: id
-            })
+                Admin.create({
+                    admin_name: collaborator_name,
+                    login: login,
+                    password: collaborator.password,
+                    collaborator_id: collaborator.id
+                })
         }
     }
 

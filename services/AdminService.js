@@ -84,7 +84,6 @@ class AdminService {
                         var hash = bcrypt.hashSync(adminData.password, salt);
                         await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
                         return 2;
-
                     }
                 } else {
                     return 0;
