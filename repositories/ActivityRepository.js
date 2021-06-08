@@ -67,7 +67,7 @@ class ActivityRepository {
     }
 
 
-    async findActivityByNameAndProcessAndId(activity_name, process_id, id) {
+    async findActivityNotSameId(activity_name, process_id, id) {
         return await
             Activity.findOne({
                 where: {
@@ -194,7 +194,7 @@ class ActivityRepository {
     };
 
 
-    async agroupableUpdateActivityAndCreateGroup(group_activity, activity_name, process_id) {
+    async createActivityAndGroup(group_activity, activity_name, process_id) {
         var hour = moment().format("YYYY-MM-DD HH:mm:ss");
         var getHour = hour.slice(0, 18);
         var sumSec = parseInt(hour.slice(18, 19)) + 2;
@@ -204,7 +204,7 @@ class ActivityRepository {
             Group.create({
                 group_name: groupPrefix + group_activity
             })
-        await Activity.update({
+     /*    await Activity.update({
             group_id: group.id,
             createdAt: hour
         }, {
@@ -215,7 +215,7 @@ class ActivityRepository {
                     status: true,
                 }]
             }
-        })
+        }) */
         await Activity.create({
             activity_name: activity_name,
             process_id: process_id,
@@ -227,7 +227,7 @@ class ActivityRepository {
     }
 
 
-    async agroupUpdateActivitiesAndCreateGroup(group_activity, activity_name, process_id, id) {
+    async updateActivityAndCreateGroup(group_activity, activity_name, process_id, id) {
         var hour = moment().format("YYYY-MM-DD HH:mm:ss");
         var getHour = hour.slice(0, 18);
         var sumSec = parseInt(hour.slice(18, 19)) + 2;
@@ -270,7 +270,7 @@ class ActivityRepository {
 
 
 
-    async agroupActivityAndCreate(group_id, activity_name, process_id) {
+    async createActivitySetGroup(group_id, activity_name, process_id) {
         return await
             Activity.create({
                 activity_name: activity_name,
@@ -281,7 +281,7 @@ class ActivityRepository {
     }
 
 
-    async agroupActivityUpdate(activity_name, process_id, group_id, id) {
+    async updateActivitySetGroup(activity_name, process_id, group_id, id) {
         return await
             Activity.update({
                 activity_name: activity_name,
