@@ -73,7 +73,7 @@ class AdminService {
 
                 if (checkAdm == null && checkCol == null) {
                     if (adminData.password == "") {
-                        var res = await AdminRepository.updateAdminLoginChangeToCollaborator(adminData.admin_name, adminData.login, adminData.id, adminData.process_id, adminData.work_time);
+                        var res = await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, null, adminData.id, adminData.process_id, adminData.work_time);
                         if (res == 0) {
                             return 0;
                         } else {
@@ -82,7 +82,7 @@ class AdminService {
                     } else {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(adminData.password, salt);
-                        await AdminRepository.adminUpdatePasswordChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
+                        await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
                         return 2;
 
                     }
@@ -97,13 +97,13 @@ class AdminService {
 
                 if (collaborator == null && admin == null) {
                     if (adminData.password == "") {
-                        await AdminRepository.updateAdminLogin(adminData.admin_name, adminData.login, adminData.id);
+                        await AdminRepository.adminUpdate(adminData.admin_name, adminData.login, null ,adminData.id);
                         return 1;
 
                     } else {
                         var salt = bcrypt.genSaltSync(10);
                         var hash = bcrypt.hashSync(adminData.password, salt);
-                        await AdminRepository.adminUpdatePassword(adminData.admin_name, adminData.login, hash, adminData.id);
+                        await AdminRepository.adminUpdate(adminData.admin_name, adminData.login, hash, adminData.id);
                         return 1;
                     }
                 } else {

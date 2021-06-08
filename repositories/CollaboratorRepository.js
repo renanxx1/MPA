@@ -93,35 +93,36 @@ class CollaboratorRepository {
             Collaborator.findByPk(id);
     }
 
-    async updateCollaboratorNoPassword(id, collaborator_name, login, process_id, work_time) {
-        return await Collaborator.update({
-            collaborator_name: collaborator_name,
-            login: login,
-            process_id: process_id,
-            work_time: work_time
-        }, {
-            where: {
-                id: id
-            }
-        });
+    async updateCollaborator(id, collaborator_name, login, hash, process_id, work_time) {
+        if(hash != null){
+             await Collaborator.update({
+                collaborator_name: collaborator_name,
+                login: login,
+                password: hash,
+                process_id: process_id,
+                work_time: work_time
+            }, {
+                where: {
+                    id: id
+                }
+            });
+        }else{
+            await Collaborator.update({
+                collaborator_name: collaborator_name,
+                login: login,
+                process_id: process_id,
+                work_time: work_time
+            }, {
+                where: {
+                    id: id
+                }
+            });
+        }
     }
 
-    async updateCollaboratorWithPassword(id, collaborator_name, login, hash, process_id, work_time) {
-        return await Collaborator.update({
-            collaborator_name: collaborator_name,
-            login: login,
-            password: hash,
-            process_id: process_id,
-            work_time: work_time
-        }, {
-            where: {
-                id: id
-            }
-        });
-    }
-
-    async updateCollaboratorWithPasswordChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time) {
-        await
+    async updateCollaboratorChangeToAdmin(id, collaborator_name, login, hash, process_id, work_time) {
+        if(hash!=null){
+            await
             Collaborator.update({
                 collaborator_name: collaborator_name,
                 login: login,
@@ -141,28 +142,28 @@ class CollaboratorRepository {
                 password: hash,
                 collaborator_id: id
             })
-    }
-
-    async updateCollaboratorNoPasswordChangeToAdmin(id, collaborator_name, login, process_id, work_time) {
-        await Collaborator.update({
-            collaborator_name: collaborator_name,
-            login: login,
-            process_id: process_id,
-            work_time: work_time,
-            status: false
-        }, {
-            where: {
-                id: id
-            }
-        });
-        var collaborator = await Collaborator.findByPk(id);
+        }else{
+            await
+            Collaborator.update({
+                collaborator_name: collaborator_name,
+                login: login,
+                password: hash,
+                process_id: process_id,
+                work_time: work_time,
+                status: false
+            }, {
+                where: {
+                    id: id
+                }
+            });
         await
             Admin.create({
                 admin_name: collaborator_name,
                 login: login,
-                password: collaborator.password,
-                collaborator_id: collaborator.id
+                password: hash,
+                collaborator_id: id
             })
+        }
     }
 
     async updateSessionCollaborator(collaborator_id) {

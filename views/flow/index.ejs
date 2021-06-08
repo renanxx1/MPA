@@ -120,21 +120,21 @@
   var newList = `
   <div class="jobs-list">
       <div class=" column__title--wrapper">
-        <h2 class="jobs-list-heading">Re-work</h2>
+        <h2 class="jobs-list-heading">In Progress</h2>
         <i class="fas fa-ellipsis-h"></i>
-        </div>
-      <div class="jobs-list-body" id="rework">
+      </div>
+      <div class="jobs-list-body" id="in-progress">
         <ul class="list-items" id="rework-jobs-list">
           <li>
-            <div class="item job-block" id="rework-job-test">
+            <div class="item job-block" id="in-progress-test">
               <div class="item job-name-block">
-                <div class="item job-name">Business Cards</div>
+                <div class="item job-name">Corporate Logo</div>
                 <div class="item job-edit"><img class="edit-job-icon"
                     src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
               </div>
               <div class="item job-info-block">
-                <div class="job-date">26 Jun</div>
-                <div class="item user-email">rework@es.com</div>
+                <div class="job-date">21 Apr</div>
+                <div class="item user-email">test@gmail.com</div>
               </div>
             </div>
           </li>
@@ -162,7 +162,7 @@
   });
 
   $('#process-borda-list').sortable({
-    connectWith: ["#process-borda-list", "#process-corte-list"],
+    connectWith: ["#process-borda-list", "#process-corte-list", "rework-jobs-list"],
     over: function (event, ui) { //triggered when sortable element hovers sortable list
       $('#in-progress').css('background-color', 'rgba(0,0,0,.1)')
     },
@@ -184,7 +184,7 @@
   });
 
   $('#process-corte-list').sortable({
-    connectWith: ["#process-borda-list", "#process-corte-list"],
+    connectWith: ["#process-borda-list", "#process-corte-list", "rework-jobs-list"],
     over: function (event, ui) { //triggered when sortable element hovers sortable list
       $('#in-progress').css('background-color', 'rgba(0,0,0,.1)')
     },
@@ -204,6 +204,36 @@
       $('#' + elementId).css('transform', 'rotate(0deg)');
     }
   });
+
+
+  $("ul").on("click", function(){
+    alert($(this).text());
+});
+
+
+   
+    $('#rework-jobs-list').sortable({
+    connectWith: ["#process-borda-list", "#process-corte-list", "rework-jobs-list"],
+    over: function (event, ui) { //triggered when sortable element hovers sortable list
+      $('#in-progress').css('background-color', 'rgba(0,0,0,.1)')
+    },
+    out: function (event, ui) { //event is triggered when a sortable item is moved away from a sortable list.
+      $('#in-progress').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    receive: function (event, ui) { // event is triggered when an item from a connected sortable list has been dropped into another list
+      $('#in-progress').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    revert: 100,
+    start: function (event, ui) { //event is triggered when sorting starts.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(4deg)');
+    },
+    stop: function (event, ui) { //event is triggered when sorting has stopped.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(0deg)');
+    }
+  });
+
 
   /*
     $(function () {
