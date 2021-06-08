@@ -27,7 +27,7 @@ class CollaboratorRepository {
         });
     }
 
-    async findOneByLoginOrName(collaborator_name, login) {
+    async findOneByLoginOrName(login) {
         return await Collaborator.findOne({
             where: {
                 [Op.and]: [{
@@ -45,15 +45,6 @@ class CollaboratorRepository {
         })
     }
 
-    async findAdminByLogin(login) {
-        return await Admin.findOne({
-            where: {
-                [Op.and]: [{
-                    login: login,
-                }]
-            }
-        })
-    }
 
     async createCollaborator(collaborator_name, login, hash, process, work_time) {
         return await Collaborator.create({
@@ -68,14 +59,6 @@ class CollaboratorRepository {
 
 
 
-    async findOneByName(collaborator_name) {
-        return await Collaborator.findOne({
-            where: {
-                collaborator_name: collaborator_name,
-            }
-        })
-    }
-
     async findOneByNameOrLoginNotSameId(login, id) {
         return await
             Collaborator.findOne({
@@ -88,10 +71,6 @@ class CollaboratorRepository {
             })
     }
 
-    async findCollaboratorByPk(id) {
-        return await
-            Collaborator.findByPk(id);
-    }
 
     async updateCollaborator(id, collaborator_name, login, hash, process_id, work_time) {
         if(hash != null){

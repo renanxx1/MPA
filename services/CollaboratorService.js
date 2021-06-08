@@ -30,7 +30,7 @@ class CollaboratorService {
         try {
             var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.login);
             if (admin == null) {
-                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaboratorData.collaborator_name, collaboratorData.login);
+                var collaborator = await CollaboratorRepository.findOneByLoginOrName(collaboratorData.login);
                 if (collaborator == undefined) {
                     var salt = bcrypt.genSaltSync(10);
                     var hash = bcrypt.hashSync(collaboratorData.password, salt);
@@ -79,7 +79,7 @@ class CollaboratorService {
     //Atualiza dados do colaborador
     async setUpdate(collaboratorData) {
         try {
-            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.login, collaboratorData.id);
+            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.id);
             var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(collaboratorData.login, collaboratorData.id);
             var changeToAdmin = collaboratorData.admin_on % 2;
 
