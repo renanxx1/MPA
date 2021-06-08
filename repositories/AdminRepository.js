@@ -23,18 +23,6 @@ class AdminRepository {
             });
     }
 
-    async findOne(login, id) {
-        return await
-            Admin.findOneByNameOrLoginNotSameId({
-                where: {
-                    [Op.and]: [{
-                        login: login,
-                        id: { [Op.not]: id },
-                    }],
-                }
-            })
-    }
-
 
     async findAdminByLogin(login) {
         return await
