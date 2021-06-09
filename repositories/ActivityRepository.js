@@ -36,7 +36,7 @@ class ActivityRepository {
 
 
     async findActivityGroupByName(activity_name, process_id) {
-        return await
+           return await
             Activity.findOne({
                 include: [{
                     all: true,
@@ -67,7 +67,7 @@ class ActivityRepository {
     }
 
 
-    async findActivityByNameAndProcessAndId(activity_name, process_id, id) {
+    async findActivityNotSameId(activity_name, process_id, id) {
         return await
             Activity.findOne({
                 where: {
@@ -145,20 +145,6 @@ class ActivityRepository {
             })
     }
 
-    async findByNameAndFilterByIdProcess(activity_name, process_id, id) {
-        return await
-            Activity.findOne({
-                where: {
-                    id: { [Op.ne]: id },
-                    [Op.and]: [{
-                        activity_name: activity_name,
-                        status: true,
-                        process_id: process_id
-                    }],
-                }
-            });
-    }
-
 
     async createActivity(activity_name, group_id, process_id) {
         return await
@@ -194,7 +180,7 @@ class ActivityRepository {
     };
 
 
-    async agroupableUpdateActivityAndCreateGroup(group_activity, activity_name, process_id) {
+    async createActivityAndGroup(group_activity, activity_name, process_id) {
         var hour = moment().format("YYYY-MM-DD HH:mm:ss");
         var getHour = hour.slice(0, 18);
         var sumSec = parseInt(hour.slice(18, 19)) + 2;
@@ -204,18 +190,18 @@ class ActivityRepository {
             Group.create({
                 group_name: groupPrefix + group_activity
             })
-        await Activity.update({
-            group_id: group.id,
-            createdAt: hour
-        }, {
-            where: {
-                [Op.and]: [{
-                    activity_name: group_activity,
-                    process_id: process_id,
-                    status: true,
-                }]
-            }
-        })
+        /*    await Activity.update({
+               group_id: group.id,
+               createdAt: hour
+           }, {
+               where: {
+                   [Op.and]: [{
+                       activity_name: group_activity,
+                       process_id: process_id,
+                       status: true,
+                   }]
+               }
+           }) */
         await Activity.create({
             activity_name: activity_name,
             process_id: process_id,
@@ -227,7 +213,7 @@ class ActivityRepository {
     }
 
 
-    async agroupUpdateActivitiesAndCreateGroup(group_activity, activity_name, process_id, id) {
+    async updateActivityAndCreateGroup(group_activity, activity_name, process_id, id) {
         var hour = moment().format("YYYY-MM-DD HH:mm:ss");
         var getHour = hour.slice(0, 18);
         var sumSec = parseInt(hour.slice(18, 19)) + 2;
@@ -270,7 +256,7 @@ class ActivityRepository {
 
 
 
-    async agroupActivityAndCreate(group_id, activity_name, process_id) {
+    async createActivitySetGroup(group_id, activity_name, process_id) {
         return await
             Activity.create({
                 activity_name: activity_name,
@@ -281,7 +267,7 @@ class ActivityRepository {
     }
 
 
-    async agroupActivityUpdate(activity_name, process_id, group_id, id) {
+    async updateActivity(activity_name, group_id, process_id,  id) {
         return await
             Activity.update({
                 activity_name: activity_name,
@@ -297,7 +283,7 @@ class ActivityRepository {
             })
     }
 
-    async agroupUpdateActivityAndGroup(activity_name, process_id, group_id, id) {
+    async updateActivityAndGroup(activity_name, process_id, group_id, id) {
         await
             Activity.update({
                 activity_name: activity_name,
@@ -305,7 +291,8 @@ class ActivityRepository {
                 where: {
                     [Op.and]: [{
                         id: id,
-                        status: true
+                        status: true,
+                        process_id: process_id
                     }]
                 }
             })
@@ -319,66 +306,7 @@ class ActivityRepository {
     }
 
 
-    async agroupUpdateActivityProcessAndGroup(activity_name, process_id, group_id, id) {
-        await
-            Activity.update({
-                activity_name: activity_name,
-                process_id: process_id,
-                group_id: group_id
-            }, {
-                where: {
-                    [Op.and]: [{
-                        id: id,
-                        status: true
-                    }]
-                }
-            })
-        await Group.update({
-            group_name: groupPrefix + activity_name
-        }, {
-            where: {
-                id: group_id
-            }
-        })
-    }
-
-    async agroupDestroyGroupAndUpdateActivity(activity_name, process_id, group_id, group, id) {
-        await
-            Group.destroy({
-                where: {
-                    id: group_id
-                }
-            })
-        await
-            Activity.update({
-                activity_name: activity_name,
-                process_id: process_id,
-                group_id: group
-            }, {
-                where: {
-                    id: id
-                }
-            })
-        return true;
-    }
-
-    async noCheckActivityUpdateGroupNull(activity_name, groupNull, process_id, id) {
-        return await
-            Activity.update({
-                activity_name: activity_name,
-                process_id: process_id,
-                group_id: groupNull
-            }, {
-                where: {
-                    [Op.and]: [{
-                        id: id,
-                        status: true
-                    }]
-                }
-            })
-    }
-
-    async noCheckGroupDelete(group_id) {
+    async deleteGroup(group_id) {
         return await
             Group.destroy({
                 where: {
@@ -396,19 +324,6 @@ class ActivityRepository {
             })
     }
 
-
-    async updateActivityAndDeleteGroup(id, group_id) {
-        Activity.update({
-            status: false,
-        }, {
-            where: { id: id }
-        })
-        await Group.destroy({
-            where: {
-                id: group_id
-            }
-        })
-    }
 }
 
 module.exports = new ActivityRepository();

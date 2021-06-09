@@ -19,7 +19,11 @@ class ActivityService {
             var processes = await ActivityRepository.findAllProcesses();
             var activities = await ActivityRepository.findAll();
             var groups = await ActivityRepository.findGroupAndActivity();
-            return { processes: processes, groups: groups, activities: activities }
+            return {
+                processes: processes,
+                groups: groups,
+                activities: activities
+            }
 
         } catch (error) {
             return error;
@@ -30,31 +34,31 @@ class ActivityService {
     async setCreate(activityData) {
         try {
             var activityName = await ActivityRepository.findActivityByNameAndProcess(activityData.activity_name, activityData.process_id);
-            if (activityName == null) {
+            if (activityName == null) { //caso o nome da atividade ja nao esteja cadastrado
 
-                if (activityData.agroup) {
-                    var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id)
-                    var group = await ActivityRepository.findGroupByName(activityData.group_name);
+                if (activityData.group_name) { //Caso o usuario envie uma atividade para vincular
+                    var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id); //traz os dados dessa atividade
+                    var group = await ActivityRepository.findGroupByName(activityData.group_name); //verifica se essa atividade ja possui grupo
 
-                    if (group == null && !activityGroup.group) {
-                        await ActivityRepository.agroupableUpdateActivityAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id);
+                    if (group == null && !activityGroup.group) { //cria uma atividade e um grupo
+                        await ActivityRepository.createActivityAndGroup(activityData.group_name, activityData.activity_name, activityData.process_id);
                         return 1;
 
-                    } else if (group == null && activityGroup.group.id) {
-                        await ActivityRepository.agroupActivityAndCreate(activityGroup.group.id, activityData.activity_name, activityData.process_id);
+                    } else if (group == null && activityGroup.group.id) { //cria uma atividade e vincula a um grupo
+                        await ActivityRepository.createActivitySetGroup(activityGroup.group.id, activityData.activity_name, activityData.process_id);
                         return 1;
 
-                    } else {
-                        await ActivityRepository.agroupActivityAndCreate(activityGroup.group.id, activityData.activity_name, activityData.process_id);
+                    } else { //cria uma atividade e vincula a um grupo
+                        await ActivityRepository.createActivitySetGroup(activityGroup.group.id, activityData.activity_name, activityData.process_id);
                         return 1;
                     }
 
-                } else {
+                } else { //caso o usuario nao envie uma atividade para vincular, apenas cria a atividade
                     await ActivityRepository.createActivity(activityData.activity_name, null, activityData.process_id);
                     return 1;
                 }
 
-            } else {
+            } else { //caso o nome da atividade ja esteja cadastrado
                 return 0;
             }
 
@@ -66,48 +70,48 @@ class ActivityService {
     //Deleta uma atividade
     async setDelete(id) {
         try {
-            var chronometerHasActivity = await ActivityRepository.findChronometer(id);
-            if (chronometerHasActivity == null) {
+            var chronometerHasActivity = await ActivityRepository.findChronometer(id); //verifica se atividade ja teve cronometro criado
+            if (chronometerHasActivity == null) { //caso nao tenha
 
-                var activity = await ActivityRepository.findOneIncludeAll(id);
-                if (activity.group_id == null) {
-                    await ActivityRepository.deleteActivity(id);
+                var activity = await ActivityRepository.findOneIncludeAll(id); //localiza os dados da atividade
+                if (activity.group_id == null) { //verifica se a atividade esta vinculada a um grupo, caso nao esteja
+                    await ActivityRepository.deleteActivity(id); //deleta
                     return 1;
 
-                } else {
-                    if (activity.group.group_name == ("G_" + activity.activity_name)) {
-                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
-                        if (Object.keys(groupHasActivity).length == 1) {
-                            await ActivityRepository.deleteActivityAndGroup(id, activity.group.id);
+                } else { //caso esteja vinculada a um grupo
+                    if (activity.group.group_name == ("G_" + activity.activity_name)) { //verifica se a atividade é uma atividade principal
+                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id); //traz todas atividades que tbm estao nesse grupo
+                        if (Object.keys(groupHasActivity).length == 1) { //caso tenha apenas uma atividade
+                            await ActivityRepository.deleteActivityAndGroup(id, activity.group.id); //deleta
                             return 1;
 
-                        } else {
+                        } else { //caso tenha mais de uma ativadade, não deleta
                             return 0;
                         }
 
-                    } else {
-                        await ActivityRepository.deleteActivity(id);
+                    } else { //caso nao seja uma atividade principal
+                        await ActivityRepository.deleteActivity(id); //deleta
                         return 1;
                     }
                 }
 
-            } else {
-                var activity = await ActivityRepository.findOneIncludeAll(id);
-                if (activity.group_id == null) {
-                    await ActivityRepository.updateActivityStatus(id);
+            } else { //caso a atividade ja tenha um cronometro criado
+                var activity = await ActivityRepository.findOneIncludeAll(id); //localiza a atividade
+                if (activity.group_id == null) { //caso o id do grupo seja null
+                    await ActivityRepository.updateActivityStatus(id); //atualiza o status da atividade para desativado
                     return 1;
 
                 } else {
-                    if (activity.group.group_name == ("G_" + activity.activity_name)) {
-                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id);
-                        if (Object.keys(groupHasActivity).length == 1) {
-                            await ActivityRepository.updateActivityStatus(id);
+                    if (activity.group.group_name == ("G_" + activity.activity_name)) { //caso seja uma atividade principal
+                        var groupHasActivity = await ActivityRepository.findActivtyByGroupId(activity.group.id); //verifica se tem outras atividades no grupo
+                        if (Object.keys(groupHasActivity).length == 1) { //caso tenha apenas 1 atividade no grupo
+                            await ActivityRepository.updateActivityStatus(id); //atualiza o status da atividade para desativado
                             return 1;
                         } else {
                             return 0;
                         }
-                    } else {
-                        await ActivityRepository.updateActivityStatus(id);
+                    } else { //caso nao seja atividade principal
+                        await ActivityRepository.updateActivityStatus(id); //atualiza o status da atividade para desativado
                         return 1;
                     }
                 }
@@ -125,7 +129,12 @@ class ActivityService {
             var activity = await ActivityRepository.findOneIncludeAll(id);
             var activities = await ActivityRepository.findAll();
 
-            return { processes: processes, groups: groups, activity: activity, activities: activities }
+            return {
+                processes: processes,
+                groups: groups,
+                activity: activity,
+                activities: activities
+            }
 
         } catch (error) {
             return error;
@@ -135,120 +144,115 @@ class ActivityService {
     //Atualiza dados da atividade
     async setUpdate(activityData) {
         try {
-            var activity = await ActivityRepository.findOneIncludeAll(activityData.id);
-            var activityName = await ActivityRepository.findActivityByNameAndProcessAndId(activityData.activity_name, activityData.process_id, activityData.id);
-            var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id);
+            var activity = await ActivityRepository.findOneIncludeAll(activityData.id); //retorna os dados da atividade
+            var activityName = await ActivityRepository.findActivityNotSameId(activityData.activity_name, activityData.process_id, activityData.id); //verifica se tem uma atividade com esse nome
+            var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id); //verifica se essa atividade tem um grupo e possui atividades vinculada
+         
+            //VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
+            //não pode cadastrar atividades com nomes iguais ou vincular a atividade em si mesma
+            if (activityName != null || activityData.activity_name == activityData.group_name) {
+                return 0;
+            }
+            //FIM VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
 
-            //VERIFICAÇÃO PRINCIPAL: NÃO PODE CADASTRAR ATIVIDADES COM NOMES IGUAIS OU VINCULAR A ATIVIDADE EM SI MESMA
-            if (activityName == null && activityData.activity_name != activityData.group_name) {
+            //caso seja selecionado uma atividade para vincular
+            if (activityData.group_name != null && activity.group_id != null) {
+                var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id); //localiza a atividade do grupo
 
-                if (activityData.agroup) {
-                    var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id);
+                //VERIFICAÇÃO DE BLOQUEIOS
+                //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido alterar o processo
+                if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityData.process_id != activity.process_id) {
+                    return -1;
+                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido vincular em outra atividade
+                } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityGroup.group_id != activity.group_id) {
+                    return -1;
+                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido deixa-la sem grupo
+                } else if (activityData.group_name == null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length != 1) {
+                    return -1;
+                }
+                //FIM VERIFICAÇÃO DE BLOQUEIOS
+                //caso a atividade que esteja sendo editada ja possua um grupo e seja uma atividade principal e que nao tenha outras atividades vinculada
+                if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
 
-                    //SE É UMA ATIVIDADE COMUM, QUE NAO PERTENCE A GRUPO
-                    if (activitiesLinked == undefined) {
+                    //se a atividade alvo para criar o vinculo, ja possua um grupo, delete o grupo e vincula nesse outro grupo
+                    if (activityGroup.group_id != null) {
+                        await ActivityRepository.deleteGroup(activity.group_id);
+                        await ActivityRepository.updateActivity(activityData.activity_name, activityGroup.group_id, activityData.process_id, activityData.id);
+                        return 1;
 
-                        //SE O ALVO NAO TIVER UM GRUPO, CRIA UM GRUPO E VINCULA
-                        if (activityGroup.group == null) {
-                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id);
-                            return 1;
-                        } else {
-                            //SE POSSUI UM GRUPO, APENAS VINCULA
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
-                            return 1;
-                        }
-
-                    } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) { //SE FOR UMA ATIVIDADE PRINCIPAL DO GRUPO E NAO POSSUIR OUTRA ATIVIDADE VINCULADA
-
-                        //SE O NOME DA ATIVIDADE SEJA DIFERENTE OU
-                        if (activityData.process_id == activity.process_id && activityData.activity_name != activity.activity_name || activityData.activity_name == activity.activity_name) {
-
-                            //SE O GRUPO ALVO E NULL, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
-                            if (activityGroup.group == null) {
-                                await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                                await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
-                                return 1;
-
-                                //SE O GRUPO ATUAL E DIFERENTE DO GRUPO ALVO, DELETA O GRUPO ATUAL E VINCULA AO OUTRO
-                            } else if (activityGroup.group_id != activity.group_id && activityGroup.group != null) {
-                                await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                                await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
-                                return 1;
-
-                            } else {
-                                await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
-                                return 1;
-                            }
-
-                        } else if (activityData.process_id != activity.process_id) {
-                            //SE O PROCESSO FOR DIFERENTE, ALTERA O PROCESSO
-                            await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, null, activityData.id);
-                            return 1;
-                            //  }
-                        }
-
-                    } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        //CASO POSSUA MAIS DE UMA ATIVIDADE VINCULADA ENTRA NESSE ELSE IF
-
-                        if (activityData.process_id == activity.process_id && activityData.activity_name != activity.activity_name || activityData.activity_name == activity.activity_name && activity.group_id == activityGroup.group_id) {
-                            await ActivityRepository.agroupUpdateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
-                            return 1;
-
-                            //SE POSSUI MAIS DE UMA ATIVIDADE, NAO É POSSIVEL ALTERAR O PROCESSO OU O GRUPO, PERMITE ALTERAR APENAS O NOME DA ATIVIDADE
-                        } else if (activity.group_id != activityGroup.group_id || activityData.process_id != activity.process_id) {
-                            return -1;
-
-                        } else {
-                            return -1;
-                        }
-
-                    } else if (activity.createdAt != activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-
-                        //CASO SEJA UMA ATIVIDADE NÃO PRINCIPAL DO GRUPO
-                        if (activityGroup.group == null) {
-                            await ActivityRepository.agroupUpdateActivitiesAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
-                            return 1;
-
-                        } else {
-                            await ActivityRepository.agroupActivityUpdate(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
-                            return 1;
-                        }
-
+                        //caso o alvo nao tenha grupo, deleta e cria um grupo
+                    } else {
+                        await ActivityRepository.deleteGroup(activity.group_id);
+                        await ActivityRepository.updateActivityAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id);
+                        return 1;
                     }
 
-                } else if (!activityData.agroup) {
+                    //caso seja uma atividade principal e que tenha mais de 1 atividade vinculada a ela, só é permitido alterar o nome do atividade.
+                } else if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
+                    await ActivityRepository.updateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
+                    return 1;
 
-                    if (activitiesLinked == undefined) {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
+                    //caso a atividade esteja vinculada a um grupo e não seja a atividade principal
+                } else if (activity.group_id != null && activity.createdAt != activity.group.createdAt) {
+
+                    //se a atividade alvo para criar o vinculo, ja possua um grupo, delete o grupo e vincula nesse outro grupo
+                    if (activityGroup.group_id != null) {
+                        await ActivityRepository.updateActivity(activityData.activity_name, activityGroup.group_id, activityData.process_id, activityData.id);
                         return 1;
 
-                    } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
-                        await ActivityRepository.noCheckGroupDelete(activity.group_id);
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
-                        return 1;
-
-                    } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        return -1;
-
-                    } else if (activity.createdAt != activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
-                        return 1;
-
+                        //caso o alvo nao tenha grupo, atualiza e cria um grupo
                     } else {
-                        await ActivityRepository.noCheckActivityUpdateGroupNull(activityData.activity_name, null, activityData.process_id, activityData.id);
+                        await ActivityRepository.updateActivityAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
                         return 1;
                     }
                 }
 
+            } else if (activityData.group_name != null && activity.group_id == null) {
+                var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id); //localiza a atividade do grupo
+
+                //se a atividade alvo para criar o vinculo, ja possua um grupo, delete o grupo e vincula nesse outro grupo
+                if (activityGroup.group_id != null) {
+                    await ActivityRepository.updateActivity(activityData.activity_name, activityGroup.group_id, activityData.process_id, activityData.id);
+                    return 1;
+
+                    //caso o alvo nao tenha grupo, atualiza e cria um grupo
+                } else {
+                    await ActivityRepository.updateActivityAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id)
+                    return 1;
+                }
+
+                //caso nao seja selecionado uma atividade para vincular
             } else {
-                return 0;
+
+                //VERIFICAÇÃO DE BLOQUEIOS
+                //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido alterar o processo
+                if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityData.process_id != activity.process_id) {
+                    return -1;
+                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido vincular em outra atividade
+                } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityGroup.group_id != activity.group_id) {
+                    return -1;
+                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido deixa-la sem grupo
+                } else if (activityData.group_name == null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
+                    return -1;
+                }
+                //FIM VERIFICAÇÃO DE BLOQUEIOS
+
+                //caso seja um atividade principal do grupo e nao tenha outra atividade vinculada
+                if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
+                    await ActivityRepository.deleteGroup(activity.group_id);
+                    await ActivityRepository.updateActivity(activityData.activity_name, null, activityData.process_id, activityData.id);
+                    return 1;
+                } else {
+                    await ActivityRepository.updateActivity(activityData.activity_name, null, activityData.process_id, activityData.id);
+                    return 1;
+                }
             }
 
         } catch (error) {
-            return error;
+            return error
         }
     }
+
 
 }
 

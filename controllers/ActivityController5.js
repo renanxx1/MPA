@@ -1,4 +1,4 @@
-const ActivityService = require('../services/ActivityService');
+const ActivityService = require('../services/ActivityService5');
 
 class ActivityController {
 
@@ -16,6 +16,7 @@ class ActivityController {
         var activityData = {
             activity_name: req.body.activityNameInput,
             process_id: req.body.processSelect,
+            agroup: req.body.agroupCheckBox,
             group_name: req.body.groupSelect
         }
 
@@ -53,6 +54,7 @@ class ActivityController {
             id: req.params.id,
             activity_name: req.body.activityNameInput,
             process_id: req.body.processSelect,
+            agroup: req.body.agroupCheckBox,
             group_name: req.body.groupSelect,
         }
 
