@@ -150,7 +150,7 @@ class ActivityService {
 
             //VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
             //não pode cadastrar atividades com nomes iguais ou vincular a atividade em si mesma
-            if (activityName != null || activityData.activity_name == activityData.group_name) {
+            if (activityName != null || activity.activity_name == activityData.group_name) {
                 return 0;
             }
             //FIM VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
