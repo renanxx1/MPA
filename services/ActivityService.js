@@ -147,7 +147,7 @@ class ActivityService {
             var activity = await ActivityRepository.findOneIncludeAll(activityData.id); //retorna os dados da atividade
             var activityName = await ActivityRepository.findActivityNotSameId(activityData.activity_name, activityData.process_id, activityData.id); //verifica se tem uma atividade com esse nome
             var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id); //verifica se essa atividade tem um grupo e possui atividades vinculada
-         
+
             //VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
             //não pode cadastrar atividades com nomes iguais ou vincular a atividade em si mesma
             if (activityName != null || activityData.activity_name == activityData.group_name) {
@@ -171,6 +171,7 @@ class ActivityService {
                     return -1;
                 }
                 //FIM VERIFICAÇÃO DE BLOQUEIOS
+
                 //caso a atividade que esteja sendo editada ja possua um grupo e seja uma atividade principal e que nao tenha outras atividades vinculada
                 if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
 
@@ -252,7 +253,6 @@ class ActivityService {
             return error
         }
     }
-
 
 }
 

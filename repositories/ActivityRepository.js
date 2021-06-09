@@ -23,7 +23,6 @@ class ActivityRepository {
     }
 
 
-
     async findGroupByName(activity_name) {
         return await
             Group.findOne({
@@ -97,7 +96,6 @@ class ActivityRepository {
     }
 
 
-
     async findActivtyByGroupId(group_id) {
         var activities = await
             Activity.findAll({
@@ -113,6 +111,7 @@ class ActivityRepository {
         }
         return activities;
     }
+
 
     async findAllProcesses() {
         return await
@@ -136,6 +135,7 @@ class ActivityRepository {
             });
     }
 
+
     async findChronometer(activity_id) {
         return await
             Activity_Chronometer.findOne({
@@ -156,6 +156,7 @@ class ActivityRepository {
             });
     }
 
+
     async deleteActivity(id) {
         return await
             Activity.destroy({
@@ -164,6 +165,7 @@ class ActivityRepository {
                 }
             });
     };
+
 
     async deleteActivityAndGroup(id, group_id) {
         await
@@ -190,18 +192,7 @@ class ActivityRepository {
             Group.create({
                 group_name: groupPrefix + group_activity
             })
-        /*    await Activity.update({
-               group_id: group.id,
-               createdAt: hour
-           }, {
-               where: {
-                   [Op.and]: [{
-                       activity_name: group_activity,
-                       process_id: process_id,
-                       status: true,
-                   }]
-               }
-           }) */
+       
         await Activity.create({
             activity_name: activity_name,
             process_id: process_id,
@@ -217,7 +208,7 @@ class ActivityRepository {
         var hour = moment().format("YYYY-MM-DD HH:mm:ss");
         var getHour = hour.slice(0, 18);
         var sumSec = parseInt(hour.slice(18, 19)) + 2;
-        var newHour = moment(getHour + sumSec).format("YYYY-MM-DD HH:mm:ss")
+        var newHour = moment(getHour + sumSec).format("YYYY-MM-DD HH:mm:ss");
 
         var group = await
             Group.create({
