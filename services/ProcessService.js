@@ -41,7 +41,7 @@ class ProcessService {
             var processHasCollaborator = await ProcessRepository.findCollaboratorsInProcess(id);
             var processHasActivityStatusFalse = await ProcessRepository.findActivitiesInProcessStatusFalse(id);
 
-            if (Object.keys(processHasActivity).length == 0 && processHasCollaborator == null && processHasActivityStatusFalse != null) {
+            if (processHasActivityStatusFalse[0] != null && Object.keys(processHasActivity).length == 0 && processHasCollaborator == null) {
                 await ProcessRepository.updateProcessStatus(id);
                 return 1;
 
