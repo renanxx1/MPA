@@ -127,7 +127,6 @@ ul {
 }
 
 
-
 .lists-container::-webkit-scrollbar {
 	height: 0.6rem;
 }
@@ -168,26 +167,11 @@ ul {
 	width: 100vw;
 }
 
-.jobs-list {
-	width: 270px;
-	margin: 0 5px 0px 0px;
-	/* height: 100%; */
-	display: inline-block;
-	vertical-align: top;
-	white-space: nowrap;
-	background-color: #e2e4e6;
-	border-radius: 5px;
-}
 
-h2.jobs-list-heading {
-	font-family: "Lato";
-	font-size: 12px;
-	font-weight: bold;
-	margin-left: 9px;
-}
+
 
 .jobs-list-body {
-	height: 490px;
+	height: 460px;
 	margin-right: 5px;
 	margin-left: 9px;
 	overflow: auto;
@@ -232,6 +216,8 @@ h2.jobs-list-heading {
 	width: 100%;
 }
 
+
+
 .job-info-block {
 	margin-top: 10px;
 	display: flex;
@@ -270,6 +256,10 @@ h2.jobs-list-heading {
 
 .edit-job-icon:hover {
 	opacity: 0.3;
+}
+
+.fas:hover {
+	color: black;
 }
 
 .user-email {
@@ -373,17 +363,70 @@ h2.jobs-list-heading {
 	height: 30px;
 }
 
+.parent {
+	display: -ms-flex;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.parent>div {
+	flex: 1;
+}
+
+.jobs-list {
+	width: 270px;
+	margin: 0 5px 0px 0px;
+	display: inline-block;
+	vertical-align: top;
+	background-color: #e2e4e6;
+	border-radius: 5px;
+}
+
 .column__title--wrapper {
+	margin-top: 2%;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	padding: .25rem;
+	height: 50px;
 	align-items: center;
+	align-content: center;
+	text-align: center;
+}
+
+.fas {
+	margin-left: -92%;
+	margin-top: -22%;
 }
 
 .column__title--wrapper i {
 	text-align: right;
 	margin-right: 4%;
 	color: #798d99;
+}
+
+h2.jobs-list-heading {
+	font-family: "Lato";
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 1%;
+
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap; 
+}
+
+
+h2.jobs-list-heading.process_name {
+	font-family: "Lato";
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 1%;
+
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap; 
 }
 
 
@@ -403,12 +446,3 @@ h2.jobs-list-heading {
 	background-color: whitesmoke;
 	cursor: pointer;
 }
-
-
-
-
-/*   .column__title--wrapper h2 {
-  color: #17394d;
-  font-weight: 700;
-  font-size: .9rem;
-} */

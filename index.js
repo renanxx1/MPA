@@ -26,7 +26,7 @@ app.use('/', require('./routes/CollaboratorRouter'));
 app.use('/', require('./routes/AdminRouter'));
 app.use('/', require('./routes/CollectorRouter'));
 app.use('/', require('./routes/DashboardRouter'));
-app.use('/', require('./routes/FlowRouter'));
+app.use('/', require('./routes/ProcessFlowRouter'));
 app.use('/', require('./routes/NotFoundRouter'));
 
 http.listen(80, () => {

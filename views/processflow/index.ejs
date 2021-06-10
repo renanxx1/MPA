@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" href="/assets/img/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="/assets/css/demo_1/flow2.css">
+
+  <title>MPA - MONITORADOR DE PROCESSOS E ATIVIDADES</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+</head>
+
+<body>
+  <div class="header-section">
+    <div class="header-top-bar">
+      <div class="top-bar-block left">
+        <div class="search-form-wrapper">
+          <form id="search-form">
+            <input id="search-input" type="text">
+            <button id="search-submit" type="submit">
+              <i class="fas fa-search search-icon"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class=" top-bar-logo logo ">
+        FLUXO DE PROCESSO
+      </div>
+      <div class="top-bar-block right">
+        <!--      <div class="profile-icon-block"><img class="profile-icon"
+            src="https://pbs.twimg.com/profile_images/751782659265822720/bQZcBl8v_bigger.jpg"></div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <section class="lists-container">
+
+    <!-- <div class="jobs-list-wrapper"> -->
+    <%processes.forEach(process=>{%>
+      <div class="jobs-list">
+        <div class="column__title--wrapper">
+          <h2 class="jobs-list-heading" style="color: #EE0000;">Tempo de Espera</h2>
+          <h2 class="jobs-list-heading process_name"><%=process.process_name%></h2>
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+
+        <div class="jobs-list-body" id="process_wait_<%=process.id%>">
+          <ul class="list-items" id="process_list_wait_<%=process.id%>">
+            <li>
+              <div class="item job-block">
+                <div class="item job-name-block">
+                  <div class="item job-name">Corporate Logo</div>
+                  <div class="item job-edit"><img class="edit-job-icon"
+                      src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
+                </div>
+                <div class="item job-info-block">
+                  <div class="job-date">21 Apr</div>
+                  <div class="item user-email">test@gmail.com</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="jobs-list-footer">
+          <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
+        </div>
+      </div>
+
+      <div class="jobs-list">
+        <div class="column__title--wrapper">
+          <h2 class="jobs-list-heading" style="color: green;">Efetuando</h2>
+          <h2 class="jobs-list-heading process_name" ><%=process.process_name%></h2>
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="jobs-list-body" id="process_<%=process.id%>">
+          <ul class="list-items" id="process_list_<%=process.id%>">
+            <li>
+              <div class="item job-block">
+                <div class="item job-name-block">
+                  <div class="item job-name">Corporate Logo</div>
+                  <div class="item job-edit"><img class="edit-job-icon"
+                      src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
+                </div>
+                <div class="item job-info-block">
+                  <div class="job-date">21 Apr</div>
+                  <div class="item user-email">test@gmail.com</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="jobs-list-footer">
+          <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
+        </div>
+      </div>
+      <%})%>
+
+        <!-- </div> -->
+        <!-- 
+    <button class="add-card-button">Add a card...</button> -->
+
+  </section>
+  <div class="footer-section"></div>
+</body>
+
+<script>
+  var newList = `
+  <div class="jobs-list">
+      <div class=" column__title--wrapper">
+        <h2 class="jobs-list-heading">In Progress</h2>
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+      <div class="jobs-list-body" id="in-progress">
+        <ul class="list-items" id="rework-jobs-list">
+          <li>
+            <div class="item job-block" id="in-progress-test">
+              <div class="item job-name-block">
+                <div class="item job-name">Corporate Logo</div>
+                <div class="item job-edit"><img class="edit-job-icon"
+                    src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
+              </div>
+              <div class="item job-info-block">
+                <div class="job-date">21 Apr</div>
+                <div class="item user-email">test@gmail.com</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="jobs-list-footer">
+        <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
+      </div>
+    </div>
+`;
+
+  $('.add-card-button').click(function (e) {
+    var $newList = $(newList);
+    $('.lists-container').find('.jobs-list').last().after($newList);
+  });
+
+</script>
+
+
+
+<script>
+  var listId = [];
+  $.each($('.list-items'), function () {
+    listId.push(this.id);
+  });
+
+  var id_list = []; //variavel que salva as listas com os id
+  '<%processes.forEach(process=>{%>'
+  id_list.push('#process_list_' + '<%=process.id%>', '#process_list_wait_' + '<%=process.id%>');
+  '<%})%>'
+
+
+  '<%processes.forEach(process=>{%>'
+
+  $('#process_list_wait_<%=process.id%>').sortable({
+    connectWith: id_list,
+    over: function (event, ui) { //triggered when sortable element hovers sortable list
+      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.1)')
+    },
+    out: function (event, ui) { //event is triggered when a sortable item is moved away from a sortable list.
+      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    receive: function (event, ui) { // event is triggered when an item from a connected sortable list has been dropped into another list
+      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    revert: 100,
+    start: function (event, ui) { //event is triggered when sorting starts.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(4deg)');
+    },
+    stop: function (event, ui) { //event is triggered when sorting has stopped.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(0deg)');
+    }
+  });
+
+
+
+  $('#process_list_<%=process.id%>').sortable({
+    connectWith: id_list,
+    over: function (event, ui) { //triggered when sortable element hovers sortable list
+      $('#process_list_<%=process.id%>').css('background-color', 'rgba(0,0,0,.1)')
+    },
+    out: function (event, ui) { //event is triggered when a sortable item is moved away from a sortable list.
+      $('#process_list_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    receive: function (event, ui) { // event is triggered when an item from a connected sortable list has been dropped into another list
+      $('#process_list_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
+    },
+    revert: 100,
+    start: function (event, ui) { //event is triggered when sorting starts.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(4deg)');
+    },
+    stop: function (event, ui) { //event is triggered when sorting has stopped.
+      var elementId = (ui.item[0].firstChild.id)
+      $('#' + elementId).css('transform', 'rotate(0deg)');
+    }
+  });
+
+
+
+  '<%})%>'
+
+
+</script>
+
+</html>
