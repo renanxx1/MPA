@@ -2,7 +2,7 @@ body {
 	padding: 0px;
 	font: 14px "Lato";
 	margin: 0px;
-	background-color: rgba(186, 186, 186, 1);
+	background-color: #838c91;
 }
 
 ul {
@@ -10,6 +10,7 @@ ul {
 	padding: 0;
 	margin: 0;
 	height: 100%;
+
 }
 
 .header-top-bar {
@@ -19,7 +20,7 @@ ul {
 	justify-content: space-between;
 	align-items: stretch;
 	align-content: stretch;
-	height: 30px;
+	height: 45px;
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.15);
 
@@ -51,7 +52,7 @@ ul {
 }
 
 .logo {
-	font-family: "Courgette", cursive;
+	font-family: "Monospace", cursive;
 	font-size: 1.5rem;
 	font-weight: 700;
 	color: white;
@@ -139,12 +140,11 @@ ul {
 
 .lists-container {
 	margin-top: 1%;
-	margin-right: 1%;
 	display: flex;
 	align-items: start;
 	padding: 0 0.8rem 0.8rem;
 	overflow-x: auto;
-	height: calc(100vh - 4.6rem);
+	height: calc(100vh - 4.2rem);
 }
 
 .lists-container {
@@ -172,9 +172,11 @@ ul {
 
 .jobs-list-body {
 	height: 460px;
-	margin-right: 5px;
-	margin-left: 9px;
+	/* margin-right: 5px;
+	margin-left: 9px; */
 	overflow: auto;
+	margin-top: 2%;
+
 }
 
 .jobs-list-body::-webkit-scrollbar {
@@ -217,7 +219,6 @@ ul {
 }
 
 
-
 .job-info-block {
 	margin-top: 10px;
 	display: flex;
@@ -248,7 +249,6 @@ ul {
 }
 
 
-
 .edit-job-icon {
 	width: 10px;
 	height: 10px;
@@ -260,6 +260,7 @@ ul {
 
 .fas:hover {
 	color: black;
+	cursor: pointer;
 }
 
 .user-email {
@@ -269,13 +270,14 @@ ul {
 }
 
 
-
 .list-items .item:hover {
 	background-color: whitesmoke;
 }
 
 
+
 .list {
+
 	flex: 0 0 15rem;
 	display: flex;
 	flex-direction: column;
@@ -379,21 +381,25 @@ ul {
 	display: inline-block;
 	vertical-align: top;
 	background-color: #e2e4e6;
+
+
 	border-radius: 5px;
 }
 
 .column__title--wrapper {
-	margin-top: 2%;
-	display: grid;
-	height: 50px;
+	margin-top: -4%;
+	height: 30px;
 	align-items: center;
 	align-content: center;
 	text-align: center;
+	border-bottom-style: double;
+	border-bottom-color:white;
 }
 
-.fas {
-	margin-left: -92%;
-	margin-top: -22%;
+.fa-ellipsis-h {
+	color: gray;
+	margin-left: 92%;
+	margin-bottom:-10%
 }
 
 .column__title--wrapper i {
@@ -446,3 +452,9 @@ h2.jobs-list-heading.process_name {
 	background-color: whitesmoke;
 	cursor: pointer;
 }
+
+.tilt {
+    transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
+  }
