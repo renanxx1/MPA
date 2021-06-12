@@ -212,10 +212,6 @@
 </div>
 
 
-<button class="confirm" type="button" data-text="Do you really want to delete that comment?"
-  data-confirm-button="Yes I am" data-cancel-button="Whoops no">
-  Delete the user
-</button>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
@@ -322,87 +318,55 @@
         $(this).removeAttr('data-previndex'); //remove o indice antigo
       },
       beforeStop: function (event, ui) {
-
+        $.confirm({
+          title: 'Confirmar alteração',
+          content: '' +
+            '<form action="" class="formName">' +
+            '<div class="form-group">' +
+            '<label>Digite sua senha para confirmar a alteração.</label>' +
+            '<input type="password" class="name form-control" required />' +
+            '</div>' +
+            '</form>',
+          buttons: {
+            formSubmit: {
+              text: 'Confirmar',
+              btnClass: 'btn-blue',
+              action: function () {
+                var name = this.$content.find('.name').val();
+                if (!name) {
+                  $.alert('Senha invalida!');
+                  return false;
+                }
+                $.alert('Your name is ' + name);
+              }
+            },
+            cancelar: function () {
+              $(".lists-container").sortable('cancel');
+            },
+          },
+          onContentReady: function () {
+            // bind to events
+            var jc = this;
+            this.$content.find('form').on('submit', function (e) {
+              // if the user submits the form by pressing enter in the field.
+              e.preventDefault();
+              jc.$$formSubmit.trigger('click'); // reference the button and click it
+            });
+          }
+        });
       },
       stop: function (event, ui) {
         ui.item.removeClass('tilt');
         $(".lists-container").sortable("disable"); //desativa o sortable ao finalizar
       }
-
     })
   });
 
 
+  /* https://craftpip.github.io/jquery-confirm/ */
 
-  $.confirm({
-    title: 'Prompt!',
-    content: '' +
-    '<form action="" class="formName">' +
-    '<div class="form-group">' +
-    '<label>Enter something here</label>' +
-    '<input type="text" placeholder="Your name" class="name form-control" required />' +
-    '</div>' +
-    '</form>',
-    buttons: {
-        formSubmit: {
-            text: 'Submit',
-            btnClass: 'btn-blue',
-            action: function () {
-                var name = this.$content.find('.name').val();
-                if(!name){
-                    $.alert('provide a valid name');
-                    return false;
-                }
-                $.alert('Your name is ' + name);
-            }
-        },
-        cancel: function () {
-            //close
-        },
-    },
-    onContentReady: function () {
-        // bind to events
-        var jc = this;
-        this.$content.find('form').on('submit', function (e) {
-            // if the user submits the form by pressing enter in the field.
-            e.preventDefault();
-            jc.$$formSubmit.trigger('click'); // reference the button and click it
-        });
-    }
-});
-
-
-https://craftpip.github.io/jquery-confirm/
-
-
-
-  function closeModal() {
-    alert('close')
-    $(".lists-container").sortable('cancel');
-  }
-
-
-  /*   $(".lists-container").each(function(){
-   console.log($(this))
-  });
-   */
 
   function addCard() {
-    $(".confirm").confirm({
-      text: "Are you sure you want to delete that comment?",
-      title: "Confirmation required",
-      confirm: function (button) {
-      },
-      cancel: function (button) {
-        // nothing to do
-      },
-      confirmButton: "Yes I am",
-      cancelButton: "No",
-      post: true,
-      confirmButtonClass: "btn-danger",
-      cancelButtonClass: "btn-default",
-      dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
-    });
     /*  $('#myModal').modal('show') */
   }
 
