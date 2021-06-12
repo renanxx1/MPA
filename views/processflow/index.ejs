@@ -319,6 +319,9 @@
       },
       beforeStop: function (event, ui) {
         $.confirm({
+          closeIcon: function () {
+            return $(".lists-container").sortable('cancel');
+          },
           title: 'Confirmar alteração',
           content: '' +
             '<form action="" class="formName">' +
