@@ -45,7 +45,7 @@
 
     <!-- <div class="jobs-list-wrapper"> -->
     <%processes.forEach(process=>{%>
-    <!--   <div class="jobs-list">
+      <!--   <div class="jobs-list">
         <div class="column__title--wrapper">
           <h2 class="jobs-list-heading" style="color: #EE0000;">Tempo de Espera</h2>
           <h2 class="jobs-list-heading process_name">
@@ -76,7 +76,7 @@
         </div>
       </div>
  -->
-      <div class="jobs-list">
+      <div class="jobs-list" id="<%=process.id%>">
         <i class="fas fa-ellipsis-h"></i>
         <div class="column__title--wrapper">
           <h2 class="jobs-list-heading process_name">
@@ -98,9 +98,9 @@
                 </div>
               </div>
             </li>
-          
+
           </ul>
-          
+
         </div>
         <div class="jobs-list-footer">
           <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
@@ -131,7 +131,7 @@
           <ul class="list-group-item-text list-inline clearfix">
             <li class="mar-bottom">
               <h4 class="">Responsavel</h4>
-            
+
               <ul class="list-inline clearfix" id="js-card-users-list-175">
                 <li id="js-card-user-add-container" class="no-print">
                   <div class="dropdown js-member-dropdown">
@@ -184,9 +184,46 @@
     </div>
   </div>
 </div>
-<script src="/js/popper.min.js" crossorigin="anonymous"></script>
+
+
+
+<div id="modalPassword" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title">Confirmar a alteração</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+
+      </div>
+      <div class="modal-body text-center">
+        <h6><b>Insira a sua senha para confirmar a alteração</b></h6>
+        <div class="input-group input-group-sm  mt-3">
+          <input type="password" class="form-control" aria-label="Exemplo do tamanho do input"
+            aria-describedby="inputGroup-sizing-sm">
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-hover" style="width: 100%;" onclick="confirmModal()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button class="confirm" type="button" data-text="Do you really want to delete that comment?"
+  data-confirm-button="Yes I am" data-cancel-button="Whoops no">
+  Delete the user
+</button>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="/js/jquery.confirm.min.js" crossorigin="anonymous"></script>
+
 
 <script>
   var newList = `
@@ -241,30 +278,6 @@
 
   '<%processes.forEach(process=>{%>'
 
-/*   $('#process_list_wait_<%=process.id%>').sortable({
-    connectWith: id_list,
-    over: function (event, ui) { //triggered when sortable element hovers sortable list
-      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.1)')
-    },
-    out: function (event, ui) { //event is triggered when a sortable item is moved away from a sortable list.
-      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
-    },
-    receive: function (event, ui) { // event is triggered when an item from a connected sortable list has been dropped into another list
-      $('#process_list_wait_<%=process.id%>').css('background-color', 'rgba(0,0,0,.0)')
-    },
-    revert: 100,
-    start: function (event, ui) { //event is triggered when sorting starts.
-      var elementId = (ui.item[0].firstChild.id)
-      $('#' + elementId).css('transform', 'rotate(4deg)');
-    },
-    stop: function (event, ui) { //event is triggered when sorting has stopped.
-      var elementId = (ui.item[0].firstChild.id)
-      $('#' + elementId).css('transform', 'rotate(0deg)');
-    }
-  });
- */
-
-
   $('#process_list_<%=process.id%>').sortable({
     connectWith: id_list,
     over: function (event, ui) { //triggered when sortable element hovers sortable list
@@ -290,22 +303,107 @@
   '<%})%>'
 
 
-  $(".lists-container").sortable({
-    connectWith: ".lists-container",
+  //Sortable dos cards do processo
+  $('.column__title--wrapper').on('mousedown', function () { //ao clicar e segurar para mover o processo
+    $(".lists-container").sortable(); //inicia o sortable
+    $(".lists-container").sortable("enable"); // ativa
 
-    start: function (event, ui) {
+    $(".lists-container").sortable({
+      connectWith: ".lists-container",
+
+      start: function (event, ui) {
         ui.item.addClass('tilt');
+        $(this).attr('data-previndex', ui.item.index()); //cria um atributo temporario com a posição
+      },
+      update: function (e, ui) {
+        var newIndex = ui.item.index(); //pega o indice atual
+        var oldIndex = $(this).attr('data-previndex'); //pega o indice anterior
+        var element_id = ui.item.attr('id'); //pega o id do card
+        $(this).removeAttr('data-previndex'); //remove o indice antigo
+      },
+      beforeStop: function (event, ui) {
+
       },
       stop: function (event, ui) {
-        console.log(event)
         ui.item.removeClass('tilt');
+        $(".lists-container").sortable("disable"); //desativa o sortable ao finalizar
       }
- 
+
+    })
   });
 
 
+
+  $.confirm({
+    title: 'Prompt!',
+    content: '' +
+    '<form action="" class="formName">' +
+    '<div class="form-group">' +
+    '<label>Enter something here</label>' +
+    '<input type="text" placeholder="Your name" class="name form-control" required />' +
+    '</div>' +
+    '</form>',
+    buttons: {
+        formSubmit: {
+            text: 'Submit',
+            btnClass: 'btn-blue',
+            action: function () {
+                var name = this.$content.find('.name').val();
+                if(!name){
+                    $.alert('provide a valid name');
+                    return false;
+                }
+                $.alert('Your name is ' + name);
+            }
+        },
+        cancel: function () {
+            //close
+        },
+    },
+    onContentReady: function () {
+        // bind to events
+        var jc = this;
+        this.$content.find('form').on('submit', function (e) {
+            // if the user submits the form by pressing enter in the field.
+            e.preventDefault();
+            jc.$$formSubmit.trigger('click'); // reference the button and click it
+        });
+    }
+});
+
+
+https://craftpip.github.io/jquery-confirm/
+
+
+
+  function closeModal() {
+    alert('close')
+    $(".lists-container").sortable('cancel');
+  }
+
+
+  /*   $(".lists-container").each(function(){
+   console.log($(this))
+  });
+   */
+
   function addCard() {
-    $('#myModal').modal('show')
+    $(".confirm").confirm({
+      text: "Are you sure you want to delete that comment?",
+      title: "Confirmation required",
+      confirm: function (button) {
+      },
+      cancel: function (button) {
+        // nothing to do
+      },
+      confirmButton: "Yes I am",
+      cancelButton: "No",
+      post: true,
+      confirmButtonClass: "btn-danger",
+      cancelButtonClass: "btn-default",
+      dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
+    });
+    /*  $('#myModal').modal('show') */
   }
 
 </script>
