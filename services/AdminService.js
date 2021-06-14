@@ -70,24 +70,30 @@ class AdminService {
             if (changeToCollaborator == 1) {
                 var checkCol = await AdminRepository.findOneCollaboratorLoginNotSameId(adminData.login, adminData.id);
                 var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(adminData.login, adminData.id);
+                var admins = await AdminRepository.findAll();
 
-                if (checkAdm == null && checkCol == null) {
-                    if (adminData.password == "") {
-                        var res = await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, null, adminData.id, adminData.process_id, adminData.work_time);
-                        if (res == 0) {
-                            return 0;
+                if(Object.keys(admins).length > 1){
+                    if (checkAdm == null && checkCol == null) {
+                        if (adminData.password == "") {
+                            var res = await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, null, adminData.id, adminData.process_id, adminData.work_time);
+                            if (res == 0) {
+                                return 0;
+                            } else {
+                                return 2;
+                            }
                         } else {
+                            var salt = bcrypt.genSaltSync(10);
+                            var hash = bcrypt.hashSync(adminData.password, salt);
+                            await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
                             return 2;
                         }
                     } else {
-                        var salt = bcrypt.genSaltSync(10);
-                        var hash = bcrypt.hashSync(adminData.password, salt);
-                        await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, hash, adminData.id, adminData.process_id, adminData.work_time);
-                        return 2;
+                        return 0;
                     }
-                } else {
-                    return 0;
+                }else{
+                    return -1;
                 }
+                
 
             } else {
 

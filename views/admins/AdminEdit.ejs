@@ -67,7 +67,11 @@
                                         <div class="alert alert-danger mt-3" role="alert">
                                             Erro: Login ja foi cadastrado no sistema.
                                         </div>
-                                        <% } %>
+                                        <% } else if(statusCode==409){%>
+                                            <div class="alert alert-danger mt-3" role="alert">
+                                                Erro: É obrigatório ter pelo menos 1 administrador cadastrado.
+                                            </div>
+                                            <% } %>
                         </div>
                     </div>
 

@@ -78,8 +78,8 @@ class CollaboratorService {
 
     //Atualiza dados do colaborador
     async setUpdate(collaboratorData) {
-      /*   try { */
-            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.id);
+        try {
+            var admin = await CollaboratorRepository.findAdminByLogin(collaboratorData.login);
             var collaborator = await CollaboratorRepository.findOneByNameOrLoginNotSameId(collaboratorData.login, collaboratorData.id);
             var changeToAdmin = collaboratorData.admin_on % 2;
 
@@ -119,9 +119,9 @@ class CollaboratorService {
                 return -1;
             }
 
-      /*   } catch (error) {
+        } catch (error) {
             return error;
-        } */
+        }
     }
 
 
