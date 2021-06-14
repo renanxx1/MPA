@@ -29,8 +29,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <%activities.forEach(activity=> { %>
-                                                <%if(activity.status==1){%> 
+                                        <%activities.forEach(activity=> { %>
+                                            <%if(activity.status==1){%>
                                                 <td>
                                                     <%=activity.id%>
                                                 </td>
@@ -103,9 +103,9 @@
                                                                             </button>
                                                                         </div>
                                                                     </td>
-                                        </tr>
-                                        <%}%>
-                                        <% })%>
+                                                                    </tr>
+                                                                    <%}%>
+                                                                        <% })%>
 
                                     </tbody>
                                 </table>
@@ -121,35 +121,36 @@
                     </html>
 
                     <script>
+
+                        //Ao renderizar a pagina recebe o statuscode
                         var statusCode = '<%=statusCode%>';
-                        if (statusCode == 406) {
-                            $('#modal-title-id3').html('Erro ao Deletar');
-                            $('#modal-body-id3').html('<h5><b><center>Possui atividades vinculadas a este grupo.');
-                            $('#modalDeleteError').modal('show');
-                            setTimeout(function () {
-                                $('#modalDeleteError').modal('hide');
+                        if (statusCode == 406) { //Caso o status code seja 406
+                            $('#modal-title-id3').html('Erro ao Deletar'); //insere esse texto no titutlo da modal
+                            $('#modal-body-id3').html('<h5><b><center>Possui atividades vinculadas a este grupo.'); //insere esse texto no corpo da modal
+                            $('#modalDeleteError').modal('show'); //exibe a modal
+                            setTimeout(function () { //conta 3 segundos
+                                $('#modalDeleteError').modal('hide'); //fecha a modal
                             }, 3000); // 3000 = 3 segundos
                         }
 
 
-                        function sendDataToModal(activity, agroup) {
-                            $('#modal-title-id1').html('Deletar Atividade');
+                        function sendDataToModal(activity, agroup) { //modal de confirmação deletar
+                            $('#modal-title-id1').html('Deletar Atividade'); //envia texto para modal
                             $('#modal-body-id1').html('<h5><center>DELETAR A ATIVIDADE: <b>' + activity +
                                 '</h5></b> '
                             );
                         }
 
-                        function sendForm(event, form) {
-                            event.preventDefault();
-                            document.getElementById("btn-confirm").addEventListener("click", function () {
-                                form.submit();
+                        function sendForm(event, form) { //envio do formulario de deletarr
+                            event.preventDefault(); //bloqueia envio do formulario
+                            document.getElementById("btn-confirm").addEventListener("click", function () { //ao clicar no botao sim do deletar
+                                form.submit(); //envia formulario
                             });
                         }
 
-                        function modalMore(d1, d2) {
+                        function modalMore(d1, d2) { //funçao para abrir modal do exibir mais
                             $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
                                 "<br><b>" + d2 + '</b>');
                         }
-
 
                     </script>

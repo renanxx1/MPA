@@ -40,7 +40,7 @@ class ActivityService {
                     var activityGroup = await ActivityRepository.findActivityGroupByName(activityData.group_name, activityData.process_id); //traz os dados dessa atividade
                     var group = await ActivityRepository.findGroupByName(activityData.group_name); //verifica se essa atividade ja possui grupo
 
-                    if (group == null && !activityGroup.group) { //cria uma atividade e um grupo
+                    if (group == null && activityGroup.group == null) { //cria uma atividade e um grupo
                         await ActivityRepository.createActivityAndGroup(activityData.group_name, activityData.activity_name, activityData.process_id);
                         return 1;
 
@@ -148,9 +148,12 @@ class ActivityService {
             var activityName = await ActivityRepository.findActivityNotSameId(activityData.activity_name, activityData.process_id, activityData.id); //verifica se tem uma atividade com esse nome
             var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id); //verifica se essa atividade tem um grupo e possui atividades vinculada
 
+            console.log(activityName)
+            console.log(activitiesLinked)
             //VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
             //não pode cadastrar atividades com nomes iguais ou vincular a atividade em si mesma
-            if (activityName != null || activity.activity_name == activityData.group_name) {
+            if (activityName != null || activity.activity_name == activityData.group_name && activity.createdAt != activity.group.createdAt) {
+                console.log('PRIMEIRO RETURN')
                 return 0;
             }
             //FIM VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
@@ -162,12 +165,15 @@ class ActivityService {
                 //VERIFICAÇÃO DE BLOQUEIOS
                 //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido alterar o processo
                 if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityData.process_id != activity.process_id) {
+                    console.log('IF 1')
                     return -1;
                     //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido vincular em outra atividade
                 } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityGroup.group_id != activity.group_id) {
+                    console.log('IF 2')
                     return -1;
                     //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido deixa-la sem grupo
                 } else if (activityData.group_name == null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length != 1) {
+                    console.log('IF 3')
                     return -1;
                 }
                 //FIM VERIFICAÇÃO DE BLOQUEIOS
@@ -175,14 +181,21 @@ class ActivityService {
                 //caso a atividade que esteja sendo editada ja possua um grupo e seja uma atividade principal e que nao tenha outras atividades vinculada
                 if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
 
+                    //se a atividade for uma principal, e esteja trocando apenas atualizando o nome
+                    if (activityGroup.group_id != null && activity.activity_name == activityData.group_name) {
+                        await ActivityRepository.updateActivityAndGroup(activityData.activity_name, activityData.process_id, activityGroup.group_id, activityData.id);
+                        return 1;
+                    }
                     //se a atividade alvo para criar o vinculo, ja possua um grupo, delete o grupo e vincula nesse outro grupo
-                    if (activityGroup.group_id != null) {
+                    else if (activityGroup.group_id != null) {
+                        console.log('IF DO DELETE GROUP')
                         await ActivityRepository.deleteGroup(activity.group_id);
                         await ActivityRepository.updateActivity(activityData.activity_name, activityGroup.group_id, activityData.process_id, activityData.id);
                         return 1;
 
                         //caso o alvo nao tenha grupo, deleta e cria um grupo
                     } else {
+                        console.log('ELSE DO DELETE GROUP')
                         await ActivityRepository.deleteGroup(activity.group_id);
                         await ActivityRepository.updateActivityAndCreateGroup(activityData.group_name, activityData.activity_name, activityData.process_id, activityData.id);
                         return 1;
@@ -224,31 +237,37 @@ class ActivityService {
 
                 //caso nao seja selecionado uma atividade para vincular
             } else {
-
-                //VERIFICAÇÃO DE BLOQUEIOS
-                //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido alterar o processo
-                if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityData.process_id != activity.process_id) {
-                    return -1;
-                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido vincular em outra atividade
-                } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityGroup.group_id != activity.group_id) {
-                    return -1;
-                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido deixa-la sem grupo
-                } else if (activityData.group_name == null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
-                    return -1;
-                }
-                //FIM VERIFICAÇÃO DE BLOQUEIOS
-
+                console.log('PENULTIMO ULTIMO ELSE')
                 //caso seja um atividade principal do grupo e nao tenha outra atividade vinculada
                 if (activity.group_id != null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length == 1) {
                     await ActivityRepository.deleteGroup(activity.group_id);
                     await ActivityRepository.updateActivity(activityData.activity_name, null, activityData.process_id, activityData.id);
                     return 1;
-                } else {
+                } else if (activity.group_id != null && activity.createdAt != activity.group.createdAt) {
                     await ActivityRepository.updateActivity(activityData.activity_name, null, activityData.process_id, activityData.id);
                     return 1;
+                } else if (activity.group_id == null) {
+                    await ActivityRepository.updateActivity(activityData.activity_name, null, activityData.process_id, activityData.id);
+                    return 1;
+                } else {
+                    console.log('ULTIMO ELSE')
+                    //VERIFICAÇÃO DE BLOQUEIOS
+                    //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido alterar o processo
+                    if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityData.process_id != activity.process_id) {
+                        console.log('ultimo bloqueio 1')
+                        return -1;
+                        //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido vincular em outra atividade
+                    } else if (activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1 && activityGroup.group_id != activity.group_id) {
+                        console.log('ultimo bloqueio 2')
+                        return -1;
+                        //caso seja uma atividade principal de grupo e tenha outras no mesmo grupo, não é permitido deixa-la sem grupo
+                    } else if (activityData.group_name == null && activity.createdAt == activity.group.createdAt && Object.keys(activitiesLinked).length > 1) {
+                        console.log('ultimo bloqueio 3')
+                        return -1;
+                    }
+                    //FIM VERIFICAÇÃO DE BLOQUEIOS
                 }
             }
-
         } catch (error) {
             return error
         }

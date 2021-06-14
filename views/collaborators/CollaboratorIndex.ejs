@@ -92,11 +92,13 @@
 
                     </html>
                     <script>
+                        //função que envia os dados para a modal de deletar
                         function sendDataToModal(collaborator) {
                             $('#modal-title-id1').html('Deletar Colaborador');
                             $('#modal-body-id1').html('<h5><center>DELETAR O COLABORADOR: <b>' + collaborator);
                         }
 
+                        //função que envia o formulario principal
                         function sendForm(event, form) {
                             event.preventDefault();
                             document.getElementById("btn-confirm").addEventListener("click", function () {
@@ -104,6 +106,7 @@
                             });
                         }
 
+                        //função que envia os dados para modal mais informações
                         function modalMore(d1, d2) {
                             $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + moment(d1).format('DD/MM/YYYY HH:MM:SS') + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
                                 "<br><b>" + moment(d2).format('DD/MM/YYYY HH:MM:SS') + '</b>');

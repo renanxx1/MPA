@@ -25,7 +25,7 @@
                                         placeholder="Login de acesso do colaborador" required>
                                     <label class="mt-3" for="senha">Senha <text style="color: red;">*</text> </label>
                                     <input type="password" class="form-control" name="inputPassword"
-                                    placeholder="Digite uma senha" required>
+                                        placeholder="Digite uma senha" required>
                                     <label class="mt-3">Processo <text style="color: red;">*</text> </label>
                                     <select class="custom-select" name="processSelectId" required>
 
@@ -45,7 +45,8 @@
                                             <i class="zmdi zmdi-info"></i> </a>
                                     </label>
                                     <input type="number" class="form-control" name="inputWorkTime"
-                                        placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4" step="0.5" required>
+                                        placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4" step="0.5"
+                                        required>
 
                                 </div>
                                 <button type="submit" class="btn btn-dark">Cadastrar</button>
@@ -72,12 +73,13 @@
             </main>
             <%- include ('../partials/footer.ejs')%>
 
+                </html>
 
                 <script>
                     $(function () {
-                        $('[data-toggle="popover"]').popover();
+                        $('[data-toggle="popover"]').popover(); //ativa popover
                     })
-                    $('body').on('click', function (e) {
+                    $('body').on('click', function (e) { //ao clicar no body da pagina oculta o popover
                         $('[data-toggle=popover]').each(function () {
                             // hide any open popovers when the anywhere else in the body is clicked
                             if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
@@ -86,5 +88,3 @@
                         });
                     });
                 </script>
-
-                </html>

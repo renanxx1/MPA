@@ -56,7 +56,7 @@
                                                             <button class="item mr-1" data-placement="top"
                                                                 title="Deletar" data-toggle="modal"
                                                                 data-target="#modalDelete"
-                                                                onclick="sendLogin('<%=admin.login%>')" target="_blank">
+                                                                onclick="sendDataToModal('<%=admin.login%>')" target="_blank">
                                                                 <i class="zmdi zmdi-delete"></i>
                                                             </button>
                                                         </form>
@@ -80,21 +80,23 @@
 
             <%- include ('../partials/modal.ejs')%>
                 <%- include ('../partials/footer.ejs')%>
+                </html>
 
                     <script>
-                        function sendLogin(login) {
+
+                        function sendDataToModal(login) { //função que envia os dados para a modal na confirmação de deleção
                             $('#modal-title-id1').html('Deletar Administrador');
                             $('#modal-body-id1').html('<h5><center>DELETAR O ADMINISTRADOR: <b>' + login + '</b>');
                         }
 
-                        function sendForm(event, form) {
+                        function sendForm(event, form) { //função que envia o formulario de atualização dos dados
                             event.preventDefault();
                             document.getElementById("btn-confirm").addEventListener("click", function () {
                                 form.submit();
                             });
                         }
 
-                        function modalMais(d1, d2) {
+                        function modalMais(d1, d2) { //função que exibe a modal com as informaçoes
                             $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
                                 "<br><b>" + d2 + '</b>');
                         }

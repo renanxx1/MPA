@@ -202,6 +202,7 @@
         </script>
 
         <script>
+            //opção de expandir o grafico,
             $('#imgMax').hover(function () {
                 $(this).css('cursor', 'pointer');
             });
@@ -220,7 +221,7 @@
                 var date1 = $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
                 var date2 = $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
-                socket.emit('getDataChart', {
+                socket.emit('getDataChart', { //solicita os dados do grafico, enviando o range de data, process, e colaborador
                     startDate: date1,
                     endDate: date2,
                     collaborator_id: '<%=collaborator.id%>',
@@ -756,7 +757,6 @@
 
 
             //Sempre que houver novos dados, atualiza o grafico diario
-            var cont = 0;
             socket.on("newDataAvailable", (newDataChart) => {
 
                 setTimeout(function () {
@@ -891,6 +891,8 @@
             $('#btnDate').bind('DOMNodeInserted', function (e) {
 
                 res = [];
+                w_time = [];
+                d_time = [];
 
                 myBarChart.data.labels = [];
                 myBarChart.data.datasets[0].data = [];
@@ -910,7 +912,7 @@
                 myPieChart.data.labels = [];
                 myPieChart.data.datasets[0].data[0] = [];
 
-                $('#filterList').html("")
+                $('#filterList').html("");
 
                 dataChart(1);
             });
@@ -930,8 +932,6 @@
                 myBarChart.options.plugins.datalabels.display = false;
             }
         </script>
-
-
 
         <script src="/js/pdfmake.min.js"></script>
         <script src="/js/vfs_fonts.js"></script>
@@ -974,7 +974,6 @@
                                     alignment: 'center',
                                 },
                             };
-
                         } else if (screen.width > 400 && screen.width < 961) {
                             var docDefinition = {
                                 pageMargins: [0, 0, 0, 0],
@@ -1005,10 +1004,8 @@
 
         </script>
 
-
         <script src="/js/excellentexport.min.js"></script>
         <script src="/js/require.js"></script>
-
 
         <script>
 
@@ -1052,8 +1049,6 @@
                         if (y == 7) {
                             if (x < myLineChart.data.datasets[2].label.length)
                                 td.appendChild(document.createTextNode(myLineChart.data.datasets[2].label[x]));
-
-
                         }
                         if (y == 8) {
                             if (x < myLineChart.data.datasets[3].data.length)
@@ -1064,7 +1059,6 @@
                             // var reducer = (accumulator, currentValue) => accumulator + currentValue; //função para somar
                             if (x < myLineChart.data.datasets[2].label.length)
                                 td.appendChild(document.createTextNode(myLineChart.data.datasets[2].data[x]));
-
                             // }
                         }
                         if (y == 11) {

@@ -121,12 +121,15 @@
                 <br>
             </main>
             <%- include ('../partials/footer.ejs')%>
+            </html>
+
+
 
                 <script>
                     $(function () {
-                        $('[data-toggle="popover"]').popover();
+                        $('[data-toggle="popover"]').popover(); //ativa o popover
                     })
-                    $('body').on('click', function (e) {
+                    $('body').on('click', function (e) { //ao clicar no body, oculta o popover
                         $('[data-toggle=popover]').each(function () {
                             // hide any open popovers when the anywhere else in the body is clicked
                             if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
@@ -139,7 +142,7 @@
                 <script>
 
                     $(function () { //Ativa o formulario
-                        $('#mainDiv').show();
+                        $('#mainDiv').show(); //exibe a div principal
                         let $select1 = $('#processSelectId'),
                             $options = $select1.find('option');
 
@@ -147,7 +150,6 @@
                         $select1.prop('value', '<%=collaborator.process_id%>').prop(
                             'selected', //Inicia o select de processo com o valor vindo do banco
                             true)
-
                     })
 
                 </script>
@@ -163,24 +165,21 @@
                         $select1.prop('value', '<%=collaborator.process_id%>').prop(
                             'selected', //Inicia o select de processo com o valor vindo do banco
                             true)
-
                     })
 
                 </script>
 
                 <script>
 
-                    var count = 0;
-                    $('.btn-toggle').click(function () {
-                        count++;
-                        $(this).find('.btn').toggleClass('btn-dark');
-                        if (count % 2 == 1) {
-                            $('#modalAdmin').modal().show()
+                    var count = 0; //variavel contador do botao transformar administrador
+                    $('.btn-toggle').click(function () { //ao clicar no botao
+                        count++; //incrementa a variavel
+                        $(this).find('.btn').toggleClass('btn-dark'); //altera a classe do botão
+                        if (count % 2 == 1) { //se o resultado é igual a 1
+                            $('#modalAdmin').modal().show(); //exibe a modal de confirmação
                         }
-                        $('#adminOnOff').val(count);
+                        $('#adminOnOff').val(count); // insere o valor do contador na variavel
                     });
 
 
                 </script>
-
-                </html>

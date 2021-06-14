@@ -355,446 +355,451 @@
         </div>
         <%} %>
 
-
-
-
-          <script src="/js/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-          <script src="/js/popper.min.js" crossorigin="anonymous"></script>
-          <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-          <script src="/js/socket.io.js"></script>
-          <script src="/js/NoSleep.min.js"></script>
-
-          <script>
-            //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
-            $(function () {
-
-              '<%activitiesAndChronometers.forEach((activity)=>{%>'
-              if (screen.width < 400) {
-                $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
-
-              } else if (screen.width > 400 && screen.width < 961) {
-                $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
-
-              } else {
-              }
-              '<%})%>'
-              $("#mainDiv").show();
-            })
-
-            var noSleep = new NoSleep(); //Declaração do NoSleep para manter a tela acesa
-
-            if (performance.navigation.type == performance.navigation
-              .TYPE_RELOAD) { //Identifica se a pagina ja foi recarregada
-              $('body').click(
-                function () { //Caso a pagina tenha sido recarregada, o nosleep só é ativado se houver um click dentro do body da pagina
-                  noSleep.enable()
-                });
-
-            } else { //Caso seja o primeiro carregamento da pagina, ativa o nosleep.
-              noSleep.enable()
-            }
-          </script>
-
-
-          <script>
-            //Controle de url e login
-            var url = "http://" + '<%=internalIp%>' + "/";
-            var url_atual = window.location.href;
-            if (url_atual.includes('localhost')) {
-              window.location.href = url;
-            }
-            var socket = io(url);
-            socket.emit('checkSession');
-            socket.on("allow", (data) => {
-              if (data == false) {
-                window.location.href = '/login';
-                alert("Usuario foi desconectado.")
-              }
-            })
-          </script>
-
-
-          <script>
-            //Script do checkpoint
-            '<%if(checkPoint!=null){ %>' //Caso tenha checkpoint
-            $('#modalCheckPoint').modal('show'); //exibe a modal
-            $('#checkButtonOk').on('click', () => { //ao clicar no botao ok da modal
-
-              var time = '<%=checkPoint.timeFixed%>'.split(":"); //separa o tempo do checkpoint para inserir na view
-
-              $('#backhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
-              $('#backminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
-              $('#backsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
-
-              $('#modalhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
-              $('#modalminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
-              $('#modalsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
-
-              $('#backhourGroup_' + '<%=checkPoint.activity_id%>').html(time[0]);
-              $('#backminuteGroup_' + '<%=checkPoint.activity_id%>').html(time[1]);
-              $('#backsecondGroup_' + '<%=checkPoint.activity_id%>').html(time[2]);
-
-              socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
-                time: '<%=checkPoint.timeFixed%>',
-                counter: '<%=checkPoint.counter%>',
-                activity_id: '<%=checkPoint.activity_id%>',
-                collaborator_id: '<%=checkPoint.collaborator_id%>'
-              })
-
-              socket.emit('activityOn', {
-                collaborator_id: '<%=checkPoint.collaborator_id%>',
-                process_id: '<%=checkPoint.process_id%>',
-                activity_id: '<%=checkPoint.activity_id%>',
-                activity_name: '<%=checkPoint.activity_name%>',
-                time: '<%=checkPoint.timeFixed%>',
-                timeDiff: '<%=checkPoint.timeDiff%>',
-                counter: '<%=checkPoint.counter%>',
-                work_time: '<%=collaborator.work_time%>',
-                checkpoint: true
-              });
-
-              socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
-                activity_id: '<%=checkPoint.activity_id%>',
-                collaborator_id: '<%=collaborator.id%>'
-              });
-              $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
-              '<%}%>'
-            })
-
-            //ao clicar no botao cancelar, deleta o checkpoint criado no banco de dados
-            $('#checkButtonCancel').on('click', () => {
-              '<%if(checkPoint!=null){ %>'
-              socket.emit('deleteCheckPoint', {
-                activity_id: '<%=checkPoint.activity_id%>',
-                collaborator_id: '<%=collaborator.id%>'
-              });
-              '<%}%>'
-            })
-
-            //ao clicar no botao fechar, deleta o checkpoint criado no banco de dados
-            $('#checkButtonClose').on('click', () => {
-              '<%if(checkPoint!=null){ %>'
-              socket.emit('deleteCheckPoint', {
-                activity_id: '<%=checkPoint.activity_id%>',
-                collaborator_id: '<%=collaborator.id%>'
-              });
-              '<%}%>'
-            })
-          </script>
-
-          <script>
-            var mapChronometer = new Map()
-
-            $(function () {
-              //Verificação de dado recebido do banco
-              //Efetua um forEach na variavel enviada pelo banco e faz um split no time do chronometro e armazena em array, depois insere na view
-              '<% activitiesAndChronometers.forEach(activity=>{ %>'
-              var time = '<%=activity.activities_chronometer.time%>'.split(":");
-
-              //Insere na view os dados recebidos do banco
-              $('#backhour_' + '<%=activity.id%>').html(time[0]);
-              $('#backminute_' + '<%=activity.id%>').html(time[1]);
-              $('#backsecond_' + '<%=activity.id%>').html(time[2]);
-
-              $('#modalhour_' + '<%=activity.id%>').html(time[0]);
-              $('#modalminute_' + '<%=activity.id%>').html(time[1]);
-              $('#modalsecond_' + '<%=activity.id%>').html(time[2]);
-
-              '<%if(activity.group_id != null) { %>'
-              $('#backhourGroup_' + '<%=activity.id%>').html(time[0]);
-              $('#backminuteGroup_' + '<%=activity.id%>').html(time[1]);
-              $('#backsecondGroup_' + '<%=activity.id%>').html(time[2]);
-
-              '<%}%>'
-
-              //Cria um cronometro para cada atividade
-              mapChronometer.set('<%=activity.id%>', new Chronometer('<%=activity.id%>', '<%=activity.activity_name%>',
-                time[0], time[1], time[2], parseInt('<%=activity.activities_chronometer.counter%>'),
-                '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>', '<%=activity.activities_chronometer.process_id%>'))
-              '<%})%>'
-
-              //Divide o tempo em 3 array
-              'if(idleTime!=null){ %>'
-              var idleTime = '<%=idleTime.time%>'.split(":");
-
-              //Insere na view os dados recebidos do banco
-              $('#modalhour_null').html(idleTime[0]);
-              $('#modalminute_null').html(idleTime[1]);
-              $('#modalsecond_null').html(idleTime[2]);
-
-              //Cria um cronometro de tempo ocioso
-              mapChronometer.set(null, new Chronometer(null, 'Tempo Ocioso',
-                idleTime[0], idleTime[1], idleTime[2], parseInt('<%=idleTime.counter%>'),
-                '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>', '<%=idleTime.process_id%>'))
-              '})'
-            })
-          </script>
-
-          <script>
-            $(function () {
-              //Ao logar no sistema inicia cronometro tempo ocioso
-              startChronometer(null);
-            })
-          </script>
-
-          <script>
-            //Exibir modal de editar contador
-            function editCounter() {
-              $('#modalCounter').modal('show');
-            }
-
-            //Funçao para alterar o contador da funçao principal
-            function alterCounter(process_id, collaborator_id) {
-              socket.emit('checkSession');
-              var counterNewValue = $('#counterNewValue').val();
-              socket.emit('setCounter', {
-                counter: counterNewValue,
-                process_id: process_id,
-                collaborator_id: collaborator_id,
-              });
-              $('#mainFunctionCounter').val(counterNewValue);
-              $('#modalCounter').modal('hide');
-
-              '<%if (mainFunction == true){%>'
-              socket.emit('activityOn', {
-                collaborator_id: collaborator_id,
-                process_id: process_id,
-                process_counter: counterNewValue,
-                process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
-              });
-              '<%}%>'
-            }
-
-            function addCounter(process_id, collaborator_id) { //função do botão adicionar
-              socket.emit('checkSession');
-              $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
-                1); //incrementa no mainfunction contador da pagina
-              $('#counterNewValue').val($('#mainFunctionCounter').val());
-              var counterNewValue = $('#counterNewValue').val();
-              var counter = parseInt($('#mainFunctionCounter').val());
-              socket.emit('setCounter', {
-                counter: counter,
-                process_id: process_id,
-                collaborator_id: collaborator_id
-              });
-
-              '<%if (mainFunction == true){%>'
-              socket.emit('activityOn', {
-                collaborator_id: collaborator_id,
-                process_id: process_id,
-                process_counter: counterNewValue,
-                process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
-              });
-              '<%}%>'
-
-            }
-
-            function groupOption(id) {
-              $('#modalOptions_' + id).modal('show');
-            }
-
-            function groupOptionClose(group) {
-              $("#modalOptions_" + group).modal().hide();
-              $('.modal-backdrop').remove();
-              $('#modalOptions_' + group).modal('hide');
-            }
-
-            var idActivityGroup;
-            $('.list-group-item').on('click', function (e) {
-              idActivityGroup = $(this).val()
-            });
-
-            function play(id, group) {
-
-              if (group != null) { //caso seja uma atividade vinculada a um grupo
-                $('#modalIdGroup').val(group); //envia para modal id atual
-                $("#modalOptions_" + group).modal().hide(); //oculta a modal de opçoes do grupo
-                $('.modal-backdrop').remove(); //remove fundo preto da modal
-                id = idActivityGroup; //atualiza o id para atualizar cronometro
-                if (id == null) { //se o id é null, encerra a modal e exibe mensagem de erro
-                  groupOptionClose(group);
-                  $('#modalError').modal('show');
-                  setTimeout(function () {
-                    $('#modalError').modal('hide');
-                  }, 3000); // 3000 = 3 segundos
-                }
-              }
-              startChronometer(id);
-              $('#modalId').val(id); //envia o id atual para modal. este id é utilizado na função apos fechar a modal
-              $('#modalPlay_' + id).modal('show');
-              idActivityGroup = null;
-
-              setTimeout(function () {
-                socket.emit('checkPoint', {
-                  activity_id: id,
-                  collaborator_id: '<%=collaborator.id%>'
-                });
-              }, 1000);
-
-              var chronometerIdleTime = mapChronometer.get(null); //Pausa o tempo ocioso
-              chronometerIdleTime.pause();
-
-            }
-
-            function pause(id, group) { //funçao para pausar chronometro e fechar modal
-
-              var chronometer = mapChronometer.get(id);
-              chronometer.pause();
-
-              $('#modalPlay_' + id).modal('hide');
-              groupOptionClose(group);
-
-              socket.emit('deleteCheckPoint', {
-                activity_id: id,
-                collaborator_id: '<%=collaborator.id%>'
-              });
-
-            }
-
-
-            $('.modal').on("hidden.bs.modal", function (e) { //ação apos fechar modal atraves do teclado
-
-              var chronometer = mapChronometer.get($('#modalId').val());
-              chronometer.pause()
-
-              $('#modalOptions_' + $('#modalIdGroup').val()).modal('hide');
-              idActivityGroup = null;
-
-              socket.emit('deleteCheckPoint', {
-                activity_id: $('#modalId').val(),
-                collaborator_id: '<%=collaborator.id%>'
-              });
-
-              startChronometer(null); //Inicia o tempo ocioso
-
-            });
-
-
-            function startChronometer(id) {
-              var chronometer = mapChronometer.get(id); //pegando a instancia do Chronometer criado ao logar na pagina
-
-              var hour = $('#modalhour_' + id).html();
-              var minute = $('#modalminute_' + id).html();
-              var second = $('#modalsecond_' + id).html();
-
-              if (hour.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-                chronometer.h = hour.substr(1, 2);
-              } else {
-                chronometer.h = hour.substr(0, 2);
-              }
-
-              if (minute.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-                chronometer.m = minute.substr(1, 2);
-              } else {
-                chronometer.m = minute.substr(0, 2);
-              }
-
-              if (second.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-                var secondInt = parseInt(second.slice(1, 2)) + 1;
-                chronometer.s = secondInt;
-
-              } else {
-                var secondInt = parseInt(second.slice(0, 2)) + 1;
-                chronometer.s = secondInt;
-              }
-              if (chronometer.run == false) {
-                chronometer.start();
-              }
-            }
-          </script>
-
-          <script>
-            class Chronometer {
-
-              constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time, process_id) {
-                this.id = id;
-                this.activity_name = activity_name;
-                this.h = h;
-                this.m = m;
-                this.s = s + 1;
-                this.counter = counter;
-                this.collaborator_id = collaborator_id;
-                this.work_time = work_time;
-                this.process_id = process_id
-                this.run = false;
-              }
-
-              start() {
-                this.run = true;
-                this.counter = this.counter + 1;
-                this.intervelId = setInterval(() => {
-
-                  if (this.s == 60) {
-                    this.m++;
-                    this.s = 0;
-                  }
-                  if (this.m == 60) {
-                    this.h++;
-                    this.s = 0;
-                    this.m = 0;
-                  }
-
-                  if (this.s < 10) {
-                    $('#modalsecond_' + this.id).html("0" + this.s);
-                    $('#backsecond_' + this.id).html("0" + this.s);
-                    $('#backsecondGroup_' + this.id).html("0" + this.s);
-                  } else {
-                    $('#modalsecond_' + this.id).html(this.s);
-                    $('#backsecond_' + this.id).html(this.s);
-                    $('#backsecondGroup_' + this.id).html(this.s);
-                  }
-
-                  if (this.h < 10) {
-                    $('#modalhour_' + this.id).html("0" + this.h);
-                    $('#backhour_' + this.id).html("0" + this.h);
-                    $('#backhourGroup_' + this.id).html("0" + this.h);
-                  } else {
-                    $('#modalhour_' + this.id).html(this.h);
-                    $('#backhour_' + this.id).html(this.h);
-                    $('#backhourGroup_' + this.id).html(this.h);
-                  }
-
-                  if (this.m < 10) {
-                    $('#modalminute_' + this.id).html("0" + this.m);
-                    $('#backminute_' + this.id).html("0" + this.m);
-                    $('#backminuteGroup_' + this.id).html("0" + this.m);
-                  } else {
-                    $('#modalminute_' + this.id).html(this.m);
-                    $('#backminute_' + this.id).html(this.m);
-                    $('#backminuteGroup_' + this.id).html(this.m);
-                  }
-                  this.s++;
-
-                  socket.emit('update', {
-                    time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
-                      '#modalsecond_' + this.id).html(),
-                    counter: this.counter,
-                    activity_id: this.id,
-                    collaborator_id: this.collaborator_id
-                  })
-
-                  socket.emit('activityOn', {
-                    collaborator_id: this.collaborator_id,
-                    process_id: this.process_id,
-                    activity_id: this.id,
-                    activity_name: this.activity_name,
-                    time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
-                      '#modalsecond_' + this.id).html(),
-                    counter: this.counter,
-                    work_time: this.work_time
-                  });
-
-                  socket.emit('checkSession');
-
-                }, 1000);
-              }
-
-              pause() {
-                this.run = false;
-                clearInterval(this.intervelId)
-              }
-
-            }
-          </script>
-
-          </html>
+    </main>
+  </body>
+
+  </html>
+
+
+
+  <script src="/js/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="/js/popper.min.js" crossorigin="anonymous"></script>
+  <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="/js/socket.io.js"></script>
+  <script src="/js/NoSleep.min.js"></script>
+
+
+  <script>
+
+    //Controle de url e login
+    var url = "http://" + '<%=internalIp%>' + "/"; //recebe o ip interno do servidor
+    var url_atual = window.location.href; //pega a url da pagina
+    if (url_atual.includes('localhost')) { //se tem localhost no url
+      window.location.href = url; //redireciona a pagina para o ip do servidor
+    }
+    var socket = io(url); //seta o ip no socket io
+    socket.emit('checkSession'); //emite um evento para checar a seção do usuario
+    socket.on("allow", (data) => {
+      if (data == false) { //se usario não permitido
+        window.location.href = '/login'; //redireciona para a tela de login
+        alert("Usuario foi desconectado.")
+      }
+    })
+
+  </script>
+
+
+  <script>
+
+    //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
+    $(function () {
+
+      '<%activitiesAndChronometers.forEach((activity)=>{%>'
+      if (screen.width < 400) {
+        $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
+
+      } else if (screen.width > 400 && screen.width < 961) {
+        $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
+
+      } else {
+      }
+      '<%})%>'
+      $("#mainDiv").show();
+    })
+
+    var noSleep = new NoSleep(); //Declaração do NoSleep para manter a tela acesa
+
+    if (performance.navigation.type == performance.navigation
+      .TYPE_RELOAD) { //Identifica se a pagina ja foi recarregada
+      $('body').click(
+        function () { //Caso a pagina tenha sido recarregada, o nosleep só é ativado se houver um click dentro do body da pagina
+          noSleep.enable()
+        });
+
+    } else { //Caso seja o primeiro carregamento da pagina, ativa o nosleep.
+      noSleep.enable()
+    }
+  </script>
+
+
+  <script>
+    //Script do checkpoint
+    '<%if(checkPoint!=null){ %>' //Caso tenha checkpoint
+    $('#modalCheckPoint').modal('show'); //exibe a modal
+    $('#checkButtonOk').on('click', () => { //ao clicar no botao ok da modal
+
+      var time = '<%=checkPoint.timeFixed%>'.split(":"); //separa o tempo do checkpoint para inserir na view
+
+      $('#backhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
+      $('#backminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
+      $('#backsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+      $('#modalhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
+      $('#modalminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
+      $('#modalsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+      $('#backhourGroup_' + '<%=checkPoint.activity_id%>').html(time[0]);
+      $('#backminuteGroup_' + '<%=checkPoint.activity_id%>').html(time[1]);
+      $('#backsecondGroup_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+      socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
+        time: '<%=checkPoint.timeFixed%>',
+        counter: '<%=checkPoint.counter%>',
+        activity_id: '<%=checkPoint.activity_id%>',
+        collaborator_id: '<%=checkPoint.collaborator_id%>'
+      })
+
+      socket.emit('activityOn', { //atualiza os dandos no banco
+        collaborator_id: '<%=checkPoint.collaborator_id%>',
+        process_id: '<%=checkPoint.process_id%>',
+        activity_id: '<%=checkPoint.activity_id%>',
+        activity_name: '<%=checkPoint.activity_name%>',
+        time: '<%=checkPoint.timeFixed%>',
+        timeDiff: '<%=checkPoint.timeDiff%>',
+        counter: '<%=checkPoint.counter%>',
+        work_time: '<%=collaborator.work_time%>',
+        checkpoint: true
+      });
+
+      socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
+        activity_id: '<%=checkPoint.activity_id%>',
+        collaborator_id: '<%=collaborator.id%>'
+      });
+      $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
+      '<%}%>'
+    })
+
+    //ao clicar no botao cancelar, deleta o checkpoint criado no banco de dados
+    $('#checkButtonCancel').on('click', () => {
+      '<%if(checkPoint!=null){ %>'
+      socket.emit('deleteCheckPoint', {
+        activity_id: '<%=checkPoint.activity_id%>',
+        collaborator_id: '<%=collaborator.id%>'
+      });
+      '<%}%>'
+    })
+
+    //ao clicar no botao fechar, deleta o checkpoint criado no banco de dados
+    $('#checkButtonClose').on('click', () => {
+      '<%if(checkPoint!=null){ %>'
+      socket.emit('deleteCheckPoint', {
+        activity_id: '<%=checkPoint.activity_id%>',
+        collaborator_id: '<%=collaborator.id%>'
+      });
+      '<%}%>'
+    })
+  </script>
+
+  <script>
+    var mapChronometer = new Map()
+
+    $(function () {
+      //Verificação de dado recebido do banco
+      //Efetua um forEach na variavel enviada pelo banco e faz um split no time do chronometro e armazena em array, depois insere na view
+      '<% activitiesAndChronometers.forEach(activity=>{ %>'
+      var time = '<%=activity.activities_chronometer.time%>'.split(":");
+
+      //Insere na view os dados recebidos do banco
+      $('#backhour_' + '<%=activity.id%>').html(time[0]);
+      $('#backminute_' + '<%=activity.id%>').html(time[1]);
+      $('#backsecond_' + '<%=activity.id%>').html(time[2]);
+
+      $('#modalhour_' + '<%=activity.id%>').html(time[0]);
+      $('#modalminute_' + '<%=activity.id%>').html(time[1]);
+      $('#modalsecond_' + '<%=activity.id%>').html(time[2]);
+
+      '<%if(activity.group_id != null) { %>'
+      $('#backhourGroup_' + '<%=activity.id%>').html(time[0]);
+      $('#backminuteGroup_' + '<%=activity.id%>').html(time[1]);
+      $('#backsecondGroup_' + '<%=activity.id%>').html(time[2]);
+      '<%}%>'
+
+      //Cria um cronometro para cada atividade
+      mapChronometer.set('<%=activity.id%>', new Chronometer('<%=activity.id%>', '<%=activity.activity_name%>',
+        time[0], time[1], time[2], parseInt('<%=activity.activities_chronometer.counter%>'),
+        '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>', '<%=activity.activities_chronometer.process_id%>'))
+      '<%})%>'
+
+      //Divide o tempo em 3 array
+      'if(idleTime!=null){ %>'
+      var idleTime = '<%=idleTime.time%>'.split(":");
+
+      //Insere na view os dados recebidos do banco
+      $('#modalhour_null').html(idleTime[0]);
+      $('#modalminute_null').html(idleTime[1]);
+      $('#modalsecond_null').html(idleTime[2]);
+
+      //Cria um cronometro de tempo ocioso
+      mapChronometer.set(null, new Chronometer(null, 'Tempo Ocioso',
+        idleTime[0], idleTime[1], idleTime[2], parseInt('<%=idleTime.counter%>'),
+        '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>', '<%=idleTime.process_id%>'))
+      '})'
+    })
+  </script>
+
+  <script>
+    $(function () {
+      //Ao logar no sistema inicia cronometro tempo ocioso
+      startChronometer(null);
+    })
+  </script>
+
+  <script>
+    //Exibir modal de editar contador
+    function editCounter() {
+      $('#modalCounter').modal('show');
+    }
+
+    //Funçao para alterar o contador da funçao principal
+    function alterCounter(process_id, collaborator_id) {
+      socket.emit('checkSession');
+      var counterNewValue = $('#counterNewValue').val();
+      socket.emit('setCounter', {
+        counter: counterNewValue,
+        process_id: process_id,
+        collaborator_id: collaborator_id,
+      });
+      $('#mainFunctionCounter').val(counterNewValue);
+      $('#modalCounter').modal('hide');
+
+      '<%if (mainFunction == true){%>'
+      socket.emit('activityOn', {
+        collaborator_id: collaborator_id,
+        process_id: process_id,
+        process_counter: counterNewValue,
+        process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
+      });
+      '<%}%>'
+    }
+
+    function addCounter(process_id, collaborator_id) { //função do botão adicionar
+      socket.emit('checkSession'); //ao clicar, vai checar a seção do usuario
+      $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
+        1); //incrementa no mainfunction contador da pagina
+      $('#counterNewValue').val($('#mainFunctionCounter').val());
+      var counterNewValue = $('#counterNewValue').val();
+      var counter = parseInt($('#mainFunctionCounter').val());
+      socket.emit('setCounter', {
+        counter: counter,
+        process_id: process_id,
+        collaborator_id: collaborator_id
+      });
+
+      '<%if (mainFunction == true){%>'
+      socket.emit('activityOn', {
+        collaborator_id: collaborator_id,
+        process_id: process_id,
+        process_counter: counterNewValue,
+        process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
+      });
+      '<%}%>'
+
+    }
+
+    function groupOption(id) {
+      $('#modalOptions_' + id).modal('show');
+    }
+
+    function groupOptionClose(group) {
+      $("#modalOptions_" + group).modal().hide();
+      $('.modal-backdrop').remove();
+      $('#modalOptions_' + group).modal('hide');
+    }
+
+    var idActivityGroup;
+    $('.list-group-item').on('click', function (e) {
+      idActivityGroup = $(this).val()
+    });
+
+    function play(id, group) {
+
+      if (group != null) { //caso seja uma atividade vinculada a um grupo
+        $('#modalIdGroup').val(group); //envia para modal id atual
+        $("#modalOptions_" + group).modal().hide(); //oculta a modal de opçoes do grupo
+        $('.modal-backdrop').remove(); //remove fundo preto da modal
+        id = idActivityGroup; //atualiza o id para atualizar cronometro
+        if (id == null) { //se o id é null, encerra a modal e exibe mensagem de erro
+          groupOptionClose(group);
+          $('#modalError').modal('show');
+          setTimeout(function () {
+            $('#modalError').modal('hide');
+          }, 3000); // 3000 = 3 segundos
+        }
+      }
+      startChronometer(id);
+      $('#modalId').val(id); //envia o id atual para modal. este id é utilizado na função apos fechar a modal
+      $('#modalPlay_' + id).modal('show');
+      idActivityGroup = null;
+
+      setTimeout(function () {
+        socket.emit('checkPoint', {
+          activity_id: id,
+          collaborator_id: '<%=collaborator.id%>'
+        });
+      }, 1000);
+
+      var chronometerIdleTime = mapChronometer.get(null); //Pausa o tempo ocioso
+      chronometerIdleTime.pause();
+
+    }
+
+    function pause(id, group) { //funçao para pausar chronometro e fechar modal
+
+      var chronometer = mapChronometer.get(id);
+      chronometer.pause();
+
+      $('#modalPlay_' + id).modal('hide');
+      groupOptionClose(group);
+
+      socket.emit('deleteCheckPoint', {
+        activity_id: id,
+        collaborator_id: '<%=collaborator.id%>'
+      });
+
+    }
+
+
+    $('.modal').on("hidden.bs.modal", function (e) { //ação apos fechar modal atraves do teclado
+
+      var chronometer = mapChronometer.get($('#modalId').val());
+      chronometer.pause()
+
+      $('#modalOptions_' + $('#modalIdGroup').val()).modal('hide');
+      idActivityGroup = null;
+
+      socket.emit('deleteCheckPoint', {
+        activity_id: $('#modalId').val(),
+        collaborator_id: '<%=collaborator.id%>'
+      });
+
+      startChronometer(null); //Inicia o tempo ocioso
+
+    });
+
+
+    function startChronometer(id) {
+      var chronometer = mapChronometer.get(id); //pegando a instancia do Chronometer criado ao logar na pagina
+
+      var hour = $('#modalhour_' + id).html();
+      var minute = $('#modalminute_' + id).html();
+      var second = $('#modalsecond_' + id).html();
+
+      if (hour.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+        chronometer.h = hour.substr(1, 2);
+      } else {
+        chronometer.h = hour.substr(0, 2);
+      }
+
+      if (minute.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+        chronometer.m = minute.substr(1, 2);
+      } else {
+        chronometer.m = minute.substr(0, 2);
+      }
+
+      if (second.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+        var secondInt = parseInt(second.slice(1, 2)) + 1;
+        chronometer.s = secondInt;
+
+      } else {
+        var secondInt = parseInt(second.slice(0, 2)) + 1;
+        chronometer.s = secondInt;
+      }
+      if (chronometer.run == false) {
+        chronometer.start();
+      }
+    }
+  </script>
+
+  <script>
+    class Chronometer {
+
+      constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time, process_id) {
+        this.id = id;
+        this.activity_name = activity_name;
+        this.h = h;
+        this.m = m;
+        this.s = s + 1;
+        this.counter = counter;
+        this.collaborator_id = collaborator_id;
+        this.work_time = work_time;
+        this.process_id = process_id
+        this.run = false;
+      }
+
+      start() {
+        this.run = true;
+        this.counter = this.counter + 1;
+        this.intervelId = setInterval(() => {
+
+          if (this.s == 60) {
+            this.m++;
+            this.s = 0;
+          }
+          if (this.m == 60) {
+            this.h++;
+            this.s = 0;
+            this.m = 0;
+          }
+
+          if (this.s < 10) {
+            $('#modalsecond_' + this.id).html("0" + this.s);
+            $('#backsecond_' + this.id).html("0" + this.s);
+            $('#backsecondGroup_' + this.id).html("0" + this.s);
+          } else {
+            $('#modalsecond_' + this.id).html(this.s);
+            $('#backsecond_' + this.id).html(this.s);
+            $('#backsecondGroup_' + this.id).html(this.s);
+          }
+
+          if (this.h < 10) {
+            $('#modalhour_' + this.id).html("0" + this.h);
+            $('#backhour_' + this.id).html("0" + this.h);
+            $('#backhourGroup_' + this.id).html("0" + this.h);
+          } else {
+            $('#modalhour_' + this.id).html(this.h);
+            $('#backhour_' + this.id).html(this.h);
+            $('#backhourGroup_' + this.id).html(this.h);
+          }
+
+          if (this.m < 10) {
+            $('#modalminute_' + this.id).html("0" + this.m);
+            $('#backminute_' + this.id).html("0" + this.m);
+            $('#backminuteGroup_' + this.id).html("0" + this.m);
+          } else {
+            $('#modalminute_' + this.id).html(this.m);
+            $('#backminute_' + this.id).html(this.m);
+            $('#backminuteGroup_' + this.id).html(this.m);
+          }
+          this.s++;
+
+          socket.emit('update', {
+            time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
+              '#modalsecond_' + this.id).html(),
+            counter: this.counter,
+            activity_id: this.id,
+            collaborator_id: this.collaborator_id
+          })
+
+          socket.emit('activityOn', {
+            collaborator_id: this.collaborator_id,
+            process_id: this.process_id,
+            activity_id: this.id,
+            activity_name: this.activity_name,
+            time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
+              '#modalsecond_' + this.id).html(),
+            counter: this.counter,
+            work_time: this.work_time
+          });
+
+          socket.emit('checkSession');
+
+        }, 1000);
+      }
+
+      pause() {
+        this.run = false;
+        clearInterval(this.intervelId)
+      }
+
+    }
+  </script>

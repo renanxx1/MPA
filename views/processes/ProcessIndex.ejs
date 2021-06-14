@@ -89,31 +89,31 @@
 
 
                     <script>
-                        var statusCode = '<%=statusCode%>';
-                        if (statusCode == 406) {
+                        var statusCode = '<%=statusCode%>'; //recebe status code da pagina
+                        if (statusCode == 406) { //caso seja 406
 
-                            $('#modal-title-id3').html('Erro ao Deletar');
-                            $('#modal-body-id3').html('<h5><b><center>Possui atividades ou colaboradores vinculados a este processo!');
-                            $('#modalDeleteError').modal('show');
-                            setTimeout(function () {
-                                $('#modalDeleteError').modal('hide');
+                            $('#modal-title-id3').html('Erro ao Deletar'); //envia para modal esse texto
+                            $('#modal-body-id3').html('<h5><b><center>Possui atividades ou colaboradores vinculados a este processo!'); //envia para modal esse texto
+                            $('#modalDeleteError').modal('show'); //exibe modal
+                            setTimeout(function () { //delay de 3 segundos
+                                $('#modalDeleteError').modal('hide'); //oculta modal
                             }, 3000); // 3000 = 3 segundos
 
                         }
 
-                        function sendDataToModal(process) {
+                        function sendDataToModal(process) { //envia dados para modal
                             $('#modal-title-id1').html('Deletar Processo');
                             $('#modal-body-id1').html('<h5><center>DELETAR O PROCESSO: <b>' + process + '</b>');
                         }
 
-                        function sendForm(event, form) {
+                        function sendForm(event, form) { //função do formulario
                             event.preventDefault();
                             document.getElementById("btn-confirm").addEventListener("click", function () {
                                 form.submit();
                             });
                         }
 
-                        function modalMore(d1, d2) {
+                        function modalMore(d1, d2) { //função da modal mais informaçoes
                             $('#modal-body-id2').html("CRIADO NA DATA: " + "<br><b>" + d1 + '</b><br><br>' + 'ATUALIZADO NA DATA: ' +
                                 "<br><b>" + d2 + '</b>');
                         }

@@ -13,8 +13,6 @@
                     <div class="card">
                         <div class="card-body">
 
-
-
                             <h5 class="card-title">Edição Administrador</h5>
                             <div class="float-right" style="margin-top: -4%; ">
                                 <div class="mx-auto text-center">
@@ -147,11 +145,12 @@
             <%- include ('../partials/footer.ejs')%>
 
                 </html>
+
                 <script>
                     $(function () {
-                        $('[data-toggle="popover"]').popover();
+                        $('[data-toggle="popover"]').popover(); //ativa o popover
                     })
-                    $('body').on('click', function (e) {
+                    $('body').on('click', function (e) { //ao clicar no body oculta o popover(mobile)
                         $('[data-toggle=popover]').each(function () {
                             // hide any open popovers when the anywhere else in the body is clicked
                             if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
@@ -162,15 +161,17 @@
                 </script>
 
                 <script>
-                    var count = 0;
-                    $('.btn-toggle').click(function () {
-                        count++;
-                        $(this).find('.btn').toggleClass('btn-dark');
-                        if (count % 2 == 1) {
-                            $('#modalAdmin').modal().show();
+                    var count = 0; //contador para a opção de transformar em colaborador
+                    $('.btn-toggle').click(function () { //ao apertar no botao de transformar em colaborador
+                        count++; //incrementa o contador
+                        $(this).find('.btn').toggleClass('btn-dark'); //altera o visual do botao
+                        if (count % 2 == 1) { //se o contador % 2 for == 1
+                            $('#modalAdmin').modal().show(); //exibe a modal de confirmação
                         }
-                        $('#adminOnOff').val(count);
+                        $('#adminOnOff').val(count); //atualiza a variavel
                     });
+
+                    //função do formulario
                     function sendForm(event, form) {
                         if (count % 2 == 1 && '<%=admin.collaborator_id%>' == '') {
                             event.preventDefault();
@@ -181,6 +182,8 @@
                             });
                         }
                     }
+
+                    //função de envio do formulario de atualização dos dados 
                     $("#form2").submit(function (event) {
                         event.preventDefault();
                         $('#processSelectId').val($('#modalSelect').val());

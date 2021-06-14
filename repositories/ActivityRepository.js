@@ -192,7 +192,18 @@ class ActivityRepository {
             Group.create({
                 group_name: groupPrefix + group_activity
             })
-       
+        await Activity.update({
+            group_id: group.id,
+            createdAt: hour
+        }, {
+            where: {
+                [Op.and]: [{
+                    activity_name: group_activity,
+                    process_id: process_id,
+                    status: true,
+                }]
+            }
+        })
         await Activity.create({
             activity_name: activity_name,
             process_id: process_id,
