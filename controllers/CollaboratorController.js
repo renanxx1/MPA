@@ -82,23 +82,34 @@ async function renderIndex(req, res, code) {
 
 
 async function renderCreate(req, res, code) {
-    var processes = await CollaboratorService.getCreate();
-    res.status(code).render('collaborators/CollaboratorCreate', {
-        statusCode: code,
-        processes: processes
-    })
+    try {
+        var processes = await CollaboratorService.getCreate();
+        res.status(code).render('collaborators/CollaboratorCreate', {
+            statusCode: code,
+            processes: processes
+        });
+
+    } catch (error) {
+        res.redirect('/colaboradores');
+    }
 }
 
 
 async function renderEdit(req, res, code) {
-    var get = await CollaboratorService.getUpdate(req);
-    var processes = get.processes;
-    var collaborator = get.collaborator;
-    res.status(code).render('collaborators/CollaboratorEdit', {
-        statusCode: code,
-        collaborator: collaborator,
-        processes: processes
-    });
+    try {
+        var get = await CollaboratorService.getUpdate(req);
+        var processes = get.processes;
+        var collaborator = get.collaborator;
+        res.status(code).render('collaborators/CollaboratorEdit', {
+            statusCode: code,
+            collaborator: collaborator,
+            processes: processes
+        });
+
+    } catch (error) {
+        res.redirect('/colaboradores');
+    }
+
 }
 
 

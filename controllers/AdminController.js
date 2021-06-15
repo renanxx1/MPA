@@ -18,7 +18,7 @@ class AdminController {
             login: req.body.inputLogin,
             password: req.body.inputPassword
         }
-        
+
         var result = await AdminService.setCreate(adminData);
         if (result == 1) {
             renderCreate(req, res, 201);
@@ -81,22 +81,32 @@ async function renderIndex(req, res, code) {
 
 
 async function renderCreate(req, res, code) {
-    res.status(code).render('admins/AdminCreate', {
-        statusCode: code
-    });
+    try {
+        res.status(code).render('admins/AdminCreate', {
+            statusCode: code
+        });
 
+    } catch (error) {
+        res.redirect('/admins')
+    }
 }
 
 
 async function renderEdit(req, res, code) {
-    var get = await AdminService.getUpdate(req);
-    var admin = get.admin;
-    var processes = get.processes;
-    res.status(code).render('admins/AdminEdit', {
-        statusCode: code,
-        admin: admin,
-        processes: processes
-    });
+    try {
+        var get = await AdminService.getUpdate(req);
+        var admin = get.admin;
+        var processes = get.processes;
+        res.status(code).render('admins/AdminEdit', {
+            statusCode: code,
+            admin: admin,
+            processes: processes
+        });
+
+    } catch (error) {
+        res.redirect('/admins')
+    }
+
 }
 
 

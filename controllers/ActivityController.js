@@ -78,34 +78,46 @@ async function renderIndex(req, res, code) {
 
 
 async function renderCreate(req, res, code) {
-    var get = await ActivityService.getCreate();
-    var processes = get.processes;
-    var groups = get.groups;
-    var activities = get.activities;
-
-    res.status(code).render('activities/ActivityCreate', {
-        statusCode: code,
-        processes: processes,
-        groups: groups,
-        activities: activities
-    })
+    try {
+        var get = await ActivityService.getCreate();
+        var processes = get.processes;
+        var groups = get.groups;
+        var activities = get.activities;
+    
+        res.status(code).render('activities/ActivityCreate', {
+            statusCode: code,
+            processes: processes,
+            groups: groups,
+            activities: activities
+        })
+  
+    } catch (error) {
+        res.redirect("/atividades");
+    }
+ 
 }
 
 async function renderEdit(req, res, code) {
-    var get = await ActivityService.getUpdate(req);
-    var processes = get.processes;
-    var activity = get.activity;
-    var groups = get.groups;
-    var activities = get.activities;
+    try {
+        var get = await ActivityService.getUpdate(req);
+        var processes = get.processes;
+        var activity = get.activity;
+        var groups = get.groups;
+        var activities = get.activities;
 
-    res.status(code).render('activities/ActivityEdit', {
-        statusCode: code,
-        activity: activity,
-        processes: processes,
-        groups: groups,
-        id: req,
-        activities: activities
-    });
+        res.status(code).render('activities/ActivityEdit', {
+            statusCode: code,
+            activity: activity,
+            processes: processes,
+            groups: groups,
+            id: req,
+            activities: activities
+        });
+  
+    } catch (error) {
+        res.redirect("/atividades");
+    }
+
 }
 
 

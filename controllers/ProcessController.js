@@ -52,13 +52,13 @@ class ProcessController {
 
 
     async setUpdate(req, res) {
-            var processData = {
-                id: req.body.id,
-                process_name: req.body.processNameInput,
-                process_counter: req.body.process_counterInput,
-                process_counterCheck: req.body.process_counterCheckBox,
-                process_goal: req.body.processGoalInput,
-                process_goalCheck: req.body.processGoalCheckBox
+        var processData = {
+            id: req.body.id,
+            process_name: req.body.processNameInput,
+            process_counter: req.body.process_counterInput,
+            process_counterCheck: req.body.process_counterCheckBox,
+            process_goal: req.body.processGoalInput,
+            process_goalCheck: req.body.processGoalCheckBox
         }
 
         var process = await ProcessService.setUpdate(processData);
@@ -89,12 +89,17 @@ async function renderCreate(req, res, code) {
 
 
 async function renderEdit(id, res, code) {
-    var process = await ProcessService.getUpdate(id);
-    res.status(code).render('processes/ProcessEdit', {
-        process: process,
-        statusCode: code
-    });
+    try {
+        var process = await ProcessService.getUpdate(id);
+        if (process == null) { res.redirect('/processos'); }
+        res.status(code).render('processes/ProcessEdit', {
+            process: process,
+            statusCode: code
+        });
 
+    } catch (error) {
+        res.redirect('/processos');
+    }
 }
 
 

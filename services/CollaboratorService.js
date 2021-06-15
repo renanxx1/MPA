@@ -69,7 +69,15 @@ class CollaboratorService {
         try {
             var processes = await CollaboratorRepository.findAllProcesses();
             var collaborator = await CollaboratorRepository.findByPk(id);
-            return { processes: processes, collaborator: collaborator };
+
+            if (collaborator == null) {
+                return null;
+            }
+
+            return {
+                processes: processes,
+                collaborator: collaborator
+            };
 
         } catch (error) {
             return error;

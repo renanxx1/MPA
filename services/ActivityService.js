@@ -128,6 +128,10 @@ class ActivityService {
             var groups = await ActivityRepository.findGroupAndActivity();
             var activity = await ActivityRepository.findOneIncludeAll(id);
             var activities = await ActivityRepository.findAll();
+           
+            if (activity == null) {
+                return null;
+            }
 
             return {
                 processes: processes,

@@ -62,6 +62,11 @@ class ProcessService {
     async getUpdate(id) {
         try {
             var process = await ProcessRepository.findByPk(id);
+
+            if(process==null){
+                return null;
+            }
+
             return process;
 
         } catch (error) {

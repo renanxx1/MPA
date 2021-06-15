@@ -55,7 +55,15 @@ class AdminService {
         try {
             var admin = await AdminRepository.findByPk(id);
             var processes = await AdminRepository.findAllProcesses();
-            return { admin: admin, processes: processes }
+
+            if (admin == null) {
+                return null;
+            }
+
+            return {
+                admin: admin,
+                processes: processes
+            }
 
         } catch (error) {
             return error;
@@ -72,7 +80,7 @@ class AdminService {
                 var checkAdm = await AdminRepository.findOneAdminLoginNotSameId(adminData.login, adminData.id);
                 var admins = await AdminRepository.findAll();
 
-                if(Object.keys(admins).length > 1){
+                if (Object.keys(admins).length > 1) {
                     if (checkAdm == null && checkCol == null) {
                         if (adminData.password == "") {
                             var res = await AdminRepository.adminUpdateChangeToAdmin(adminData.admin_name, adminData.login, null, adminData.id, adminData.process_id, adminData.work_time);
@@ -90,10 +98,10 @@ class AdminService {
                     } else {
                         return 0;
                     }
-                }else{
+                } else {
                     return -1;
                 }
-                
+
 
             } else {
 
@@ -102,7 +110,7 @@ class AdminService {
 
                 if (collaborator == null && admin == null) {
                     if (adminData.password == "") {
-                        await AdminRepository.adminUpdate(adminData.admin_name, adminData.login, null ,adminData.id);
+                        await AdminRepository.adminUpdate(adminData.admin_name, adminData.login, null, adminData.id);
                         return 1;
 
                     } else {
