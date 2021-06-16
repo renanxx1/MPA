@@ -860,8 +860,7 @@
                     if (index != -1) {
                         myBarChart.data.datasets[0].data.splice(index, 1);
                         myBarChart.data.labels.splice(index, 1);
-                    }
-                    if (index == -1) {
+                    }else{
                         myBarChart.data.labels.push("Tempo Ocioso");
                         var hms = idle_time;
                         var a = hms.split(':');
