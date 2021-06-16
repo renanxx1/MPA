@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="/css/shared/style.css">
     <link rel="stylesheet" href="/css/demo_1/style.css">
     <link rel="stylesheet" type="text/css" href="/css/daterangepicker.css" />
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
 
     <%- include ('../partials/navbar.ejs')%>
@@ -13,8 +14,7 @@
                     <div class="float-right text-center">
                         <h6 class="">Processo</h6>
                         <div class="dropdown">
-                            <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button"
-                                data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
+                            <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
                                 <%=process.process_name%>
                             </button>
 
@@ -46,15 +46,14 @@
                                 <div class="btn-group toolbar-item" role="group" aria-label="Basic example">
 
                                     <button type="button" id="btnLastDate" class="btn btn-secondary rounded"><i
-                                            class="mdi mdi-chevron-left"></i></button>
+                                            class="zmdi zmdi-chevron-left"></i></button>
                                     <button type="button" id="btnDate" name="date" class="btn btn-secondary"></button>
                                     <button type="button" id="btnNextDate" class="btn btn-secondary rounded"><i
-                                            class="mdi mdi-chevron-right"></i></button>
+                                            class="zmdi zmdi-chevron-right"></i></button>
                                 </div>
                                 <div class="ml-3"></div>
                                 <div class="dropdown toolbar-item text-center ">
-                                    <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hoje</button>
+                                    <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hoje</button>
                                     <div class="dropdown-menu" aria-labelledby="userDropdown">
                                         <a id="a1" class="dropdown-item" href="#">Hoje</a>
                                         <a id="a2" class="dropdown-item" href="#">Ontem</a>
@@ -66,9 +65,7 @@
                                 </div>
 
                                 <div class="dropdown ml-auto toolbar-item">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">Exportar</button>
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                         <a id="pdf" class="dropdown-item" href="#">Exportar para PDF</a>
                                         <a id="excel" class="dropdown-item" href="#">Exportar para Excel</a>
@@ -86,14 +83,12 @@
                                 <div id="processCounter" class="card-header mb-2" style="display: inline-block;">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     <label class="mb-0" id="processCounterName">Contador Variavel</label>
-                                    <img id="imgMax" class="float-right" src="../../img/arrow.png" width="16px"
-                                        style="margin-right: -1%;">
+                                    <img id="imgMax" class="float-right" src="../../img/arrow.png" width="16px" style="margin-right: -1%;">
 
                                 </div>
                                 <canvas id="myAreaChart" width="82%" height="30"></canvas>
                                 <div class="card-footer text-center mt-2">
-                                    <h2 id="processCounterValue" class="mb-0 mt-0 mx-auto"
-                                        style="color: rgb(28,28,28);">
+                                    <h2 id="processCounterValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
                                 </div>
                             </div>
@@ -102,16 +97,13 @@
                         <div id="chart2" class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fas fa-chart-bar mr-1"></i>
-                                    Produtividade
+                                    <i class="fas fa-chart-bar mr-1"></i> Produtividade
 
-                                    <button type="button" class="btn btn-default btn-sm dropdown float-right"
-                                        data-toggle="dropdown" data-flip="false"> <i
+                                    <button type="button" class="btn btn-default btn-sm dropdown float-right" data-toggle="dropdown" data-flip="false"> <i
                                             class="mx-auto zmdi zmdi-filter-list"></i>
                                     </button>
 
-                                    <ul id="filterList"
-                                        class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
+                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
                                     </ul>
                                 </div>
 
@@ -127,16 +119,11 @@
                         <div class="col-xl-12">
                             <div class="card mb-4">
                                 <div class="card-header mb-2">
-                                    <i class="fas fa-chart-bar mr-1"></i>
-                                    Tempo das Atividades
+                                    <i class="fas fa-chart-bar mr-1"></i> Tempo das Atividades
                                     <div class="float-right">
                                         <div class="btn-group btn-toggle">
-                                            <button onclick="buttonOnOff()" id="buttonOn" class="btn btn-xs btn-primary"
-                                                data-toggle="tooltip" data-placement="bottom"
-                                                title="Exibir/Ocultar Tempo Ocioso">ON</button>
-                                            <button onclick="buttonOnOff()" id="buttonOff"
-                                                class="btn btn-xs btn-default" data-toggle="tooltip"
-                                                data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
+                                            <button onclick="buttonOnOff()" id="buttonOn" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">ON</button>
+                                            <button onclick="buttonOnOff()" id="buttonOff" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
                                         </div>
                                     </div>
                                 </div>
@@ -189,26 +176,24 @@
             '<% }) %>'
 
             //Ao clicar na opçao do processo, insere o id no botao principal do dropdown
-            $('.dropdown-item a').on('click', function () {
-                $('#buttonProcess').val($(this).attr('id'));
-            })
-            //Redireciona e altera o html do botao principal
-            $('#filterProcess a').on('click', function () {
+            $('.dropdown-item a').on('click', function() {
+                    $('#buttonProcess').val($(this).attr('id'));
+                })
+                //Redireciona e altera o html do botao principal
+            $('#filterProcess a').on('click', function() {
                 $('#buttonProcess').html($(this).attr('value'));
                 window.location.href = "/dashboard/" + $(this).attr('value') + '/' + '<%=collaborator.id%>';
             })
-
-
         </script>
 
         <script>
             //opção de expandir o grafico,
-            $('#imgMax').hover(function () {
+            $('#imgMax').hover(function() {
                 $(this).css('cursor', 'pointer');
             });
 
             var chartMaxSize = 0;
-            $('#imgMax').on('click', function () {
+            $('#imgMax').on('click', function() {
                 $('#chart1').toggleClass('col-xl-12');
                 $('#chart2').toggleClass('col-xl-12');
                 chartMaxSize++;
@@ -232,7 +217,6 @@
         </script>
 
         <script>
-
             //Função para converter segundos para time 00:00:00
             function convert(time) {
                 var hrs = ~~(time / 3600);
@@ -312,7 +296,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     var labelOptions = [];
                                     labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
                                         8));
@@ -327,7 +311,7 @@
                             anchor: 'end',
                             align: 'top',
                             color: 'rgb(112, 118, 144)',
-                            formatter: function (value, context) {
+                            formatter: function(value, context) {
                                 if (value != 0) {
                                     return new Date(value * 1000).toISOString().substr(11, 8);
                                 } else {
@@ -355,7 +339,7 @@
                                 suggestedMax: 36000,
                                 stepSize: 3600,
                                 beginAtZero: true,
-                                callback: function (label, index, labels) {
+                                callback: function(label, index, labels) {
                                     return convert(label);
                                 },
                             },
@@ -385,8 +369,7 @@
                         pointHitRadius: 50,
                         pointBorderWidth: 2,
                         data: [],
-                    },
-                    {
+                    }, {
                         label: "Meta",
                         lineTension: 0.3,
                         backgroundColor: "rgb(70, 952, 0)",
@@ -398,18 +381,15 @@
                         pointHitRadius: 50,
                         pointBorderWidth: 2,
                         data: [],
-                    },
-                    {
+                    }, {
                         label: [],
                         data: [],
                         hidden: true,
-                    },
-                    {
+                    }, {
                         label: [],
                         data: [],
                         hidden: true,
-                    },
-                    ],
+                    }, ],
                 },
                 plugins: [ChartDataLabels],
                 options: {
@@ -417,7 +397,7 @@
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     if (tooltipItem.datasetIndex == 1) {
                                         return 'Meta: ' + tooltipItem.raw
                                     } else {
@@ -484,18 +464,17 @@
                     aspectRatio: 2.63,
                     plugins: {
                         legend: {
-                            onClick: function (e, legendItem) {
-                            },
+                            onClick: function(e, legendItem) {},
                             //display: false,
                             reverse: true,
 
                         },
                         tooltip: {
                             callbacks: {
-                                title: function (tooltipItem, data) {
+                                title: function(tooltipItem, data) {
                                     return tooltipItem[0].label
                                 },
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     var totalNumberOfSeconds = tooltipItem.raw;
 
                                     if (tooltipItem.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
@@ -519,7 +498,7 @@
                         datalabels: {
                             align: 'center',
                             color: 'black',
-                            formatter: function (value, context) {
+                            formatter: function(value, context) {
                                 var totalNumberOfSeconds = value;
 
                                 if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
@@ -540,7 +519,7 @@
 
                                 if (context.dataIndex == 0 && totalNumberOfSeconds == 0) {
                                     return null;
-                                }//caso nao tenha sido executado nenhuma atividade, retorna null
+                                } //caso nao tenha sido executado nenhuma atividade, retorna null
 
                                 res.push(totalNumberOfSeconds);
 
@@ -722,12 +701,12 @@
 
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
-                        $(document).on('click', 'li', function (event) {
+                        $(document).on('click', 'li', function(event) {
                             event.stopPropagation();
                         });
 
                         //Botao de filtrar atividade no grafico de produtividade
-                        $('.dropdown-menu li input').on('click', function (event) {
+                        $('.dropdown-menu li input').on('click', function(event) {
 
                             var index = myBarChart.data.labels.indexOf($(this).val());
                             var value = myBarChart.data.datasets[0].data[index];
@@ -759,7 +738,7 @@
             //Sempre que houver novos dados, atualiza o grafico diario
             socket.on("newDataAvailable", (newDataChart) => {
 
-                setTimeout(function () {
+                setTimeout(function() {
                     if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
                         if (newDataChart.process_id == $('#buttonProcess').val() && newDataChart.collaborator_id == '<%=collaborator.id%>') {
 
@@ -801,7 +780,7 @@
                             myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'Lime';
 
                             myBarChart.update()
-                            /*-----------------------------------------------------------------------------------------------------------*/
+                                /*-----------------------------------------------------------------------------------------------------------*/
 
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
@@ -841,7 +820,7 @@
             //Caso o colaborador deslogue e o administrador esteja na pagina diaria, visualizando os dados, chama essa função atualizando os graficos
             socket.on('collaboratorOff', (data) => {
                 if (data.collaborator_id == '<%=collaborator.id%>') {
-                    setTimeout(function () {
+                    setTimeout(function() {
                         for (var i = 0; i < myBarChart.data.labels.length; i++) {
                             myBarChart.data.datasets[0].backgroundColor[i] = 'rgba(2,117,216,1)';
                             myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgba(2,157,216,1)';
@@ -850,13 +829,12 @@
                     }, 1000)
                 }
             })
-
         </script>
 
 
         <script>
             //Botão do tempo ocioso
-            $('.btn-toggle').click(function () {
+            $('.btn-toggle').click(function() {
                 $(this).find('.btn').toggleClass('btn-primary');
             });
 
@@ -886,9 +864,8 @@
 
 
         <script>
-
             //Função ao alterar a data da pagina, zera os dados todos graficos
-            $('#btnDate').bind('DOMNodeInserted', function (e) {
+            $('#btnDate').bind('DOMNodeInserted', function(e) {
 
                 res = [];
                 w_time = [];
@@ -916,7 +893,6 @@
 
                 dataChart(1);
             });
-
         </script>
 
 
@@ -938,9 +914,8 @@
         <script src="/js/html2canvas.min.js"></script>
 
         <script>
-
             //Script para gerar PDF
-            $("#pdf").on("click", function () {
+            $("#pdf").on("click", function() {
 
                 //Pega a data do grafico para criar relatorio
                 var d = $('#smallDateInfo').html()
@@ -950,7 +925,7 @@
                 }
 
                 html2canvas(document.getElementById('container-fluid'), {
-                    onrendered: function (canvas) {
+                    onrendered: function(canvas) {
                         var data = canvas.toDataURL();
                         if (screen.width > 961 && (chartMaxSize % 2 == 0)) {
                             var docDefinition = {
@@ -1001,16 +976,14 @@
                     }
                 })
             })
-
         </script>
 
         <script src="/js/excellentexport.min.js"></script>
         <script src="/js/require.js"></script>
 
         <script>
-
             //Relatorio do excel
-            $("#excel").on("click", function () {
+            $("#excel").on("click", function() {
 
                 table();
 
@@ -1095,7 +1068,7 @@
             })
 
             //Função para limpar o relatorio após ser executado
-            $("#excel").mouseup(function () {
+            $("#excel").mouseup(function() {
                 $("table").children().remove()
             });
 
@@ -1105,5 +1078,4 @@
                     '<thead><colgroup width="109"></colgroup><colgroup width="114"></colgroup><colgroup width="67"></colgroup><colgroup width="95"></colgroup><colgroup width="85"></colgroup><colgroup width="114"></colgroup><colgroup width="76"></colgroup><colgroup width="58"></colgroup><colgroup width="53"></colgroup><colgroup width="89"></colgroup><colgroup width="146"></colgroup><colgroup width="109"></colgroup><tr><td colspan=6 height="19" align="center"><b>TEMPO DAS ATIVIDADES</b></td><td><b><br></b></td><td colspan=3 align="center"><b>CONTADOR VARIAVEL</b></td><td><b><br></b></td><td colspan=3 align="center"><b>PRODUTIVIDADE</b></td></tr><tr><td height="19" style=" width:100%; height:100%; ">NOME ATIVIDADE</td><td style=" width:100%; height:100%; ">TEMPO ATIVIDADE (SEG)</td><td style=" width:100%; height:100%; ">VEZES EXECUTADO</td><td style=" width:100%; height:100%; ">TEMPO MEDIO (SEG)</td><td style=" width:100%; height:100%; ">PROCESSO</td><td style=" width:100%; height:100%; ">COLABORADOR</td><td><br></td><td style=" width:100%; height:100%; ">NOME CONTADOR</td><td style=" width:100%; height:100%; ">META</td><td style=" width:100%; height:100%; ">PRODUZIDO</td><td><br></td><td style=" width:100%; height:100%; ">HORARIO DE TRABALHO (SEG)</td><td style=" width:100%; height:100%; ">TEMPO TOTAL EXECUTADO (SEG)</td><td style=" width:100%; height:100%; ">PRODUTIVIDADE TOTAL</td></tr></thead></table>'
                 )
             }
-
         </script>
