@@ -745,7 +745,7 @@
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE LINHAS
                             if (newDataChart.process_counter != null && newDataChart.process_counter != undefined) {
-                                $('#processCounterValue').html("Total " + newDataChart.process_counter_name + " " + newDataChart.process_counter)
+                                $('#processCounterValue').html("Total Produzido " + newDataChart.process_counter)
                                 myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
                                 myLineChart.data.datasets[2].data[0] = newDataChart.process_counter;
                                 myLineChart.update();
