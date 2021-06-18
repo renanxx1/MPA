@@ -274,6 +274,15 @@ class CollectorRepository {
             })
     }
 
+    async deleteAllCheckPoint(collaborator_id) {
+        return await
+            Checkpoint.destroy({
+                where: {
+                    collaborator_id: collaborator_id
+                }
+            })
+    }
+
 }
 
 module.exports = new CollectorRepository();

@@ -29,6 +29,11 @@ class CollectorService {
             var chronometer = await CollectorRepository.findOneChronometer(activity_id, collaborator_id);
             var check = await CollectorRepository.findCheckPoint(chronometer.id);
 
+            if (check != null || check != undefined) {
+                await CollectorRepository.deleteAllCheckPoint(collaborator_id);
+                check = await CollectorRepository.findCheckPoint(chronometer.id);
+            }
+
             if (check == null || check == undefined) {
                 await CollectorRepository.createCheckPoint(chronometer.collaborator_id, chronometer.id, chronometer.process_id);
             }
@@ -50,7 +55,7 @@ class CollectorService {
 
     //Retorna os dados da pagina do coletor
     async getIndex(req) {
-       try {
+        try {
             //Consulta com os dados para a view
             var collaborator = await CollectorRepository.findCollaboratorAndProcess(req.session.user.id);
             var processAndCounter = await CollectorRepository.findProcessAndCounter(req.session.user.id, req.session.user.process_id);
@@ -162,7 +167,7 @@ class CollectorService {
 
         } catch (error) {
             return error;
-        } 
+        }
     }
 
 }
