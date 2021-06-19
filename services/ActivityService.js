@@ -152,8 +152,6 @@ class ActivityService {
             var activityName = await ActivityRepository.findActivityNotSameId(activityData.activity_name, activityData.process_id, activityData.id); //verifica se tem uma atividade com esse nome
             var activitiesLinked = await ActivityRepository.findActivtyByGroupId(activity.group_id); //verifica se essa atividade tem um grupo e possui atividades vinculada
 
-            console.log(activityName)
-            console.log(activitiesLinked)
             //VERIFICAÇÃO DE BLOQUEIO PRINCIPAL
             //não pode cadastrar atividades com nomes iguais ou vincular a atividade em si mesma
             if (activityName != null || activity.activity_name == activityData.group_name && activity.createdAt != activity.group.createdAt) {

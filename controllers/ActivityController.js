@@ -56,14 +56,22 @@ class ActivityController {
             group_name: req.body.groupSelect,
         }
 
+
+
         var result = await ActivityService.setUpdate(activityData);
         if (result == 1) {
             renderEdit(activityData.id, res, 201);
+            io.emit('activityUpdated', {
+                activityData: activityData
+            })
         } else if (result == 0) {
             renderEdit(activityData.id, res, 406);
         } else {
             renderEdit(activityData.id, res, 409);
         }
+
+
+
     }
 
 }
@@ -83,18 +91,18 @@ async function renderCreate(req, res, code) {
         var processes = get.processes;
         var groups = get.groups;
         var activities = get.activities;
-    
+
         res.status(code).render('activities/ActivityCreate', {
             statusCode: code,
             processes: processes,
             groups: groups,
             activities: activities
         })
-  
+
     } catch (error) {
         res.redirect("/atividades");
     }
- 
+
 }
 
 async function renderEdit(req, res, code) {
@@ -113,7 +121,7 @@ async function renderEdit(req, res, code) {
             id: req,
             activities: activities
         });
-  
+
     } catch (error) {
         res.redirect("/atividades");
     }
