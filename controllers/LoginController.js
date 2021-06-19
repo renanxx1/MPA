@@ -18,14 +18,13 @@ class LoginController {
 
     async authenticate(req, res) {
         return await
-            LoginService.authenticate(req, res);
+        LoginService.authenticate(req, res);
     }
 
 }
 
 
-io.on("connection", async function (socket) {
-
+io.on("connection", async function(socket) {
     //Caso seja um colaborador logando, dispara um evento que este colaborador esta online
     try {
         if (socket.handshake.session.user.admin == false) {
@@ -43,10 +42,10 @@ io.on("connection", async function (socket) {
 
 
     //Verifica se a seção do usuario esta permitida
-    socket.on('checkSession', async (data) => {
+    socket.on('checkSession', async(data) => {
         try {
             if (socket.handshake.session.user.admin == false) {
-                var collaborator = await LoginRepository.findLogin(socket.handshake.session.user.login, socket.handshake.sessionID)
+                var collaborator = await LoginRepository.findLogin(socket.handshake.session.user.login, data.session);
                 if (collaborator == null) {
                     socket.emit("allow", false)
                 } else {
@@ -60,7 +59,7 @@ io.on("connection", async function (socket) {
 
 
     //Caso o colaborador delogue, dispara um evento que este colaborador deslogou
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function() {
         try {
             if (socket.handshake.session.user.admin == false) {
                 io.emit('collaboratorOff', {

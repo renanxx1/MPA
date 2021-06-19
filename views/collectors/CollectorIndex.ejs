@@ -1,805 +1,778 @@
 <%- include ('../partials/header.ejs')%>
 
 
-  <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark row d-flex justify-content-center">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark row d-flex justify-content-center">
 
-    <div class="sb-sidenav-footer ml-auto">
-      <div class="small" style="color: darkgrey;">Logado com: <br>
-        <%=collaborator.login%>
-      </div>
-    </div>
-
-
-    <h1 class="navbar-nav mx-auto" style="color: white; position: fixed;">
-      <%=collaborator.process.process_name%>
-    </h1>
-
-    <ul class="navbar-nav">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="/logout">Sair</a>
+        <div class="sb-sidenav-footer ml-auto">
+            <div class="small" style="color: darkgrey;">Logado com: <br>
+                <%=collaborator.login%>
+            </div>
         </div>
-      </li>
-    </ul>
-
-  </nav>
-
-  <body class="sb-nav-fixed mt-2"><br><br>
-    <main id="main">
-      <div id="mainDiv" style="display:none" class="container-fluid mb-4 ">
-
-        <%if(mainFunction==true){ %>
-          <div class="card col-lg-2 row mx-auto mt-4">
-            <div class="card-header row">
-              <text class="mx-auto mb-n2 mt-n2"><b>
-                  <%=processAndCounter.processes_counter.process_counter%>
-                </b></text>
-            </div>
-
-            <div class="card-body mt-1">
-
-              <div class="table-data-feature mr-n2 mt-n3 ">
-                <button class="item mt-n1" data-toggle="tooltip" data-placement="top" title="Editar"
-                  onclick="editCounter()">
-                  <i class="zmdi zmdi-edit"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class=" mx-auto row text-center mt-n5">
-              <input id="mainFunctionCounter" type="text" class="form-control input-sm text-center mx-auto mt-2"
-                value="<%=processAndCounter.processes_counter.counter%>" disabled>
-              <button class="btn btn-dark btn-sm mx-auto mb-1"
-                onclick="addCounter('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Adicionar</button>
-            </div>
-
-          </div>
 
 
-          <div class="modal fade bd-example-modal-sm" id="modalCounter" tabindex="-1" role="dialog"
-            aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">
-                    Alterar Valor
-                  </h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+        <h1 class="navbar-nav mx-auto" style="color: white; position: fixed;">
+            <%=collaborator.process.process_name%>
+        </h1>
+
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="/logout">Sair</a>
                 </div>
+            </li>
+        </ul>
 
-                <input type="number" id="counterNewValue" class="text-center card-body form-control mx-auto"
-                  value="<%=processAndCounter.processes_counter.counter%>"
-                  style="padding-left: 40px; font-weight: bold; color:rgb(78, 76, 76); font-size: 108%;" required>
+    </nav>
 
-                <div class="modal-footer mx-auto">
-                  <button type="button" class="btn btn-dark"
-                    onclick="alterCounter('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Confirmar</button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                </div>
-              </div>
-            </div>
-          </div>
+    <body class="sb-nav-fixed mt-2"><br><br>
+        <main id="main">
+            <div id="mainDiv" style="display:none" class="container-fluid mb-4 ">
 
-          <hr class="mt-4 mb-4">
-          <% } else{%>
-            <hr class="mt-4 mb-4">
-            <% }%>
-
-              <div class="row justify-content-md-center">
-                <%var mainActivities=[]%>
-
-                  <%activitiesAndChronometers.forEach((activity)=>{%>
-                    <%if(activity.group_id==null) {%>
-
-                      <div id="cardDiv_<%=activity.id%>" class="col-sm-2 mb-4 mr-3 ml-3">
-
-                        <div class="card text-center" id="cardCollector">
-                          <div class="card-header text-center">
-                            <text class="mr-n5 ml-n5 mt-n5 mb-n5">
-                              <b>
-                                <%=activity.activity_name%>
-                              </b>
-                            </text>
-                          </div>
-                          <div class="card-body" id="cardBody" onclick="play('<%=activity.id%>')">
-                            <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/play.png" alt="Play" height="70"
-                              width="70">
-                          </div>
-                          <div class="card-footer">
-                            <span id="backhour_<%=activity.id%>" style="color:black">00</span>:<span
-                              id="backminute_<%=activity.id%>" style="color:black">00</span>:<span
-                              id="backsecond_<%=activity.id%>" style="color:black">00</span>
-                          </div>
+                <%if(mainFunction==true){ %>
+                    <div class="card col-lg-2 row mx-auto mt-4">
+                        <div class="card-header row">
+                            <text class="mx-auto mb-n2 mt-n2"><b>
+              <%=processAndCounter.processes_counter.process_counter%>
+            </b></text>
                         </div>
-                        <br>
-                      </div>
 
-                      <div class="modal fade in" id="modalPlay_<%=activity.id%>" tabindex="5" role="dialog"
-                        aria-hidden="true" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                          <div class="modal-content">
-                            <div class="card text-center" id="cardCollector">
-                              <div class="card-header">
-                                <h5 class="modal-title" id="modalTextHeader">
-                                  <%=activity.activity_name%>
-                                </h5>
-                              </div>
-                              <input id='modalId' value="" hidden>
-                              <div class="card-body" id="cardBody2" onclick="pause('<%=activity.id%>')">
-                                <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png" alt="Pause"
-                                  height="150" width="150">
-                              </div>
-                              <div class="card-footer">
-                                <span id="modalhour_<%=activity.id%>" style="color:black">00</span>:<span
-                                  id="modalminute_<%=activity.id%>" style="color:black">00</span>:<span
-                                  id="modalsecond_<%=activity.id%>" style="color:black">00</span>
-                              </div>
+                        <div class="card-body mt-1">
+
+                            <div class="table-data-feature mr-n2 mt-n3 ">
+                                <button class="item mt-n1" data-toggle="tooltip" data-placement="top" title="Editar" onclick="editCounter()">
+              <i class="zmdi zmdi-edit"></i>
+            </button>
                             </div>
-                          </div>
                         </div>
-                      </div>
-                      <%}else{%>
-                        <%}%>
-                          <% })%>
+
+                        <div class=" mx-auto row text-center mt-n5">
+                            <input id="mainFunctionCounter" type="text" class="form-control input-sm text-center mx-auto mt-2" value="<%=processAndCounter.processes_counter.counter%>" disabled>
+                            <button class="btn btn-dark btn-sm mx-auto mb-1" onclick="addCounter('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Adicionar</button>
+                        </div>
+
+                    </div>
 
 
-                            <%groupMainActivities.forEach(groupMainActivity=> { %>
-                              <div id="cardDiv_<%=groupMainActivity.id%>" class="col-sm-2 mb-4 mr-3 ml-3">
-                                <div class="card text-center" id="cardCollector">
-                                  <div class="card-header text-center">
-                                    <text class="mr-n5 ml-n5 mt-n5 mb-n5">
-                                      <b>
-                                        *<%=groupMainActivity.activity_name%>*
-                                      </b>
-                                    </text>
-                                  </div>
-                                  <div class="card-body" id="cardBody"
-                                    onclick="groupOption('<%=groupMainActivity.group_id%>')">
-                                    <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/play.png" alt="Play"
-                                      height="70" width="70">
-                                  </div>
-                                  <div class="card-footer">
-                                    <span id="backhour_<%=groupMainActivity.id%>" style="color:black">00</span>:<span
-                                      id="backminute_<%=groupMainActivity.id%>" style="color:black">00</span>:<span
-                                      id="backsecond_<%=groupMainActivity.id%>" style="color:black">00</span>
-                                  </div>
-                                </div>
-                                <br>
-                              </div>
-
-
-                              <div class="modal fade" id="modalOptions_<%=groupMainActivity.group_id%>" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title">Grupo de Atividades</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <input id='modalIdGroup' value="" hidden>
-                                    <div class="modal-body text-center">
-                                      <h5>
-                                        Selecione uma atividade deste grupo
-                                      </h5>
-
-                                      <div class="list-group" id="listGroupId">
-
-                                        <button type="button" value="<%=groupMainActivity.id%>"
-                                          class="list-group-item list-group-item-action">
-                                          <b>
-                                            <%=groupMainActivity.activity_name%>
-                                          </b>
-                                          <div class="">
-                                            <hr class="mt-0 mb-0 mr-4 ml-4">
-                                            <span id="backhourGroup_<%=groupMainActivity.id%>">00</span>:<span
-                                              id="backminuteGroup_<%=groupMainActivity.id%>">00</span>:<span
-                                              id="backsecondGroup_<%=groupMainActivity.id%>">00</span>
-                                          </div>
-                                        </button>
-
-                                        <%groupActivities.forEach((groupActivity)=> { %>
-                                          <%if(groupActivity.group_id==groupMainActivity.group_id){%>
-
-                                            <button type="button" value="<%=groupActivity.id%>"
-                                              class="list-group-item list-group-item-action">
-                                              <b>
-                                                <%=groupActivity.activity_name%>
-                                              </b>
-                                              <div class="">
-                                                <hr class="mt-0 mb-0 mr-4 ml-4">
-
-                                                <span id="backhourGroup_<%=groupActivity.id%>">00</span>:<span
-                                                  id="backminuteGroup_<%=groupActivity.id%>">00</span>:<span
-                                                  id="backsecondGroup_<%=groupActivity.id%>">00</span>
-                                              </div>
-                                            </button>
-
-                                            <%}%>
-                                              <%})%>
-
-                                      </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button id="modalGroupConfirm" type="button" class="btn btn-dark"
-                                        onclick="play(null, '<%=groupMainActivity.group_id%>')">Confirmar</button>
-                                      <button type="button" class="btn btn-danger"
-                                        data-dismiss="modal">Cancelar</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-
-                              <div class="modal fade" id="modalPlay_<%=groupMainActivity.id%>" tabindex="5"
-                                role="dialog" aria-hidden="true" data-backdrop="static">
-                                <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                  <div class="modal-content">
-                                    <div class="card text-center" id="cardCollector">
-                                      <div class="card-header">
-                                        <h5 class="modal-title" id="modalTextHeader">
-                                          <%=groupMainActivity.activity_name%>
-                                        </h5>
-                                      </div>
-                                      <input id='modalId' value="" hidden>
-                                      <div class="card-body" id="cardBody2"
-                                        onclick="pause('<%=groupMainActivity.id%>', '<%=groupMainActivity.group_id%>')">
-                                        <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png"
-                                          alt="Pause" height="150" width="150">
-                                      </div>
-                                      <div class="card-footer">
-                                        <span id="modalhour_<%=groupMainActivity.id%>"
-                                          style="color:black">00</span>:<span id="modalminute_<%=groupMainActivity.id%>"
-                                          style="color:black">00</span>:<span id="modalsecond_<%=groupMainActivity.id%>"
-                                          style="color:black">00</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <%})%>
-
-
-                                <%groupActivities.forEach((groupActivity)=> { %>
-                                  <div class="modal fade" id="modalPlay_<%=groupActivity.id%>" tabindex="5"
-                                    role="dialog" aria-hidden="true" data-backdrop="static">
-                                    <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                      <div class="modal-content">
-                                        <div class="card text-center" id="cardCollector">
-                                          <div class="card-header">
-                                            <h5 class="modal-title" id="modalTextHeader">
-                                              <%=groupActivity.activity_name%>
-                                            </h5>
-                                          </div>
-                                          <input id='modalId' value="" hidden>
-                                          <div class="card-body" id="cardBody2"
-                                            onclick="pause('<%=groupActivity.id%>', '<%=groupActivity.group_id%>')">
-                                            <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png"
-                                              alt="Pause" height="150" width="150">
-                                          </div>
-                                          <div class="card-footer">
-                                            <span id="modalhour_<%=groupActivity.id%>"
-                                              style="color:black">00</span>:<span id="modalminute_<%=groupActivity.id%>"
-                                              style="color:black">00</span>:<span id="modalsecond_<%=groupActivity.id%>"
-                                              style="color:black">00</span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <%})%>
-              </div>
-      </div>
-
-      <div class="modal fade" id="modalError" tabindex="5" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modal-title-id3">
-                Erro ao Iniciar Atividade.
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <div class="modal fade bd-example-modal-sm" id="modalCounter" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        Alterar Valor
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
-            <div class="modal-body" id="modal-body-id3">
-              <h5 class="modal-body text-center" id="modalTextHeader">
-                NENHUMA ATIVIDADE FOI SELECIONADA.
-              </h5>
-            </div>
-            <div class="modal-footer">
-            </div>
-          </div>
-        </div>
-      </div>
+                                </div>
 
-      <div class="card-footer text-center" style="visibility: hidden;">
-        <span id="modalhour_null" style="color:black">00</span>:<span id="modalminute_null"
-          style="color:black">00</span>:<span id="modalsecond_null" style="color:black">00</span>
-      </div>
+                                <input type="number" id="counterNewValue" class="text-center card-body form-control mx-auto" value="<%=processAndCounter.processes_counter.counter%>" style="padding-left: 40px; font-weight: bold; color:rgb(78, 76, 76); font-size: 108%;" required>
 
-      <%if(checkPoint!=null){ %>
-        <div class="modal fade" id="modalCheckPoint" tabindex="5" role="dialog" aria-hidden="true"
-          data-backdrop="static" data-keyboard="false">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modal-title-id3">
-                  Encerramento Incorreto.
-                </h5>
-                <button id="checkButtonClose" type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <div class="modal-footer mx-auto">
+                                    <button type="button" class="btn btn-dark" onclick="alterCounter('<%=processAndCounter.id%>', '<%=processAndCounter.processes_counter.collaborator_id%>')">Confirmar</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="mt-4 mb-4">
+                    <% } else{%>
+                        <hr class="mt-4 mb-4">
+                        <% }%>
+
+                            <div class="row justify-content-md-center">
+                                <%var mainActivities=[]%>
+
+                                    <%activitiesAndChronometers.forEach((activity)=>{%>
+                                        <%if(activity.group_id==null) {%>
+
+                                            <div id="cardDiv_<%=activity.id%>" class="col-sm-2 mb-4 mr-3 ml-3">
+
+                                                <div class="card text-center" id="cardCollector">
+                                                    <div class="card-header text-center">
+                                                        <text class="mr-n5 ml-n5 mt-n5 mb-n5">
+                <b>
+                  <%=activity.activity_name%>
+                </b>
+              </text>
+                                                    </div>
+                                                    <div class="card-body" id="cardBody" onclick="play('<%=activity.id%>')">
+                                                        <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/play.png" alt="Play" height="70" width="70">
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <span id="backhour_<%=activity.id%>" style="color:black">00</span>:<span id="backminute_<%=activity.id%>" style="color:black">00</span>:<span id="backsecond_<%=activity.id%>" style="color:black">00</span>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+
+                                            <div class="modal fade in" id="modalPlay_<%=activity.id%>" tabindex="5" role="dialog" aria-hidden="true" data-backdrop="static">
+                                                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="card text-center" id="cardCollector">
+                                                            <div class="card-header">
+                                                                <h5 class="modal-title" id="modalTextHeader">
+                                                                    <%=activity.activity_name%>
+                                                                </h5>
+                                                            </div>
+                                                            <input id='modalId' value="" hidden>
+                                                            <div class="card-body" id="cardBody2" onclick="pause('<%=activity.id%>')">
+                                                                <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png" alt="Pause" height="150" width="150">
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <span id="modalhour_<%=activity.id%>" style="color:black">00</span>:<span id="modalminute_<%=activity.id%>" style="color:black">00</span>:<span id="modalsecond_<%=activity.id%>" style="color:black">00</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <%}else{%>
+                                                <%}%>
+                                                    <% })%>
+
+
+                                                        <%groupMainActivities.forEach(groupMainActivity=> { %>
+                                                            <div id="cardDiv_<%=groupMainActivity.id%>" class="col-sm-2 mb-4 mr-3 ml-3">
+                                                                <div class="card text-center" id="cardCollector">
+                                                                    <div class="card-header text-center">
+                                                                        <text class="mr-n5 ml-n5 mt-n5 mb-n5">
+                <b>
+                  *<%=groupMainActivity.activity_name%>*
+                </b>
+              </text>
+                                                                    </div>
+                                                                    <div class="card-body" id="cardBody" onclick="groupOption('<%=groupMainActivity.group_id%>')">
+                                                                        <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/play.png" alt="Play" height="70" width="70">
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <span id="backhour_<%=groupMainActivity.id%>" style="color:black">00</span>:<span id="backminute_<%=groupMainActivity.id%>" style="color:black">00</span>:<span id="backsecond_<%=groupMainActivity.id%>"
+                                                                            style="color:black">00</span>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+
+
+                                                            <div class="modal fade" id="modalOptions_<%=groupMainActivity.group_id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Grupo de Atividades</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-              </div>
-              <div class="modal-body" id="modal-body-id3">
-                <h5 class="modal-body text-center" id="modalTextHeader">
-                  O sistema identificou um encerramento incorreto na atividade: <b>
-                    <%=checkPoint.activity_name%>
-                  </b><br><br>
-                  Gostaria de corrigir o tempo total para:
-                  <br>
-                  <%=checkPoint.timeFixed%></b>
-                </h5>
-              </div>
-              <div class="modal-footer">
-                <button id="checkButtonOk" type="button" class="btn btn-dark" onclick="">Sim</button>
-                <button id="checkButtonCancel" type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
-              </div>
+                                                                        </div>
+                                                                        <input id='modalIdGroup' value="" hidden>
+                                                                        <div class="modal-body text-center">
+                                                                            <h5>
+                                                                                Selecione uma atividade deste grupo
+                                                                            </h5>
+
+                                                                            <div class="list-group" id="listGroupId">
+
+                                                                                <button type="button" value="<%=groupMainActivity.id%>" class="list-group-item list-group-item-action">
+                    <b>
+                      <%=groupMainActivity.activity_name%>
+                    </b>
+                    <div class="">
+                      <hr class="mt-0 mb-0 mr-4 ml-4">
+                      <span id="backhourGroup_<%=groupMainActivity.id%>">00</span>:<span
+                        id="backminuteGroup_<%=groupMainActivity.id%>">00</span>:<span
+                        id="backsecondGroup_<%=groupMainActivity.id%>">00</span>
+                    </div>
+                  </button>
+
+                                                                                <%groupActivities.forEach((groupActivity)=> { %>
+                                                                                    <%if(groupActivity.group_id==groupMainActivity.group_id){%>
+
+                                                                                        <button type="button" value="<%=groupActivity.id%>" class="list-group-item list-group-item-action">
+                    <b>
+                      <%=groupActivity.activity_name%>
+                    </b>
+                    <div class="">
+                      <hr class="mt-0 mb-0 mr-4 ml-4">
+
+                      <span id="backhourGroup_<%=groupActivity.id%>">00</span>:<span
+                        id="backminuteGroup_<%=groupActivity.id%>">00</span>:<span
+                        id="backsecondGroup_<%=groupActivity.id%>">00</span>
+                    </div>
+                  </button>
+
+                                                                                        <%}%>
+                                                                                            <%})%>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button id="modalGroupConfirm" type="button" class="btn btn-dark" onclick="play(null, '<%=groupMainActivity.group_id%>')">Confirmar</button>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="modal fade" id="modalPlay_<%=groupMainActivity.id%>" tabindex="5" role="dialog" aria-hidden="true" data-backdrop="static">
+                                                                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="card text-center" id="cardCollector">
+                                                                            <div class="card-header">
+                                                                                <h5 class="modal-title" id="modalTextHeader">
+                                                                                    <%=groupMainActivity.activity_name%>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <input id='modalId' value="" hidden>
+                                                                            <div class="card-body" id="cardBody2" onclick="pause('<%=groupMainActivity.id%>', '<%=groupMainActivity.group_id%>')">
+                                                                                <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png" alt="Pause" height="150" width="150">
+                                                                            </div>
+                                                                            <div class="card-footer">
+                                                                                <span id="modalhour_<%=groupMainActivity.id%>" style="color:black">00</span>:<span id="modalminute_<%=groupMainActivity.id%>" style="color:black">00</span>:<span id="modalsecond_<%=groupMainActivity.id%>"
+                                                                                    style="color:black">00</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <%})%>
+
+
+                                                                <%groupActivities.forEach((groupActivity)=> { %>
+                                                                    <div class="modal fade" id="modalPlay_<%=groupActivity.id%>" tabindex="5" role="dialog" aria-hidden="true" data-backdrop="static">
+                                                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="card text-center" id="cardCollector">
+                                                                                    <div class="card-header">
+                                                                                        <h5 class="modal-title" id="modalTextHeader">
+                                                                                            <%=groupActivity.activity_name%>
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <input id='modalId' value="" hidden>
+                                                                                    <div class="card-body" id="cardBody2" onclick="pause('<%=groupActivity.id%>', '<%=groupActivity.group_id%>')">
+                                                                                        <img class="mt-n3 mb-n3 mr-n3 ml-n3" src="../../img/pause.png" alt="Pause" height="150" width="150">
+                                                                                    </div>
+                                                                                    <div class="card-footer">
+                                                                                        <span id="modalhour_<%=groupActivity.id%>" style="color:black">00</span>:<span id="modalminute_<%=groupActivity.id%>" style="color:black">00</span>:<span id="modalsecond_<%=groupActivity.id%>"
+                                                                                            style="color:black">00</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <%})%>
+                            </div>
             </div>
-          </div>
-        </div>
-        <%} %>
 
-    </main>
-  </body>
+            <div class="modal fade" id="modalError" tabindex="5" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-id3">
+                                Erro ao Iniciar Atividade.
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                        </div>
+                        <div class="modal-body" id="modal-body-id3">
+                            <h5 class="modal-body text-center" id="modalTextHeader">
+                                NENHUMA ATIVIDADE FOI SELECIONADA.
+                            </h5>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  </html>
+            <div class="card-footer text-center" style="visibility: hidden;">
+                <span id="modalhour_null" style="color:black">00</span>:<span id="modalminute_null" style="color:black">00</span>:<span id="modalsecond_null" style="color:black">00</span>
+            </div>
 
+            <%if(checkPoint!=null){ %>
+                <div class="modal fade" id="modalCheckPoint" tabindex="5" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal-title-id3">
+                                    Encerramento Incorreto.
+                                </h5>
+                                <button id="checkButtonClose" type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                            </div>
+                            <div class="modal-body" id="modal-body-id3">
+                                <h5 class="modal-body text-center" id="modalTextHeader">
+                                    O sistema identificou um encerramento incorreto na atividade: <b>
+                <%=checkPoint.activity_name%>
+              </b><br><br> Gostaria de corrigir o tempo total para:
+                                    <br>
+                                    <%=checkPoint.timeFixed%>
+                                        </b>
+                                </h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="checkButtonOk" type="button" class="btn btn-dark" onclick="">Sim</button>
+                                <button id="checkButtonCancel" type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%} %>
 
+        </main>
+    </body>
 
-  <script src="/js/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-  <script src="/js/popper.min.js" crossorigin="anonymous"></script>
-  <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <script src="/js/socket.io.js"></script>
-  <script src="/js/NoSleep.min.js"></script>
-
-
-  <script>
-
-    //Controle de url e login
-    var url = "http://" + '<%=internalIp%>' + "/"; //recebe o ip interno do servidor
-    var url_atual = window.location.href; //pega a url da pagina
-    if (url_atual.includes('localhost')) { //se tem localhost no url
-      window.location.href = url; //redireciona a pagina para o ip do servidor
-    }
-    var socket = io(url); //seta o ip no socket io
-    socket.emit('checkSession'); //emite um evento para checar a seção do usuario
-    socket.on("allow", (data) => {
-      if (data == false) { //se usario não permitido
-        window.location.href = '/login'; //redireciona para a tela de login
-        alert("Usuario foi desconectado.")
-      }
-    })
-
-  </script>
-
-
-  <script>
-
-    //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
-    $(function () {
-
-      '<%activitiesAndChronometers.forEach((activity)=>{%>'
-      if (screen.width < 400) {
-        $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
-
-      } else if (screen.width > 400 && screen.width < 961) {
-        $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
-
-      } else {
-      }
-      '<%})%>'
-      $("#mainDiv").show();
-    })
-
-    var noSleep = new NoSleep(); //Declaração do NoSleep para manter a tela acesa
-
-    if (performance.navigation.type == performance.navigation
-      .TYPE_RELOAD) { //Identifica se a pagina ja foi recarregada
-      $('body').click(
-        function () { //Caso a pagina tenha sido recarregada, o nosleep só é ativado se houver um click dentro do body da pagina
-          noSleep.enable()
-        });
-
-    } else { //Caso seja o primeiro carregamento da pagina, ativa o nosleep.
-      noSleep.enable()
-    }
-  </script>
+    </html>
 
 
-  <script>
-    //Script do checkpoint
-    '<%if(checkPoint!=null){ %>' //Caso tenha checkpoint
-    $('#modalCheckPoint').modal('show'); //exibe a modal
-    $('#checkButtonOk').on('click', () => { //ao clicar no botao ok da modal
 
-      var time = '<%=checkPoint.timeFixed%>'.split(":"); //separa o tempo do checkpoint para inserir na view
+    <script src="/js/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="/js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/socket.io.js"></script>
+    <script src="/js/NoSleep.min.js"></script>
 
-      $('#backhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
-      $('#backminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
-      $('#backsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
 
-      $('#modalhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
-      $('#modalminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
-      $('#modalsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
-
-      $('#backhourGroup_' + '<%=checkPoint.activity_id%>').html(time[0]);
-      $('#backminuteGroup_' + '<%=checkPoint.activity_id%>').html(time[1]);
-      $('#backsecondGroup_' + '<%=checkPoint.activity_id%>').html(time[2]);
-
-      socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
-        time: '<%=checkPoint.timeFixed%>',
-        counter: '<%=checkPoint.counter%>',
-        activity_id: '<%=checkPoint.activity_id%>',
-        collaborator_id: '<%=checkPoint.collaborator_id%>'
-      })
-
-      socket.emit('activityOn', { //atualiza os dandos no banco
-        collaborator_id: '<%=checkPoint.collaborator_id%>',
-        process_id: '<%=checkPoint.process_id%>',
-        activity_id: '<%=checkPoint.activity_id%>',
-        activity_name: '<%=checkPoint.activity_name%>',
-        time: '<%=checkPoint.timeFixed%>',
-        timeDiff: '<%=checkPoint.timeDiff%>',
-        counter: '<%=checkPoint.counter%>',
-        work_time: '<%=collaborator.work_time%>',
-        checkpoint: true
-      });
-
-      socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
-        activity_id: '<%=checkPoint.activity_id%>',
-        collaborator_id: '<%=collaborator.id%>'
-      });
-      $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
-      '<%}%>'
-    })
-
-    //ao clicar no botao cancelar, deleta o checkpoint criado no banco de dados
-    $('#checkButtonCancel').on('click', () => {
-      '<%if(checkPoint!=null){ %>'
-      socket.emit('deleteCheckPoint', {
-        activity_id: '<%=checkPoint.activity_id%>',
-        collaborator_id: '<%=collaborator.id%>'
-      });
-      '<%}%>'
-    })
-
-    //ao clicar no botao fechar, deleta o checkpoint criado no banco de dados
-    $('#checkButtonClose').on('click', () => {
-      '<%if(checkPoint!=null){ %>'
-      socket.emit('deleteCheckPoint', {
-        activity_id: '<%=checkPoint.activity_id%>',
-        collaborator_id: '<%=collaborator.id%>'
-      });
-      '<%}%>'
-    })
-  </script>
-
-  <script>
-    var mapChronometer = new Map()
-
-    $(function () {
-      //Verificação de dado recebido do banco
-      //Efetua um forEach na variavel enviada pelo banco e faz um split no time do chronometro e armazena em array, depois insere na view
-      '<% activitiesAndChronometers.forEach(activity=>{ %>'
-      var time = '<%=activity.activities_chronometer.time%>'.split(":");
-
-      //Insere na view os dados recebidos do banco
-      $('#backhour_' + '<%=activity.id%>').html(time[0]);
-      $('#backminute_' + '<%=activity.id%>').html(time[1]);
-      $('#backsecond_' + '<%=activity.id%>').html(time[2]);
-
-      $('#modalhour_' + '<%=activity.id%>').html(time[0]);
-      $('#modalminute_' + '<%=activity.id%>').html(time[1]);
-      $('#modalsecond_' + '<%=activity.id%>').html(time[2]);
-
-      '<%if(activity.group_id != null) { %>'
-      $('#backhourGroup_' + '<%=activity.id%>').html(time[0]);
-      $('#backminuteGroup_' + '<%=activity.id%>').html(time[1]);
-      $('#backsecondGroup_' + '<%=activity.id%>').html(time[2]);
-      '<%}%>'
-
-      //Cria um cronometro para cada atividade
-      mapChronometer.set('<%=activity.id%>', new Chronometer('<%=activity.id%>', '<%=activity.activity_name%>',
-        time[0], time[1], time[2], parseInt('<%=activity.activities_chronometer.counter%>'),
-        '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>', '<%=activity.activities_chronometer.process_id%>'))
-      '<%})%>'
-
-      //Divide o tempo em 3 array
-      'if(idleTime!=null){ %>'
-      var idleTime = '<%=idleTime.time%>'.split(":");
-
-      //Insere na view os dados recebidos do banco
-      $('#modalhour_null').html(idleTime[0]);
-      $('#modalminute_null').html(idleTime[1]);
-      $('#modalsecond_null').html(idleTime[2]);
-
-      //Cria um cronometro de tempo ocioso
-      mapChronometer.set(null, new Chronometer(null, 'Tempo Ocioso',
-        idleTime[0], idleTime[1], idleTime[2], parseInt('<%=idleTime.counter%>'),
-        '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>', '<%=idleTime.process_id%>'))
-      '})'
-    })
-  </script>
-
-  <script>
-    $(function () {
-      //Ao logar no sistema inicia cronometro tempo ocioso
-      startChronometer(null);
-    })
-  </script>
-
-  <script>
-    //Exibir modal de editar contador
-    function editCounter() {
-      $('#modalCounter').modal('show');
-    }
-
-    //Funçao para alterar o contador da funçao principal
-    function alterCounter(process_id, collaborator_id) {
-      socket.emit('checkSession');
-      var counterNewValue = $('#counterNewValue').val();
-      socket.emit('setCounter', {
-        counter: counterNewValue,
-        process_id: process_id,
-        collaborator_id: collaborator_id,
-      });
-      $('#mainFunctionCounter').val(counterNewValue);
-      $('#modalCounter').modal('hide');
-
-      '<%if (mainFunction == true){%>'
-      socket.emit('activityOn', {
-        collaborator_id: collaborator_id,
-        process_id: process_id,
-        process_counter: counterNewValue,
-        process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
-      });
-      '<%}%>'
-    }
-
-    function addCounter(process_id, collaborator_id) { //função do botão adicionar
-      socket.emit('checkSession'); //ao clicar, vai checar a seção do usuario
-      $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
-        1); //incrementa no mainfunction contador da pagina
-      $('#counterNewValue').val($('#mainFunctionCounter').val());
-      var counterNewValue = $('#counterNewValue').val();
-      var counter = parseInt($('#mainFunctionCounter').val());
-      socket.emit('setCounter', {
-        counter: counter,
-        process_id: process_id,
-        collaborator_id: collaborator_id
-      });
-
-      '<%if (mainFunction == true){%>'
-      socket.emit('activityOn', {
-        collaborator_id: collaborator_id,
-        process_id: process_id,
-        process_counter: counterNewValue,
-        process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
-      });
-      '<%}%>'
-
-    }
-
-    function groupOption(id) {
-      $('#modalOptions_' + id).modal('show');
-    }
-
-    function groupOptionClose(group) {
-      $("#modalOptions_" + group).modal().hide();
-      $('.modal-backdrop').remove();
-      $('#modalOptions_' + group).modal('hide');
-    }
-
-    var idActivityGroup;
-    $('.list-group-item').on('click', function (e) {
-      idActivityGroup = $(this).val()
-    });
-
-    function play(id, group) {
-
-      if (group != null) { //caso seja uma atividade vinculada a um grupo
-        $('#modalIdGroup').val(group); //envia para modal id atual
-        $("#modalOptions_" + group).modal().hide(); //oculta a modal de opçoes do grupo
-        $('.modal-backdrop').remove(); //remove fundo preto da modal
-        id = idActivityGroup; //atualiza o id para atualizar cronometro
-        if (id == null) { //se o id é null, encerra a modal e exibe mensagem de erro
-          groupOptionClose(group);
-          $('#modalError').modal('show');
-          setTimeout(function () {
-            $('#modalError').modal('hide');
-          }, 3000); // 3000 = 3 segundos
+    <script>
+        //Controle de url e login
+        var url = "http://" + '<%=internalIp%>' + "/"; //recebe o ip interno do servidor
+        var url_atual = window.location.href; //pega a url da pagina
+        if (url_atual.includes('localhost')) { //se tem localhost no url
+            window.location.href = url; //redireciona a pagina para o ip do servidor
         }
-      }
-      startChronometer(id);
-      $('#modalId').val(id); //envia o id atual para modal. este id é utilizado na função apos fechar a modal
-      $('#modalPlay_' + id).modal('show');
-      idActivityGroup = null;
+        var socket = io(url); //seta o ip no socket io
+        var tabID = sessionStorage.tabID ? sessionStorage.tabID : sessionStorage.tabID = Math
+            .random();
+        socket.emit('checkSession', {
+            session: tabID
+        }); //emite um evento para checar a seção do usuario
+        console.log(tabID)
+        socket.on("allow", (data) => {
+            if (data == false) { //se usario não permitido
+                window.location.href = '/login'; //redireciona para a tela de login
+                alert("Usuario foi desconectado.")
+            }
+        })
+    </script>
 
-      setTimeout(function () {
-        socket.emit('checkPoint', {
-          activity_id: id,
-          collaborator_id: '<%=collaborator.id%>'
+
+    <script>
+        //Caso seja celular ou tablet, troca a classe da div dos cards para melhor visualização
+        $(function() {
+
+            '<%activitiesAndChronometers.forEach((activity)=>{%>'
+            if (screen.width < 400) {
+                $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
+
+            } else if (screen.width > 400 && screen.width < 961) {
+                $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
+
+            } else {}
+            '<%})%>'
+            $("#mainDiv").show();
+        })
+
+        var noSleep = new NoSleep(); //Declaração do NoSleep para manter a tela acesa
+
+        if (performance.navigation.type == performance.navigation
+            .TYPE_RELOAD) { //Identifica se a pagina ja foi recarregada
+            $('body').click(
+                function() { //Caso a pagina tenha sido recarregada, o nosleep só é ativado se houver um click dentro do body da pagina
+                    noSleep.enable()
+                });
+
+        } else { //Caso seja o primeiro carregamento da pagina, ativa o nosleep.
+            noSleep.enable()
+        }
+    </script>
+
+
+    <script>
+        //Script do checkpoint
+        '<%if(checkPoint!=null){ %>' //Caso tenha checkpoint
+        $('#modalCheckPoint').modal('show'); //exibe a modal
+        $('#checkButtonOk').on('click', () => { //ao clicar no botao ok da modal
+
+            var time = '<%=checkPoint.timeFixed%>'.split(":"); //separa o tempo do checkpoint para inserir na view
+
+            $('#backhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
+            $('#backminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
+            $('#backsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+            $('#modalhour_' + '<%=checkPoint.activity_id%>').html(time[0]);
+            $('#modalminute_' + '<%=checkPoint.activity_id%>').html(time[1]);
+            $('#modalsecond_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+            $('#backhourGroup_' + '<%=checkPoint.activity_id%>').html(time[0]);
+            $('#backminuteGroup_' + '<%=checkPoint.activity_id%>').html(time[1]);
+            $('#backsecondGroup_' + '<%=checkPoint.activity_id%>').html(time[2]);
+
+            socket.emit('update', { //atualiza o cronometro enviando os dados do checkpoint
+                time: '<%=checkPoint.timeFixed%>',
+                counter: '<%=checkPoint.counter%>',
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=checkPoint.collaborator_id%>'
+            })
+
+            socket.emit('activityOn', { //atualiza os dandos no banco
+                collaborator_id: '<%=checkPoint.collaborator_id%>',
+                process_id: '<%=checkPoint.process_id%>',
+                activity_id: '<%=checkPoint.activity_id%>',
+                activity_name: '<%=checkPoint.activity_name%>',
+                time: '<%=checkPoint.timeFixed%>',
+                timeDiff: '<%=checkPoint.timeDiff%>',
+                counter: '<%=checkPoint.counter%>',
+                work_time: '<%=collaborator.work_time%>',
+                checkpoint: true
+            });
+
+            socket.emit('deleteCheckPoint', { //deleta o checkpoint criado no banco de dados
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
+            });
+            $('#modalCheckPoint').modal('hide'); //fecha o modal do checkpoint
+            '<%}%>'
+        })
+
+        //ao clicar no botao cancelar, deleta o checkpoint criado no banco de dados
+        $('#checkButtonCancel').on('click', () => {
+            '<%if(checkPoint!=null){ %>'
+            socket.emit('deleteCheckPoint', {
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
+            });
+            '<%}%>'
+        })
+
+        //ao clicar no botao fechar, deleta o checkpoint criado no banco de dados
+        $('#checkButtonClose').on('click', () => {
+            '<%if(checkPoint!=null){ %>'
+            socket.emit('deleteCheckPoint', {
+                activity_id: '<%=checkPoint.activity_id%>',
+                collaborator_id: '<%=collaborator.id%>'
+            });
+            '<%}%>'
+        })
+    </script>
+
+    <script>
+        var mapChronometer = new Map()
+
+        $(function() {
+            //Verificação de dado recebido do banco
+            //Efetua um forEach na variavel enviada pelo banco e faz um split no time do chronometro e armazena em array, depois insere na view
+            '<% activitiesAndChronometers.forEach(activity=>{ %>'
+            var time = '<%=activity.activities_chronometer.time%>'.split(":");
+
+            //Insere na view os dados recebidos do banco
+            $('#backhour_' + '<%=activity.id%>').html(time[0]);
+            $('#backminute_' + '<%=activity.id%>').html(time[1]);
+            $('#backsecond_' + '<%=activity.id%>').html(time[2]);
+
+            $('#modalhour_' + '<%=activity.id%>').html(time[0]);
+            $('#modalminute_' + '<%=activity.id%>').html(time[1]);
+            $('#modalsecond_' + '<%=activity.id%>').html(time[2]);
+
+            '<%if(activity.group_id != null) { %>'
+            $('#backhourGroup_' + '<%=activity.id%>').html(time[0]);
+            $('#backminuteGroup_' + '<%=activity.id%>').html(time[1]);
+            $('#backsecondGroup_' + '<%=activity.id%>').html(time[2]);
+            '<%}%>'
+
+            //Cria um cronometro para cada atividade
+            mapChronometer.set('<%=activity.id%>', new Chronometer('<%=activity.id%>', '<%=activity.activity_name%>',
+                time[0], time[1], time[2], parseInt('<%=activity.activities_chronometer.counter%>'),
+                '<%=activity.activities_chronometer.collaborator_id%>', '<%=activity.activities_chronometer.work_time%>',
+                '<%=activity.activities_chronometer.process_id%>'))
+            '<%})%>'
+
+            //Divide o tempo em 3 array
+            'if(idleTime!=null){ %>'
+            var idleTime = '<%=idleTime.time%>'.split(":");
+
+            //Insere na view os dados recebidos do banco
+            $('#modalhour_null').html(idleTime[0]);
+            $('#modalminute_null').html(idleTime[1]);
+            $('#modalsecond_null').html(idleTime[2]);
+
+            //Cria um cronometro de tempo ocioso
+            mapChronometer.set(null, new Chronometer(null, 'Tempo Ocioso',
+                idleTime[0], idleTime[1], idleTime[2], parseInt('<%=idleTime.counter%>'),
+                '<%=idleTime.collaborator_id%>', '<%=idleTime.work_time%>', '<%=idleTime.process_id%>'))
+            '})'
+        })
+    </script>
+
+    <script>
+        $(function() {
+            //Ao logar no sistema inicia cronometro tempo ocioso
+            startChronometer(null);
+        })
+    </script>
+
+    <script>
+        //Exibir modal de editar contador
+        function editCounter() {
+            $('#modalCounter').modal('show');
+        }
+
+        //Funçao para alterar o contador da funçao principal
+        function alterCounter(process_id, collaborator_id) {
+            socket.emit('checkSession', {
+                session: tabID
+            });
+            var counterNewValue = $('#counterNewValue').val();
+            socket.emit('setCounter', {
+                counter: counterNewValue,
+                process_id: process_id,
+                collaborator_id: collaborator_id,
+            });
+            $('#mainFunctionCounter').val(counterNewValue);
+            $('#modalCounter').modal('hide');
+
+            '<%if (mainFunction == true){%>'
+            socket.emit('activityOn', {
+                collaborator_id: collaborator_id,
+                process_id: process_id,
+                process_counter: counterNewValue,
+                process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
+            });
+            '<%}%>'
+        }
+
+        function addCounter(process_id, collaborator_id) { //função do botão adicionar
+            socket.emit('checkSession', {
+                session: tabID
+            }); //ao clicar, vai checar a seção do usuario
+            $('#mainFunctionCounter').val(parseInt($('#mainFunctionCounter').val()) +
+                1); //incrementa no mainfunction contador da pagina
+            $('#counterNewValue').val($('#mainFunctionCounter').val());
+            var counterNewValue = $('#counterNewValue').val();
+            var counter = parseInt($('#mainFunctionCounter').val());
+            socket.emit('setCounter', {
+                counter: counter,
+                process_id: process_id,
+                collaborator_id: collaborator_id
+            });
+
+            '<%if (mainFunction == true){%>'
+            socket.emit('activityOn', {
+                collaborator_id: collaborator_id,
+                process_id: process_id,
+                process_counter: counterNewValue,
+                process_counter_name: '<%=processAndCounter.processes_counter.process_counter%>'
+            });
+            '<%}%>'
+
+        }
+
+        function groupOption(id) {
+            $('#modalOptions_' + id).modal('show');
+        }
+
+        function groupOptionClose(group) {
+            $("#modalOptions_" + group).modal().hide();
+            $('.modal-backdrop').remove();
+            $('#modalOptions_' + group).modal('hide');
+        }
+
+        var idActivityGroup;
+        $('.list-group-item').on('click', function(e) {
+            idActivityGroup = $(this).val()
         });
-      }, 1000);
 
-      var chronometerIdleTime = mapChronometer.get(null); //Pausa o tempo ocioso
-      chronometerIdleTime.pause();
+        function play(id, group) {
 
-    }
+            if (group != null) { //caso seja uma atividade vinculada a um grupo
+                $('#modalIdGroup').val(group); //envia para modal id atual
+                $("#modalOptions_" + group).modal().hide(); //oculta a modal de opçoes do grupo
+                $('.modal-backdrop').remove(); //remove fundo preto da modal
+                id = idActivityGroup; //atualiza o id para atualizar cronometro
+                if (id == null) { //se o id é null, encerra a modal e exibe mensagem de erro
+                    groupOptionClose(group);
+                    $('#modalError').modal('show');
+                    setTimeout(function() {
+                        $('#modalError').modal('hide');
+                    }, 3000); // 3000 = 3 segundos
+                }
+            }
+            startChronometer(id);
+            $('#modalId').val(id); //envia o id atual para modal. este id é utilizado na função apos fechar a modal
+            $('#modalPlay_' + id).modal('show');
+            idActivityGroup = null;
 
-    function pause(id, group) { //funçao para pausar chronometro e fechar modal
+            setTimeout(function() {
+                socket.emit('checkPoint', {
+                    activity_id: id,
+                    collaborator_id: '<%=collaborator.id%>'
+                });
+            }, 1000);
 
-      var chronometer = mapChronometer.get(id);
-      chronometer.pause();
+            var chronometerIdleTime = mapChronometer.get(null); //Pausa o tempo ocioso
+            chronometerIdleTime.pause();
 
-      $('#modalPlay_' + id).modal('hide');
-      groupOptionClose(group);
+        }
 
-      socket.emit('deleteCheckPoint', {
-        activity_id: id,
-        collaborator_id: '<%=collaborator.id%>'
-      });
+        function pause(id, group) { //funçao para pausar chronometro e fechar modal
 
-    }
+            var chronometer = mapChronometer.get(id);
+            chronometer.pause();
 
+            $('#modalPlay_' + id).modal('hide');
+            groupOptionClose(group);
 
-    $('.modal').on("hidden.bs.modal", function (e) { //ação apos fechar modal atraves do teclado
+            socket.emit('deleteCheckPoint', {
+                activity_id: id,
+                collaborator_id: '<%=collaborator.id%>'
+            });
 
-      var chronometer = mapChronometer.get($('#modalId').val());
-      chronometer.pause()
-
-      $('#modalOptions_' + $('#modalIdGroup').val()).modal('hide');
-      idActivityGroup = null;
-
-      socket.emit('deleteCheckPoint', {
-        activity_id: $('#modalId').val(),
-        collaborator_id: '<%=collaborator.id%>'
-      });
-
-      startChronometer(null); //Inicia o tempo ocioso
-
-    });
+        }
 
 
-    function startChronometer(id) {
-      var chronometer = mapChronometer.get(id); //pegando a instancia do Chronometer criado ao logar na pagina
+        $('.modal').on("hidden.bs.modal", function(e) { //ação apos fechar modal atraves do teclado
 
-      var hour = $('#modalhour_' + id).html();
-      var minute = $('#modalminute_' + id).html();
-      var second = $('#modalsecond_' + id).html();
+            var chronometer = mapChronometer.get($('#modalId').val());
+            chronometer.pause()
 
-      if (hour.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-        chronometer.h = hour.substr(1, 2);
-      } else {
-        chronometer.h = hour.substr(0, 2);
-      }
+            $('#modalOptions_' + $('#modalIdGroup').val()).modal('hide');
+            idActivityGroup = null;
 
-      if (minute.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-        chronometer.m = minute.substr(1, 2);
-      } else {
-        chronometer.m = minute.substr(0, 2);
-      }
+            socket.emit('deleteCheckPoint', {
+                activity_id: $('#modalId').val(),
+                collaborator_id: '<%=collaborator.id%>'
+            });
 
-      if (second.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
-        var secondInt = parseInt(second.slice(1, 2)) + 1;
-        chronometer.s = secondInt;
+            startChronometer(null); //Inicia o tempo ocioso
 
-      } else {
-        var secondInt = parseInt(second.slice(0, 2)) + 1;
-        chronometer.s = secondInt;
-      }
-      if (chronometer.run == false) {
-        chronometer.start();
-      }
-    }
-  </script>
+        });
 
-  <script>
-    class Chronometer {
 
-      constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time, process_id) {
-        this.id = id;
-        this.activity_name = activity_name;
-        this.h = h;
-        this.m = m;
-        this.s = s + 1;
-        this.counter = counter;
-        this.collaborator_id = collaborator_id;
-        this.work_time = work_time;
-        this.process_id = process_id
-        this.run = false;
-      }
+        function startChronometer(id) {
+            var chronometer = mapChronometer.get(id); //pegando a instancia do Chronometer criado ao logar na pagina
 
-      start() {
-        this.run = true;
-        this.counter = this.counter + 1;
-        this.intervelId = setInterval(() => {
+            var hour = $('#modalhour_' + id).html();
+            var minute = $('#modalminute_' + id).html();
+            var second = $('#modalsecond_' + id).html();
 
-          if (this.s == 60) {
-            this.m++;
-            this.s = 0;
-          }
-          if (this.m == 60) {
-            this.h++;
-            this.s = 0;
-            this.m = 0;
-          }
+            if (hour.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+                chronometer.h = hour.substr(1, 2);
+            } else {
+                chronometer.h = hour.substr(0, 2);
+            }
 
-          if (this.s < 10) {
-            $('#modalsecond_' + this.id).html("0" + this.s);
-            $('#backsecond_' + this.id).html("0" + this.s);
-            $('#backsecondGroup_' + this.id).html("0" + this.s);
-          } else {
-            $('#modalsecond_' + this.id).html(this.s);
-            $('#backsecond_' + this.id).html(this.s);
-            $('#backsecondGroup_' + this.id).html(this.s);
-          }
+            if (minute.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+                chronometer.m = minute.substr(1, 2);
+            } else {
+                chronometer.m = minute.substr(0, 2);
+            }
 
-          if (this.h < 10) {
-            $('#modalhour_' + this.id).html("0" + this.h);
-            $('#backhour_' + this.id).html("0" + this.h);
-            $('#backhourGroup_' + this.id).html("0" + this.h);
-          } else {
-            $('#modalhour_' + this.id).html(this.h);
-            $('#backhour_' + this.id).html(this.h);
-            $('#backhourGroup_' + this.id).html(this.h);
-          }
+            if (second.slice(0, 1) == "0") { //se o primeiro numero for 0, atualiza só o segundo
+                var secondInt = parseInt(second.slice(1, 2)) + 1;
+                chronometer.s = secondInt;
 
-          if (this.m < 10) {
-            $('#modalminute_' + this.id).html("0" + this.m);
-            $('#backminute_' + this.id).html("0" + this.m);
-            $('#backminuteGroup_' + this.id).html("0" + this.m);
-          } else {
-            $('#modalminute_' + this.id).html(this.m);
-            $('#backminute_' + this.id).html(this.m);
-            $('#backminuteGroup_' + this.id).html(this.m);
-          }
-          this.s++;
+            } else {
+                var secondInt = parseInt(second.slice(0, 2)) + 1;
+                chronometer.s = secondInt;
+            }
+            if (chronometer.run == false) {
+                chronometer.start();
+            }
+        }
+    </script>
 
-          socket.emit('update', {
-            time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
-              '#modalsecond_' + this.id).html(),
-            counter: this.counter,
-            activity_id: this.id,
-            collaborator_id: this.collaborator_id
-          })
+    <script>
+        class Chronometer {
 
-          socket.emit('activityOn', {
-            collaborator_id: this.collaborator_id,
-            process_id: this.process_id,
-            activity_id: this.id,
-            activity_name: this.activity_name,
-            time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
-              '#modalsecond_' + this.id).html(),
-            counter: this.counter,
-            work_time: this.work_time
-          });
+            constructor(id, activity_name, h, m, s, counter, collaborator_id, work_time, process_id) {
+                this.id = id;
+                this.activity_name = activity_name;
+                this.h = h;
+                this.m = m;
+                this.s = s + 1;
+                this.counter = counter;
+                this.collaborator_id = collaborator_id;
+                this.work_time = work_time;
+                this.process_id = process_id
+                this.run = false;
+            }
 
-          socket.emit('checkSession');
+            start() {
+                this.run = true;
+                this.counter = this.counter + 1;
+                this.intervelId = setInterval(() => {
 
-        }, 1000);
-      }
+                    if (this.s == 60) {
+                        this.m++;
+                        this.s = 0;
+                    }
+                    if (this.m == 60) {
+                        this.h++;
+                        this.s = 0;
+                        this.m = 0;
+                    }
 
-      pause() {
-        this.run = false;
-        clearInterval(this.intervelId)
-      }
+                    if (this.s < 10) {
+                        $('#modalsecond_' + this.id).html("0" + this.s);
+                        $('#backsecond_' + this.id).html("0" + this.s);
+                        $('#backsecondGroup_' + this.id).html("0" + this.s);
+                    } else {
+                        $('#modalsecond_' + this.id).html(this.s);
+                        $('#backsecond_' + this.id).html(this.s);
+                        $('#backsecondGroup_' + this.id).html(this.s);
+                    }
 
-    }
-  </script>
+                    if (this.h < 10) {
+                        $('#modalhour_' + this.id).html("0" + this.h);
+                        $('#backhour_' + this.id).html("0" + this.h);
+                        $('#backhourGroup_' + this.id).html("0" + this.h);
+                    } else {
+                        $('#modalhour_' + this.id).html(this.h);
+                        $('#backhour_' + this.id).html(this.h);
+                        $('#backhourGroup_' + this.id).html(this.h);
+                    }
+
+                    if (this.m < 10) {
+                        $('#modalminute_' + this.id).html("0" + this.m);
+                        $('#backminute_' + this.id).html("0" + this.m);
+                        $('#backminuteGroup_' + this.id).html("0" + this.m);
+                    } else {
+                        $('#modalminute_' + this.id).html(this.m);
+                        $('#backminute_' + this.id).html(this.m);
+                        $('#backminuteGroup_' + this.id).html(this.m);
+                    }
+                    this.s++;
+
+                    socket.emit('update', {
+                        time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
+                            '#modalsecond_' + this.id).html(),
+                        counter: this.counter,
+                        activity_id: this.id,
+                        collaborator_id: this.collaborator_id
+                    })
+
+                    socket.emit('activityOn', {
+                        collaborator_id: this.collaborator_id,
+                        process_id: this.process_id,
+                        activity_id: this.id,
+                        activity_name: this.activity_name,
+                        time: $('#modalhour_' + this.id).html() + ":" + $('#modalminute_' + this.id).html() + ":" + $(
+                            '#modalsecond_' + this.id).html(),
+                        counter: this.counter,
+                        work_time: this.work_time
+                    });
+
+                    socket.emit('checkSession', {
+                        session: tabID
+                    });
+
+                }, 1000);
+            }
+
+            pause() {
+                this.run = false;
+                clearInterval(this.intervelId)
+            }
+
+        }
+    </script>

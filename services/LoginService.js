@@ -8,6 +8,7 @@ class LoginService {
         try {
             var adminLogin = await LoginRepository.findLoginAdmin(req.body.login);
             var collaboratorLogin = await LoginRepository.findLoginCollaborator(req.body.login);
+            /*  req.sessionID = req.body.tabID; */
 
             if (adminLogin) {
                 var passwordResult = await bcrypt.compare(req.body.password, adminLogin.password);
@@ -17,7 +18,7 @@ class LoginService {
                         login: adminLogin.login,
                         admin: true
                     }
-                    await LoginRepository.updateAdminSession(adminLogin.id, req.sessionID)
+                    await LoginRepository.updateAdminSession(adminLogin.id, req.body.tabID);
                     return res.json({
                         result: 0
                     })
@@ -39,7 +40,7 @@ class LoginService {
                         process_name: collaboratorLogin.process.dataValues.process_name,
                         admin: false
                     }
-                    await LoginRepository.updateCollaboratorSession(collaboratorLogin.id, req.sessionID)
+                    await LoginRepository.updateCollaboratorSession(collaboratorLogin.id, req.body.tabID);
                     return res.json({
                         login_id: collaboratorLogin.id,
                         process_name: collaboratorLogin.process.dataValues.process_name.toLowerCase()
@@ -56,7 +57,7 @@ class LoginService {
                     result: 3
                 })
             }
-            
+
         } catch (error) {
             return error;
         }
