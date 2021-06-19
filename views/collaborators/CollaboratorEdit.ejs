@@ -19,12 +19,8 @@
                                     <label>Administrador</label>
                                     <br>
                                     <div class="btn-group btn-toggle">
-                                        <button class="btn btn-sm btn-default" data-toggle="tooltip"
-                                            data-placement="bottom"
-                                            title="Transformar este Colaborador em Administrador">SIM</button>
-                                        <button class="btn btn-sm btn-dark" data-toggle="tooltip"
-                                            data-placement="bottom"
-                                            title="Transformar este Colaborador em Administrador">NAO</button>
+                                        <button class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="bottom" title="Transformar este Colaborador em Administrador">SIM</button>
+                                        <button class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" title="Transformar este Colaborador em Administrador">NAO</button>
                                     </div>
                                 </div>
                             </div>
@@ -36,17 +32,12 @@
                                     <label for="inputColaborador" class="mt-1">Nome do Colaborador <text
                                             style="color: red;">*</text>
                                     </label>
-                                    <input class="form-control" name="inputCollaborator"
-                                        placeholder="Insira o nome do colaborador"
-                                        value="<%=collaborator.collaborator_name%>" required>
+                                    <input class="form-control" name="inputCollaborator" placeholder="Insira o nome do colaborador" value="<%=collaborator.collaborator_name%>" required>
                                     <label for="inputLogin" class='mt-3'>Login <text style="color: red;">*</text>
                                     </label>
-                                    <input class="form-control" name="inputLogin"
-                                        placeholder="Login de acesso do colaborador" value="<%=collaborator.login%>"
-                                        required>
+                                    <input class="form-control" name="inputLogin" placeholder="Login de acesso do colaborador" value="<%=collaborator.login%>" required>
                                     <label class="mt-3" for="senha">Senha <text style="color: red;">*</text> </label>
-                                    <input type="password" class="form-control" name="inputPassword" 
-                                    placeholder="*********">
+                                    <input type="password" class="form-control" name="inputPassword" placeholder="*********" minlength="6">
                                     <label class="mt-3">Processo <text style="color: red;">*</text> </label>
                                     <select class="custom-select" name="processSelect" id="processSelectId" required>
 
@@ -65,9 +56,7 @@
                                             data-content="A quantidade de horas trabalhadas no dia sera utilizado para calcular o indice de produtividade.">
                                             <i class="zmdi zmdi-info"></i> </a>
                                     </label>
-                                    <input type="number" class="form-control" name="inputWorkTime"
-                                        value="<%=collaborator.work_time%>" placeholder="Horas de trabalho no dia"
-                                        min="0" max="24" maxlength="4" step="0.5" required>
+                                    <input type="number" class="form-control" name="inputWorkTime" value="<%=collaborator.work_time%>" placeholder="Horas de trabalho no dia" min="0" max="24" maxlength="4" step="0.5" required>
 
                                 </div>
                                 <button type="submit" class="btn btn-dark">Alterar</button>
@@ -93,8 +82,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -121,16 +109,17 @@
                 <br>
             </main>
             <%- include ('../partials/footer.ejs')%>
-            </html>
+
+                </html>
 
 
 
                 <script>
-                    $(function () {
+                    $(function() {
                         $('[data-toggle="popover"]').popover(); //ativa o popover
                     })
-                    $('body').on('click', function (e) { //ao clicar no body, oculta o popover
-                        $('[data-toggle=popover]').each(function () {
+                    $('body').on('click', function(e) { //ao clicar no body, oculta o popover
+                        $('[data-toggle=popover]').each(function() {
                             // hide any open popovers when the anywhere else in the body is clicked
                             if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
                                 $(this).popover('hide');
@@ -140,8 +129,7 @@
                 </script>
 
                 <script>
-
-                    $(function () { //Ativa o formulario
+                    $(function() { //Ativa o formulario
                         $('#mainDiv').show(); //exibe a div principal
                         let $select1 = $('#processSelectId'),
                             $options = $select1.find('option');
@@ -151,12 +139,10 @@
                             'selected', //Inicia o select de processo com o valor vindo do banco
                             true)
                     })
-
                 </script>
 
                 <script>
-
-                    $(function () { //Ativa o formulario
+                    $(function() { //Ativa o formulario
                         $('#mainDiv').show();
                         let $select1 = $('#processSelectId'),
                             $options = $select1.find('option');
@@ -166,13 +152,11 @@
                             'selected', //Inicia o select de processo com o valor vindo do banco
                             true)
                     })
-
                 </script>
 
                 <script>
-
                     var count = 0; //variavel contador do botao transformar administrador
-                    $('.btn-toggle').click(function () { //ao clicar no botao
+                    $('.btn-toggle').click(function() { //ao clicar no botao
                         count++; //incrementa a variavel
                         $(this).find('.btn').toggleClass('btn-dark'); //altera a classe do botão
                         if (count % 2 == 1) { //se o resultado é igual a 1
@@ -180,6 +164,4 @@
                         }
                         $('#adminOnOff').val(count); // insere o valor do contador na variavel
                     });
-
-
                 </script>
