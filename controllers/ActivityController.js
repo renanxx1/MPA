@@ -56,8 +56,6 @@ class ActivityController {
             group_name: req.body.groupSelect,
         }
 
-
-
         var result = await ActivityService.setUpdate(activityData);
         if (result == 1) {
             renderEdit(activityData.id, res, 201);
@@ -70,10 +68,7 @@ class ActivityController {
             renderEdit(activityData.id, res, 409);
         }
 
-
-
     }
-
 }
 
 async function renderIndex(req, res, code) {
