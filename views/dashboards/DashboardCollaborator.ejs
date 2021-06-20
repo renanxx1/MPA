@@ -14,10 +14,9 @@
                     <div class="float-right text-center">
                         <h6 class="">Processo</h6>
                         <div class="dropdown">
-                            <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button"
-                                data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
-                                <%=process.process_name%>
-                            </button>
+                            <button id="buttonProcess" class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" data-value="<%=process.process_name%>" value="<%=process.id%>">
+                        <%=process.process_name%>
+                    </button>
 
                             <div id="filterProcess" class="dropdown-menu dropdown-menu-right">
                             </div>
@@ -47,15 +46,14 @@
                                 <div class="btn-group toolbar-item" role="group" aria-label="Basic example">
 
                                     <button type="button" id="btnLastDate" class="btn btn-secondary rounded"><i
-                                            class="zmdi zmdi-chevron-left"></i></button>
+                                    class="zmdi zmdi-chevron-left"></i></button>
                                     <button type="button" id="btnDate" name="date" class="btn btn-secondary"></button>
                                     <button type="button" id="btnNextDate" class="btn btn-secondary rounded"><i
-                                            class="zmdi zmdi-chevron-right"></i></button>
+                                    class="zmdi zmdi-chevron-right"></i></button>
                                 </div>
                                 <div class="ml-3"></div>
                                 <div class="dropdown toolbar-item text-center ">
-                                    <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hoje</button>
+                                    <button id="dropMain" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hoje</button>
                                     <div class="dropdown-menu" aria-labelledby="userDropdown">
                                         <a id="a1" class="dropdown-item" href="#">Hoje</a>
                                         <a id="a2" class="dropdown-item" href="#">Ontem</a>
@@ -67,9 +65,7 @@
                                 </div>
 
                                 <div class="dropdown ml-auto toolbar-item">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">Exportar</button>
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                         <a id="pdf" class="dropdown-item" href="#">Exportar para PDF</a>
                                         <a id="excel" class="dropdown-item" href="#">Exportar para Excel</a>
@@ -87,14 +83,12 @@
                                 <div id="processCounter" class="card-header mb-2" style="display: inline-block;">
                                     <i class="fas fa-chart-bar mr-1"></i>
                                     <label class="mb-0" id="processCounterName">Contador Variavel</label>
-                                    <img id="imgMax" class="float-right" src="../../img/arrow.png" width="16px"
-                                        style="margin-right: -1%;">
+                                    <img id="imgMax" class="float-right" src="../../img/arrow.png" width="16px" style="margin-right: -1%;">
 
                                 </div>
                                 <canvas id="myAreaChart" width="82%" height="30"></canvas>
                                 <div class="card-footer text-center mt-2">
-                                    <h2 id="processCounterValue" class="mb-0 mt-0 mx-auto"
-                                        style="color: rgb(28,28,28);">
+                                    <h2 id="processCounterValue" class="mb-0 mt-0 mx-auto" style="color: rgb(28,28,28);">
                                     </h2>
                                 </div>
                             </div>
@@ -105,13 +99,10 @@
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar mr-1"></i> Produtividade
 
-                                    <button type="button" class="btn btn-default btn-sm dropdown float-right"
-                                        data-toggle="dropdown" data-flip="false"> <i
-                                            class="mx-auto zmdi zmdi-filter-list"></i>
-                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm dropdown float-right" data-toggle="dropdown" data-flip="false"> <i class="mx-auto zmdi zmdi-filter-list"></i>
+                            </button>
 
-                                    <ul id="filterList"
-                                        class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
+                                    <ul id="filterList" class="dropdown-menu  checkbox-menu allow-focus scrollable-menu">
                                     </ul>
                                 </div>
 
@@ -130,12 +121,8 @@
                                     <i class="fas fa-chart-bar mr-1"></i> Tempo das Atividades
                                     <div class="float-right">
                                         <div class="btn-group btn-toggle">
-                                            <button onclick="buttonOnOff()" id="buttonOn" class="btn btn-xs btn-primary"
-                                                data-toggle="tooltip" data-placement="bottom"
-                                                title="Exibir/Ocultar Tempo Ocioso">ON</button>
-                                            <button onclick="buttonOnOff()" id="buttonOff"
-                                                class="btn btn-xs btn-default" data-toggle="tooltip"
-                                                data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
+                                            <button onclick="buttonOnOff()" id="buttonOn" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">ON</button>
+                                            <button onclick="buttonOnOff()" id="buttonOff" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="bottom" title="Exibir/Ocultar Tempo Ocioso">OFF</button>
                                         </div>
                                     </div>
                                 </div>
@@ -182,17 +169,21 @@
 
         <script>
             //Opçoes de processo
-            $('#filterProcess').append('<a class="dropdown-item small" id="<%=collaborator.process.process_id%>" value="<%=collaborator.process.process_name%>"> <b><%=collaborator.process.process_name%> -  Ativo</a>')
+            $('#filterProcess').append(
+                '<a class="dropdown-item small" id="<%=collaborator.process.process_id%>" value="<%=collaborator.process.process_name%>"> <b><%=collaborator.process.process_name%> -  Ativo</a>'
+            )
             '<%collaboratorProcessHistory.forEach(element => { %>'
-            $('#filterProcess').append('<a class="dropdown-item small" id="<%=element.process.id%>" value="<%=element.process.process_name%>"><%=element.process.process_name%></a>')
+            $('#filterProcess').append(
+                '<a class="dropdown-item small" id="<%=element.process.id%>" value="<%=element.process.process_name%>"><%=element.process.process_name%></a>'
+            )
             '<% }) %>'
 
             //Ao clicar na opçao do processo, insere o id no botao principal do dropdown
-            $('.dropdown-item a').on('click', function () {
-                $('#buttonProcess').val($(this).attr('id'));
-            })
-            //Redireciona e altera o html do botao principal
-            $('#filterProcess a').on('click', function () {
+            $('.dropdown-item a').on('click', function() {
+                    $('#buttonProcess').val($(this).attr('id'));
+                })
+                //Redireciona e altera o html do botao principal
+            $('#filterProcess a').on('click', function() {
                 $('#buttonProcess').html($(this).attr('value'));
                 window.location.href = "/dashboard/" + $(this).attr('value') + '/' + '<%=collaborator.id%>';
             })
@@ -200,12 +191,12 @@
 
         <script>
             //opção de expandir o grafico,
-            $('#imgMax').hover(function () {
+            $('#imgMax').hover(function() {
                 $(this).css('cursor', 'pointer');
             });
 
             var chartMaxSize = 0;
-            $('#imgMax').on('click', function () {
+            $('#imgMax').on('click', function() {
                 $('#chart1').toggleClass('col-xl-12');
                 $('#chart2').toggleClass('col-xl-12');
                 chartMaxSize++;
@@ -308,12 +299,15 @@
                         },
                         tooltip: {
                             callbacks: {
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     var labelOptions = [];
                                     labelOptions.push(new Date(tooltipItem.raw * 1000).toISOString().substr(11,
                                         8));
-                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem.dataIndex]);
-                                    labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[tooltipItem.dataIndex] / tooltipItem.dataset.data1[tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
+                                    labelOptions.push('Vezes executado: ' + tooltipItem.dataset.data1[tooltipItem
+                                        .dataIndex]);
+                                    labelOptions.push('Tempo médio: ' + new Date((tooltipItem.dataset.data[
+                                        tooltipItem.dataIndex] / tooltipItem.dataset.data1[
+                                        tooltipItem.dataIndex]) * 1000).toISOString().substr(11,
                                         8))
                                     return labelOptions;
                                 },
@@ -323,7 +317,7 @@
                             anchor: 'end',
                             align: 'top',
                             color: 'rgb(112, 118, 144)',
-                            formatter: function (value, context) {
+                            formatter: function(value, context) {
                                 if (value != 0) {
                                     return new Date(value * 1000).toISOString().substr(11, 8);
                                 } else {
@@ -351,7 +345,7 @@
                                 suggestedMax: 36000,
                                 stepSize: 3600,
                                 beginAtZero: true,
-                                callback: function (label, index, labels) {
+                                callback: function(label, index, labels) {
                                     return convert(label);
                                 },
                             },
@@ -401,7 +395,7 @@
                         label: [],
                         data: [],
                         hidden: true,
-                    },],
+                    }, ],
                 },
                 plugins: [ChartDataLabels],
                 options: {
@@ -409,11 +403,12 @@
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     if (tooltipItem.datasetIndex == 1) {
                                         return 'Meta: ' + tooltipItem.raw
                                     } else {
-                                        return tooltipItem.dataset.label[tooltipItem.dataIndex] + ": " + tooltipItem.raw
+                                        return tooltipItem.dataset.label[tooltipItem.dataIndex] + ": " + tooltipItem
+                                            .raw
                                     }
                                 },
                             },
@@ -476,32 +471,38 @@
                     aspectRatio: 2.63,
                     plugins: {
                         legend: {
-                            onClick: function (e, legendItem) { },
+                            onClick: function(e, legendItem) {},
                             //display: false,
                             reverse: true,
 
                         },
                         tooltip: {
                             callbacks: {
-                                title: function (tooltipItem, data) {
+                                title: function(tooltipItem, data) {
                                     return tooltipItem[0].label
                                 },
-                                label: function (tooltipItem, data) {
+                                label: function(tooltipItem, data) {
                                     var totalNumberOfSeconds = tooltipItem.raw;
 
-                                    if (tooltipItem.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
-                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
+                                    if (tooltipItem.dataIndex == 1 && myPieChart.data.datasets[0].data[0] >
+                                        myPieChart.data.datasets[0].data[1] / 2) {
+                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0]
+                                            .data[0] / 2;
                                     } else if (tooltipItem.dataIndex == 1) {
-                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
+                                        totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0]
+                                            .data[0];
                                     }
-                                    if (tooltipItem.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
+                                    if (tooltipItem.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data
+                                        .datasets[0].data[1] / 2) {
                                         totalNumberOfSeconds = totalNumberOfSeconds / 2;
                                     }
 
                                     var hours = parseInt(totalNumberOfSeconds / 3600);
                                     var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
-                                    var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
-                                    var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                                    var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes *
+                                        60))));
+                                    var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" +
+                                        minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
 
                                     return result
                                 },
@@ -510,21 +511,25 @@
                         datalabels: {
                             align: 'center',
                             color: 'black',
-                            formatter: function (value, context) {
+                            formatter: function(value, context) {
                                 var totalNumberOfSeconds = value;
 
-                                if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data.datasets[0].data[1] / 2) {
-                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0] / 2;
+                                if (context.dataIndex == 1 && myPieChart.data.datasets[0].data[0] > myPieChart.data
+                                    .datasets[0].data[1] / 2) {
+                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[
+                                        0] / 2;
                                     doubleVal = true;
                                     w_time.push(totalNumberOfSeconds);
                                 } else if (context.dataIndex == 1) {
-                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[0];
+                                    totalNumberOfSeconds = totalNumberOfSeconds - myPieChart.data.datasets[0].data[
+                                        0];
                                     w_time.push(totalNumberOfSeconds);
                                 } else {
                                     d_time.push(totalNumberOfSeconds);
                                 }
 
-                                if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0].data[1] / 2) {
+                                if (context.dataIndex == 0 && totalNumberOfSeconds > myPieChart.data.datasets[0]
+                                    .data[1] / 2) {
                                     totalNumberOfSeconds = totalNumberOfSeconds / 2;
                                     w_time.push(totalNumberOfSeconds);
                                 }
@@ -537,8 +542,10 @@
 
                                 var hours = parseInt(totalNumberOfSeconds / 3600);
                                 var minutes = parseInt((totalNumberOfSeconds - (hours * 3600)) / 60);
-                                var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes * 60))));
-                                var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                                var seconds = Math.floor((totalNumberOfSeconds - ((hours * 3600) + (minutes *
+                                    60))));
+                                var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" +
+                                    minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
                                 return result
                             },
                             font: {
@@ -567,10 +574,13 @@
                     if (data.chronometers[0] == null && data.process_counter[0] == null && data.idleTime[0] != null) {
                         $('#chart1').hide();
                         $('#chart2').hide();
-                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format(
+                                'YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker')
+                            .endDate.format('YYYY-MM-DD')) {
                             var d1 = data.idleTime[0].min_date.split("-");
                             var d2 = data.idleTime[0].max_date.split("-");
-                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] +
+                                " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
                         } else {
                             $('#smallDateInfo').html("");
                         }
@@ -580,10 +590,13 @@
                     if (data.chronometers[0] == null && data.process_counter[0] != null && data.idleTime[0] != null) {
                         $('#chart2').hide();
                         $('#chart1').toggleClass('col-xl-12');
-                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                        if (data.idleTime[0].min_date != $('#btnDate').data('daterangepicker').startDate.format(
+                                'YYYY-MM-DD') || data.idleTime[0].max_date != $('#btnDate').data('daterangepicker')
+                            .endDate.format('YYYY-MM-DD')) {
                             var d1 = data.idleTime[0].min_date.split("-");
                             var d2 = data.idleTime[0].max_date.split("-");
-                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] +
+                                " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
                         } else {
                             $('#smallDateInfo').html("");
                         }
@@ -591,15 +604,17 @@
 
                     //Caso tenha cronometro e não tenho process counter, oculta o grafico do process counter
                     if (data.chronometers[0] != null && data.process_counter[0] == null) {
-                        console.log('IF2')
                         $('#chart1').hide();
                         $('#chart2').addClass('col-xl-12');
 
-                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format(
+                                'YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker')
+                            .endDate.format('YYYY-MM-DD')) {
                             var d1 = data.chronometers[0].min_date.split("-");
                             var d2 = data.chronometers[0].max_date.split("-");
 
-                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] +
+                                " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
                         } else {
                             $('#smallDateInfo').html("");
                         }
@@ -607,12 +622,16 @@
 
 
                     //Caso tenha todos os dados
-                    if (data.chronometers[0] != null && data.process_counter[0] != null && data.process_counter[0] != null) {
-                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format('YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker').endDate.format('YYYY-MM-DD')) {
+                    if (data.chronometers[0] != null && data.process_counter[0] != null && data.process_counter[0] !=
+                        null) {
+                        if (data.chronometers[0].min_date != $('#btnDate').data('daterangepicker').startDate.format(
+                                'YYYY-MM-DD') || data.chronometers[0].max_date != $('#btnDate').data('daterangepicker')
+                            .endDate.format('YYYY-MM-DD')) {
                             var d1 = data.chronometers[0].min_date.split("-");
                             var d2 = data.chronometers[0].max_date.split("-");
 
-                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] + " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
+                            $('#smallDateInfo').html("Exibindo os dados de: " + d1[2] + "/" + d1[1] + "/" + d1[0] +
+                                " - " + d2[2] + "/" + d2[1] + "/" + d2[0]);
                         } else {
                             $('#smallDateInfo').html("");
                         }
@@ -659,15 +678,18 @@
                         var j = 0;
                         data.process_counter_total.forEach(element => {
                             myLineChart.data.datasets[2].data.push(data.process_counter_total[j].total_counter);
-                            myLineChart.data.datasets[2].label.push(data.process_counter_total[j].process_counter);
+                            myLineChart.data.datasets[2].label.push(data.process_counter_total[j]
+                                .process_counter);
                             j++;
                         })
 
                         //carrega os dados de soma dos contadores em um dataset invisivel do grafico
                         var l = 0;
                         data.process_counter_total.forEach(element => {
-                            myLineChart.data.datasets[3].data.push(data.process_counter_total[l].total_daily_goal);
-                            myLineChart.data.datasets[3].label.push(data.process_counter_total[l].process_counter);
+                            myLineChart.data.datasets[3].data.push(data.process_counter_total[l]
+                                .total_daily_goal);
+                            myLineChart.data.datasets[3].label.push(data.process_counter_total[l]
+                                .process_counter);
                             l++;
                         })
 
@@ -687,7 +709,10 @@
                         var soma = 0;
 
                         data.chronometers.forEach(element => {
-                            $('#filterList').append('<li class="small"><label> <input type="checkbox" id="filter_' + element.activity_id + '"' + 'value="' + element.activity_name + '"' + '  checked>' + element.activity_name + '</label></li>')
+                            $('#filterList').append(
+                                '<li class="small"><label> <input type="checkbox" id="filter_' + element
+                                .activity_id + '"' + 'value="' + element.activity_name + '"' +
+                                '  checked>' + element.activity_name + '</label></li>')
                             var a = convertToTimeFormat(element.total_time).split(':');
                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
                             soma = soma + seconds;
@@ -701,43 +726,53 @@
 
                         //Insere o valor da produtividade
                         if (doubleVal != true) {
-                            var productivity = (res[0] / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            var productivity = (res[0] / res[1]) *
+                                100; //calcula a eficiente pegando os valores do grafico nessa variavel
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                         } else {
-                            var productivity = ((res[0] / 2) / res[1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            var productivity = ((res[0] / 2) / res[1]) *
+                                100; //calcula a eficiente pegando os valores do grafico nessa variavel
                             $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
                         }
-                        if (myPieChart.data.datasets[0].data[0] == 0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
+                        if (myPieChart.data.datasets[0].data[0] ==
+                            0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
                             $('#productivityValue').html("Produtividade Total " + 0 + "%");
                         }
 
 
                         //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
-                        $(document).on('click', 'li', function (event) {
+                        $(document).on('click', 'li', function(event) {
                             event.stopPropagation();
                         });
 
                         //Botao de filtrar atividade no grafico de produtividade
-                        $('.dropdown-menu li input').on('click', function (event) {
+                        $('.dropdown-menu li input').on('click', function(event) {
 
                             var index = myBarChart.data.labels.indexOf($(this).val());
                             var value = myBarChart.data.datasets[0].data[index];
 
                             if ($(this).prop('checked') == true) {
-                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + value;
+                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] +
+                                    value;
                             } else {
-                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] - value;
+                                myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] -
+                                    value;
                             }
-                            myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0]; //atualiza o horario de trabalho com o work_time + tempo executado
+                            myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[
+                                0]; //atualiza o horario de trabalho com o work_time + tempo executado
                             myPieChart.update();
 
                             //Insere o valor da produtividade
-                            var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                            var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) *
+                                100; //calcula a eficiente pegando os valores do grafico nessa variavel
 
-                            if (myPieChart.data.datasets[0].data[0] == 0) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
+                            if (myPieChart.data.datasets[0].data[0] ==
+                                0
+                            ) { //caso nao tenha sido executado nenhuma atividade no dia, retorna 0 na produtividade
                                 $('#productivityValue').html("Produtividade Total " + 0 + "%");
                             } else {
-                                $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                                $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) +
+                                    "%");
                             }
 
                         })
@@ -750,14 +785,19 @@
             //Sempre que houver novos dados, atualiza o grafico diario
             socket.on("newDataAvailable", (newDataChart) => {
 
-                setTimeout(function () {
-                    if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format('DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
-                        if (newDataChart.process_id == $('#buttonProcess').val() && newDataChart.collaborator_id == '<%=collaborator.id%>') {
+                setTimeout(function() {
+                    if ($('#btnDate').data('daterangepicker').startDate.format('DD/MM/YYYY') == moment().format(
+                            'DD/MM/YYYY') && $('#btnDate').data('daterangepicker').endDate.format(
+                            'DD/MM/YYYY') == moment().format('DD/MM/YYYY')) {
+                        if (newDataChart.process_id == $('#buttonProcess').val() && newDataChart
+                            .collaborator_id == '<%=collaborator.id%>') {
 
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE LINHAS
-                            if (newDataChart.process_counter != null && newDataChart.process_counter != undefined) {
-                                $('#processCounterValue').html("Total Produzido " + newDataChart.process_counter)
+                            if (newDataChart.process_counter != null && newDataChart.process_counter !=
+                                undefined) {
+                                $('#processCounterValue').html("Total Produzido " + newDataChart
+                                    .process_counter)
                                 myLineChart.data.datasets[0].data[0] = newDataChart.process_counter;
                                 myLineChart.data.datasets[2].data[0] = newDataChart.process_counter;
                                 myLineChart.update();
@@ -792,17 +832,19 @@
                             myBarChart.data.datasets[0].hoverBackgroundColor[index] = 'Lime';
 
                             myBarChart.update()
-                            /*-----------------------------------------------------------------------------------------------------------*/
+                                /*-----------------------------------------------------------------------------------------------------------*/
 
                             /*-----------------------------------------------------------------------------------------------------------*/
                             //ATUALIZANDO DADOS NO GRAFICO DE TORTA - 3
-                            if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart.activity_id != null) {
+                            if ($('#filter_' + newDataChart.activity_id).prop("checked") && newDataChart
+                                .activity_id != null) {
 
                                 //Caso o dado esteja vindo de um checkpoint, pega a difença do tempo, converte para segundos e incrementa no grafico
                                 if (newDataChart.checkpoint) {
                                     var diff = newDataChart.timeDiff.split(':')
                                     var diffSeconds = (+diff[0]) * 60 * 60 + (+diff[1]) * 60 + (+diff[2]);
-                                    myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] + diffSeconds;
+                                    myPieChart.data.datasets[0].data[0] = myPieChart.data.datasets[0].data[0] +
+                                        diffSeconds;
                                 }
 
                                 myPieChart.data.datasets[0].data[0]++;
@@ -810,14 +852,17 @@
                                 var work_time = newDataChart.work_time * 3600;
 
                                 //atualiza o horario de trabalho com o work_time + tempo executado
-                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0].data[0];
+                                myPieChart.data.datasets[0].data[1] = work_time + myPieChart.data.datasets[0]
+                                    .data[0];
                                 myPieChart.update();
 
                                 //Só atualiza a produtividade se o tooltip nao estiver ativo
                                 if (myPieChart.$context.chart.tooltip.opacity == 0) {
                                     //Insere o valor da produtividade
-                                    var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) * 100; //calcula a eficiente pegando os valores do grafico nessa variavel
-                                    $('#productivityValue').html("Produtividade Total " + productivity.toFixed(0) + "%");
+                                    var productivity = ((res[(res.length) - 2]) / res[(res.length) - 1]) *
+                                        100; //calcula a eficiente pegando os valores do grafico nessa variavel
+                                    $('#productivityValue').html("Produtividade Total " + productivity.toFixed(
+                                        0) + "%");
                                 }
                             }
                         }
@@ -832,7 +877,7 @@
             //Caso o colaborador deslogue e o administrador esteja na pagina diaria, visualizando os dados, chama essa função atualizando os graficos
             socket.on('collaboratorOff', (data) => {
                 if (data.collaborator_id == '<%=collaborator.id%>') {
-                    setTimeout(function () {
+                    setTimeout(function() {
                         for (var i = 0; i < myBarChart.data.labels.length; i++) {
                             myBarChart.data.datasets[0].backgroundColor[i] = 'rgba(2,117,216,1)';
                             myBarChart.data.datasets[0].hoverBackgroundColor[i] = 'rgba(2,157,216,1)';
@@ -846,7 +891,7 @@
 
         <script>
             //Botão do tempo ocioso
-            $('.btn-toggle').click(function () {
+            $('.btn-toggle').click(function() {
                 $(this).find('.btn').toggleClass('btn-primary');
             });
 
@@ -860,7 +905,7 @@
                     if (index != -1) {
                         myBarChart.data.datasets[0].data.splice(index, 1);
                         myBarChart.data.labels.splice(index, 1);
-                    }else{
+                    } else {
                         myBarChart.data.labels.push("Tempo Ocioso");
                         var hms = idle_time;
                         var a = hms.split(':');
@@ -876,7 +921,7 @@
 
         <script>
             //Função ao alterar a data da pagina, zera os dados todos graficos
-            $('#btnDate').bind('DOMNodeInserted', function (e) {
+            $('#btnDate').bind('DOMNodeInserted', function(e) {
 
                 res = [];
                 w_time = [];
@@ -926,7 +971,7 @@
 
         <script>
             //Script para gerar PDF
-            $("#pdf").on("click", function () {
+            $("#pdf").on("click", function() {
 
                 //Pega a data do grafico para criar relatorio
                 var d = $('#smallDateInfo').html()
@@ -936,7 +981,7 @@
                 }
 
                 html2canvas(document.getElementById('container-fluid'), {
-                    onrendered: function (canvas) {
+                    onrendered: function(canvas) {
                         var data = canvas.toDataURL();
                         if (screen.width > 961 && (chartMaxSize % 2 == 0)) {
                             var docDefinition = {
@@ -983,7 +1028,9 @@
                                 },
                             }
                         }
-                        pdfMake.createPdf(docDefinition).download("Relatorio - " + '<%=process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date);
+                        pdfMake.createPdf(docDefinition).download("Relatorio - " +
+                            '<%=process.process_name%>' + " - " +
+                            '<%=collaborator.collaborator_name%>' + " - " + date);
                     }
                 })
             })
@@ -994,7 +1041,7 @@
 
         <script>
             //Relatorio do excel
-            $("#excel").on("click", function () {
+            $("#excel").on("click", function() {
 
                 table();
 
@@ -1018,10 +1065,12 @@
                             td.appendChild(document.createTextNode(myBarChart.data.datasets[0].data1[x]));
                         }
                         if (y == 3) {
-                            if (isNaN((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x]).toFixed(1))) {
+                            if (isNaN((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x])
+                                    .toFixed(1))) {
                                 td.appendChild(document.createTextNode(0));
                             } else {
-                                td.appendChild(document.createTextNode((myBarChart.data.datasets[0].data[x] / myBarChart.data.datasets[0].data1[x]).toFixed(1)));
+                                td.appendChild(document.createTextNode((myBarChart.data.datasets[0].data[x] / myBarChart
+                                    .data.datasets[0].data1[x]).toFixed(1)));
                             }
                         }
                         if (y == 4) {
@@ -1073,13 +1122,15 @@
                     date = $('#btnDate').html()
                 }
 
-                $(this).attr('download', "Relatorio - " + '<%=process.process_name%>' + " - " + '<%=collaborator.collaborator_name%>' + " - " + date);
-                return ExcellentExport.excel(this, 'datatable', 'Relatório ' + '<%=collaborator.process.process_name%>');
+                $(this).attr('download', "Relatorio - " + '<%=process.process_name%>' + " - " +
+                    '<%=collaborator.collaborator_name%>' + " - " + date);
+                return ExcellentExport.excel(this, 'datatable', 'Relatório ' +
+                    '<%=collaborator.process.process_name%>');
 
             })
 
             //Função para limpar o relatorio após ser executado
-            $("#excel").mouseup(function () {
+            $("#excel").mouseup(function() {
                 $("table").children().remove()
             });
 
