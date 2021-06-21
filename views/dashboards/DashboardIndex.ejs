@@ -2,34 +2,33 @@
 <link rel="stylesheet" href="/css/shared/style.css">
 <link rel="stylesheet" href="/css/demo_1/style.css">
 
-    <%- include ('../partials/navbar.ejs')%>
+<%- include ('../partials/navbar.ejs')%>
 
-        <div id="layoutSidenav_content">
-            <main>
-                <div id="container-fluid" class="container-fluid">
+<div id="layoutSidenav_content">
+    <main>
+        <div id="container-fluid" class="container-fluid">
 
-                    <h1 class="mt-3 display-6">Dashboard Geral</h1>
+            <h1 class="mt-3 display-6">Dashboard Geral</h1>
 
-                    <div class="row page-title-header">
-                        <div class="page-header mb-3 mt-0">
-                        </div>
+            <div class="row page-title-header">
+                <div class="page-header mb-3 mt-0">
+                </div>
 
-                        <div class="col-md-12 text-center">
-                            <div class="page-header-toolbar">
-
-
-                                <input id="anythingSearch" type="search" id="form1"
-                                    class="ml-auto form-control  input-group-sm" placeholder="Procurar..."
-                                    style="width: 20%; height:29px" />
+                <div class="col-md-12 text-center">
+                    <div class="page-header-toolbar">
 
 
+                        <input id="anythingSearch" type="search" id="form1" class="ml-auto form-control  input-group-sm"
+                            placeholder="Procurar..." style="width: 20%; height:29px" />
 
-                                <button type="button" class="btn btn-dark btn-sm dropdown float-right ml-1"
-                                    data-toggle="dropdown" data-flip="false"> Filtros <i class="fas fa-search"></i>
-                                </button>
 
-                                <ul id="filters" class="dropdown-menu  checkbox-menu allow-focus">
-                                    <!-- 
+
+                        <button type="button" class="btn btn-dark btn-sm dropdown float-right ml-1"
+                            data-toggle="dropdown" data-flip="false"> Filtros <i class="fas fa-search"></i>
+                        </button>
+
+                        <ul id="filters" class="dropdown-menu  checkbox-menu allow-focus">
+                            <!-- 
                                     <li class="ml-1">Processos</li>
                                     <hr class="mb-0 mt-0">
                                     <li class="small"><label> <input type="checkbox"> Corte</label></li>
@@ -44,236 +43,254 @@
                                     <hr class="mb-0 mt-0">
                                     <li class="small"><label> <input type="checkbox"> Online</label></li>
                                     <li class="small"><label> <input type="checkbox"> Offline</label></li> -->
-                                </ul>
+                        </ul>
 
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <div id="myDIV" class="row" >
-                        <%if(collaborators[0]==null){ %>
-                            <h4 class="text-center mx-auto mt-4">Sem colaboradores cadastrados no sistema.</h4>
-                            <%}%>
+            <div id="myDIV" class="row">
+                <%if(collaborators[0]==null){ %>
+                <h4 class="text-center mx-auto mt-4">Sem colaboradores cadastrados no sistema.</h4>
+                <%}%>
 
                                 <%collaborators.forEach(collaborator=> { %>
-                                    <%if(collaborator.status==1){%>
-                                        <%collaborator.status='Ativo' %>
-                                            <%}else{%>
-                                                <%collaborator.status='Desativado' %>
-                                                    <%}%>
+                <%if(collaborator.status==1){%>
+                <%collaborator.status='Ativo' %>
+                <%}else{%>
+                <%collaborator.status='Desativado' %>
+                <%}%>
 
                                                         <div class="col-xl-4 parent" id="div_<%=collaborator.id%>"
-                                                            data-filter="<%=collaborator.process.process_name%> <%=collaborator.status%> Offline">
-                                                            <div class="card mb-4">
+                data-filter="<%=collaborator.process.process_name%> <%=collaborator.status%> Offline">
+                <div class="card mb-4">
 
-                                                                <div class="card-body"
-                                                                    onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
+                    <div class="card-body"
+                        onclick="redirect('<%=collaborator.process.process_name%>', '<%=collaborator.id%>')">
 
-                                                                    <div class="float-right text-center ">
-                                                                        <div id="spin_<%=collaborator.id%>"
-                                                                            class="spinner-border spinner-border-sm text-center">
-                                                                        </div>
-                                                                        <div id="br_<%=collaborator.id%>">
-                                                                        </div>
-                                                                        <h6 id="collaboratorLogged_<%=collaborator.id%>"
-                                                                            class="h6"
-                                                                            style="display:none; color: red;">
-                                                                            offline
-                                                                        </h6>
-                                                                        <img class="" width="38px"
-                                                                            src="../../img/prod.png">
-                                                                    </div>
+                        <div class="float-right text-center ">
+                            <div id="spin_<%=collaborator.id%>" class="spinner-border spinner-border-sm text-center">
+                            </div>
+                            <div id="br_<%=collaborator.id%>">
+                            </div>
+                            <h6 id="collaboratorLogged_<%=collaborator.id%>" class="h6"
+                                style="display:none; color: red;">
+                                offline
+                            </h6>
+                            <img class="" width="38px" src="../../img/prod.png">
+                        </div>
 
 
-                                                                    <h6 id="collaborator"
-                                                                        value="<%=collaborator.collaborator_name%>"
-                                                                        class="mr-auto  ml-2 display-5">Colaborador:
-                                                                        <b>
-                                                                            <%=collaborator.collaborator_name%>
-                                                                        </b>
-                                                                    </h6>
+                        <h6 id="collaborator" value="<%=collaborator.collaborator_name%>"
+                            class="mr-auto  ml-2 display-5">Colaborador:
+                            <b>
+                                <%=collaborator.collaborator_name%>
+                            </b>
+                        </h6>
 
 
-                                                                    <h6 id="process"
-                                                                        value="<%=collaborator.process.process_name%>"
-                                                                        class="mr-auto ml-2 display-5">Processo:
-                                                                        <b>
-                                                                            <%=collaborator.process.process_name%>
-                                                                        </b>
-                                                                    </h6>
+                        <h6 id="process" value="<%=collaborator.process.process_name%>" class="mr-auto ml-2 display-5">
+                            Processo:
+                            <b>
+                                <%=collaborator.process.process_name%>
+                            </b>
+                        </h6>
 
-                                                                    <h6 class="mr-auto  ml-2 display-5">Cadastro:
-                                                                        <b>
-                                                                            <%=collaborator.status%>
-                                                                        </b>
+                        <h6 class="mr-auto  ml-2 display-5">Cadastro:
+                            <b>
+                                <%=collaborator.status%>
+                            </b>
 
-                                                                    </h6>
-                                                                </div>
-                                                                <div class="card-footer text-center" height="50px">
-                                                                    <h5 id="space_<%=collaborator.id%>">
-                                                                        <b>
-                                                                             
-                                                                        </b>
-                                                                    </h5>
-                                                                    <h5 id="collaboratorExec_<%=collaborator.id%>"
-                                                                        class="h5 text-center display-5"
-                                                                        style="display: none;">
-                                                                        <b>
-                                                                             
-                                                                        </b>
-                                                                    </h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <%})%>
+                        </h6>
                     </div>
-            </main>
-            <%- include ('../partials/footer.ejs')%>
+                    <div class="card-footer text-center" height="50px">
+                        <h5 id="space_<%=collaborator.id%>">
+                            <b>
+                                 
+                            </b>
+                        </h5>
+                        <h5 id="collaboratorExec_<%=collaborator.id%>" class="h5 text-center display-5"
+                            style="display: none;">
+                            <b>
+                                 
+                            </b>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <%})%>
+        </div>
+    </main>
+    <%- include ('../partials/footer.ejs')%>
 
-                <script src="/js/socket.io.js"></script>
+    <script src="/js/socket.io.js"></script>
 
-                <script>
-                    //Conexao com socket io
-                    var url_atual = window.location.href.split('/');
-                    var url = url_atual[2];
-                    var socket = io(url);
-                    console.log(url)
-                </script>
-
-
-                <script>
-
-                    //Caso esteja em versão mobile, aumenta o input do search
-                    if (screen.width > 400 && screen.width < 961) {
-                        $('#anythingSearch').css('width', '50%')
-                    } else if (screen.width < 400) {
-                        $('#anythingSearch').css('width', '100%')
-                    }
-
-                    //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
-                    $(document).on('click', 'li', function (event) {
-                        event.stopPropagation();
-                    });
-
-                    //Altera o ponteiro do mouse ao passar em cima do card
-                    $('.card-body').hover(function () {
-                        $(this).css('cursor', 'pointer');
-                    });
-
-                    //Redireciona a pagina ao clicar no card
-                    function redirect(process, id) {
-                        window.location.href = "/dashboard/" + process + '/' + id;
-                    }
+    <script>
+        //Conexao com socket io
+        var url_atual = window.location.href.split('/');
+        var url = url_atual[2];
+        var socket = io(url);
+        console.log(url)
+    </script>
 
 
-                    //Função que carrega o loader no offline
-                    setTimeout(function () {
-                        '<%collaborators.forEach(collaborator=> { %>'
-                        $('#spin_' + '<%=collaborator.id%>').remove();
-                        $('#space_' + '<%=collaborator.id%>').remove();
-                        $('#br_' + '<%=collaborator.id%>').remove();
-                        '<%})%>'
+    <script>
+        //Caso esteja em versão mobile, aumenta o input do search
+        if (screen.width > 400 && screen.width < 961) {
+            $('#anythingSearch').css('width', '50%')
+        } else if (screen.width < 400) {
+            $('#anythingSearch').css('width', '100%')
+        }
 
-                        $('.h6').show()
-                        $('.h5').show()
-                    }, 1000);
+        //Bloqueia o dropdown do filter list de fechar ao selecionar uma opçao
+        $(document).on('click', 'li', function (event) {
+            event.stopPropagation();
+        });
 
-                </script>
+        //Altera o ponteiro do mouse ao passar em cima do card
+        $('.card-body').hover(function () {
+            $(this).css('cursor', 'pointer');
+        });
 
-
-                <script>
-                    //Ao receber dados do colaboradorr
-                    socket.on("newDataAvailable", (data) => {
-
-                        $('#collaboratorLogged_' + data.collaborator_id).html('online');
-                        $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
-                        $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
-
-                        var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
-                        var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
-                        $('#div_' + data.collaborator_id).attr('data-filter', filterOn)
-
-                    })
-
-                    socket.on('collaboratorOff', (data) => {
-                        $('#collaboratorLogged_' + data.collaborator_id).html('offline');
-                        $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
-                        $('#collaboratorExec_' + data.collaborator_id).html(' ');
-                    })
-
-                </script>
-
-                <script>
-
-                    //OPÇÕES DE PROCESSOS
-                    $('#filters').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
-
-                    var processes = [];
-                    '<%collaborators.forEach(collaborator=> { %>'
-                    processes.push('<%=collaborator.process.process_name%>')
-                    '<%})%>'
-
-                    //FUNÇÃO PARA RETORNAR VALOR UNICO
-                    function unique(value, index, self) {
-                        return self.indexOf(value) === index;
-                    }
-
-                    //PARA CADA PROCESSO UNICO, INSERE NA LISTA
-                    processes.filter(unique).forEach(process => {
-                        $('#filters').append('<li class="small"><label> <input class="process" type="checkbox" value="' + process + '"' + '>' + process + '</label></li>');
-                    });
+        //Redireciona a pagina ao clicar no card
+        function redirect(process, id) {
+            window.location.href = "/dashboard/" + process + '/' + id;
+        }
 
 
-                    //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
-                    $('#filters').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
-                    $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Ativo' + '"' + '>' + 'Ativo' + '</label></li>');
-                    $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
+        //Função que carrega o loader no offline
+        setTimeout(function () {
+            '<%collaborators.forEach(collaborator=> { %>'
+            $('#spin_' + '<%=collaborator.id%>').remove();
+            $('#space_' + '<%=collaborator.id%>').remove();
+            $('#br_' + '<%=collaborator.id%>').remove();
+            '<%})%>'
+
+            $('.h6').show()
+            $('.h5').show()
+        }, 1000);
+    </script>
 
 
-                    //OPÇOES DE STATUS ONLINE OU OFFLINE
-                    $('#filters').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
-                    $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Online' + '"' + '>' + 'Online' + '</label></li>');
-                    $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Offline' + '"' + '>' + 'Offline' + '</label></li>');
-                </script>
+    <script>
+        //Ao receber dados do colaborador
+        var size =[];
+        '<%collaborators.forEach(collaborator=> { %>'
+        size.push('<%=collaborator%>')
+        '<%})%>'
+        var cont = 0;
+        
+        socket.on("newDataAvailable", (data) => {
+            if (cont != size.length) {
+                $('#collaboratorLogged_' + data.collaborator_id).html('online');
+                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
+                $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
 
-                <script>
+                var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
+                var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
+                $('#div_' + data.collaborator_id).attr('data-filter', filterOn);
 
-                    //FILTRO BOTAO FILTRAR
-                    var getFilter = function (category) {
-                        var filter = $("#filters ." + category + ":checked").map(function () {
-                            return '[data-filter*="' + this.value + '"]';
-                        }).get().join(",");
-                        filter = (filter.length > 0) ? filter : "*";
-                        return filter;
-                    }
+               cont++;
+            } else {
 
-                    $("#filters :checkbox").click(function () {
-                        $("#anythingSearch").val('');
-                        var all = $(".col-xl-4");
-                        var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                        all.not(tgts).hide();
-                        tgts.show();
-                    });
+                setTimeout(function () {
+                    $('#collaboratorLogged_' + data.collaborator_id).html('online');
+                    $('#collaboratorLogged_' + data.collaborator_id).css('color', 'rgb(14, 202, 14)');
+                    $('#collaboratorExec_' + data.collaborator_id).html(data.activity_name);
+
+                    var filterSplit = $('#div_' + data.collaborator_id).attr('data-filter').split(' ');
+                    var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
+                    $('#div_' + data.collaborator_id).attr('data-filter', filterOn);
+                }, 1000)
+
+            }
+
+        })
+
+        socket.on('collaboratorOff', (data) => {
+            $('#collaboratorLogged_' + data.collaborator_id).html('offline');
+            $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
+            $('#collaboratorExec_' + data.collaborator_id).html(' ');
+        })
+    </script>
+
+    <script>
+        //OPÇÕES DE PROCESSOS
+        $('#filters').append('<li class="ml-1">Processos</li> <hr class="mb-0 mt-0">');
+
+        var processes = [];
+        '<%collaborators.forEach(collaborator=> { %>'
+        processes.push('<%=collaborator.process.process_name%>')
+        '<%})%>'
+
+        //FUNÇÃO PARA RETORNAR VALOR UNICO
+        function unique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        //PARA CADA PROCESSO UNICO, INSERE NA LISTA
+        processes.filter(unique).forEach(process => {
+            $('#filters').append('<li class="small"><label> <input class="process" type="checkbox" value="' +
+                process + '"' + '>' + process + '</label></li>');
+        });
 
 
-                    //FILTRO DA BARRA DE PESQUISA
-                    $(document).ready(function () {
-                        $("#anythingSearch").on("keyup", function () {
-                            var all = $(".col-xl-4");
-                            var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                            var value = $(this).val().toLowerCase();
-                            tgts.filter(function () {
-                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                            });
-                        });
-                    });
+        //OPÇÕES DE CADASTRO - ATIVO OU DESATIVADO
+        $('#filters').append('<li class="ml-1">Cadastro</li> <hr class="mb-0 mt-0">');
+        $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' + 'Ativo' +
+            '"' + '>' + 'Ativo' + '</label></li>');
+        $('#filters').append('<li class="small"><label> <input class="register" type="checkbox" value="' +
+            'Desativado' + '"' + '>' + 'Desativado' + '</label></li>');
 
-                    document.getElementById("anythingSearch").addEventListener("search", function (event) {
-                        var all = $(".col-xl-4");
-                        var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter("status"));
-                        var value = $(this).val().toLowerCase();
-                        tgts.filter(function () {
-                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                        });
-                    });
-                </script>
+
+        //OPÇOES DE STATUS ONLINE OU OFFLINE
+        $('#filters').append('<li class="ml-1">Status</li> <hr class="mb-0 mt-0">');
+        $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Online' +
+            '"' + '>' + 'Online' + '</label></li>');
+        $('#filters').append('<li class="small"><label> <input class="status" type="checkbox" value="' + 'Offline' +
+            '"' + '>' + 'Offline' + '</label></li>');
+    </script>
+
+    <script>
+        //FILTRO BOTAO FILTRAR
+        var getFilter = function (category) {
+            var filter = $("#filters ." + category + ":checked").map(function () {
+                return '[data-filter*="' + this.value + '"]';
+            }).get().join(",");
+            filter = (filter.length > 0) ? filter : "*";
+            return filter;
+        }
+
+        $("#filters :checkbox").click(function () {
+            $("#anythingSearch").val('');
+            var all = $(".col-xl-4");
+            var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter(
+                "status"));
+            all.not(tgts).hide();
+            tgts.show();
+        });
+
+
+        //FILTRO DA BARRA DE PESQUISA
+        $(document).ready(function () {
+            $("#anythingSearch").on("keyup", function () {
+                var all = $(".col-xl-4");
+                var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(
+                    getFilter("status"));
+                var value = $(this).val().toLowerCase();
+                tgts.filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        document.getElementById("anythingSearch").addEventListener("search", function (event) {
+            var all = $(".col-xl-4");
+            var tgts = all.filter(getFilter("process")).filter(getFilter("register")).filter(getFilter(
+                "status"));
+            var value = $(this).val().toLowerCase();
+            tgts.filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    </script>

@@ -102,7 +102,7 @@
 
                                                 <div class="card text-center" id="cardCollector">
                                                     <div class="card-header text-center">
-                                                        <text class="mr-n5 ml-n5 mt-n5 mb-n5">
+                                                        <text class="card-text mr-n5 ml-n5 mt-n5 mb-n5">
                                                             <b>
                                                                 <%=activity.activity_name%>
                                                             </b>
@@ -165,7 +165,7 @@
                                                                 class="col-sm-2 mb-4 mr-3 ml-3">
                                                                 <div class="card text-center" id="cardCollector">
                                                                     <div class="card-header text-center">
-                                                                        <text class="mr-n5 ml-n5 mt-n5 mb-n5">
+                                                                        <text class=" card-text mr-n5 ml-n5 mt-n5 mb-n5">
                                                                             <b>
                                                                                 *<%=groupMainActivity.activity_name%>*
                                                                             </b>
@@ -451,6 +451,7 @@
             '<%activitiesAndChronometers.forEach((activity)=>{%>'
             if (screen.width < 400) {
                 $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col');
+                $('.card-text').css('white-space', 'nowrap');
 
             } else if (screen.width > 400 && screen.width < 961) {
                 $("#cardDiv_" + '<%=activity.id%>').removeClass().addClass('col-sm-4');
