@@ -122,7 +122,8 @@
         </div>
     </main>
     <%- include ('../partials/footer.ejs')%>
-
+    
+    <script src="/js/HackTimer.js" crossorigin="anonymous"></script>
     <script src="/js/socket.io.js"></script>
 
     <script>
@@ -179,7 +180,7 @@
         size.push('<%=collaborator%>')
         '<%})%>'
         var cont = 0;
-        
+
         socket.on("newDataAvailable", (data) => {
             if (cont != size.length) {
                 $('#collaboratorLogged_' + data.collaborator_id).html('online');
