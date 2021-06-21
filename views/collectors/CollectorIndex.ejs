@@ -842,7 +842,7 @@
 
 
                     socket.on('activityUpdated', (data) => {
-                                if (data.activityData.process_id == '<%=processAndCounter.id%>') {
+                                if (data.activityData.process_id == '<%=collaborator.process_id%>') {
                                     this.activity_name = data.activityData.activity_name;
                                 }
                             })
