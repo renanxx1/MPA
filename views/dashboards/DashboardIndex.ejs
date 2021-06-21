@@ -122,7 +122,7 @@
         </div>
     </main>
     <%- include ('../partials/footer.ejs')%>
-    
+
     <script src="/js/HackTimer.js" crossorigin="anonymous"></script>
     <script src="/js/socket.io.js"></script>
 
@@ -175,7 +175,7 @@
 
     <script>
         //Ao receber dados do colaborador
-        var size =[];
+        var size = [];
         '<%collaborators.forEach(collaborator=> { %>'
         size.push('<%=collaborator%>')
         '<%})%>'
@@ -191,7 +191,7 @@
                 var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
                 $('#div_' + data.collaborator_id).attr('data-filter', filterOn);
 
-               cont++;
+                cont++;
             } else {
 
                 setTimeout(function () {
@@ -203,15 +203,16 @@
                     var filterOn = filterSplit[0] + " " + filterSplit[1] + " " + 'Online';
                     $('#div_' + data.collaborator_id).attr('data-filter', filterOn);
                 }, 1000)
-
             }
-
         })
 
         socket.on('collaboratorOff', (data) => {
-            $('#collaboratorLogged_' + data.collaborator_id).html('offline');
-            $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
-            $('#collaboratorExec_' + data.collaborator_id).html(' ');
+            setTimeout(function () {
+                console.log(data)
+                $('#collaboratorLogged_' + data.collaborator_id).html('offline');
+                $('#collaboratorLogged_' + data.collaborator_id).css('color', 'red');
+                $('#collaboratorExec_' + data.collaborator_id).html(' ');
+            }, 1000)
         })
     </script>
 
