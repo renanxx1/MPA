@@ -1,6 +1,6 @@
-const Activity_Chronometer = require('../models/Activity_Chronometer')
+const Activity_Chronometer = require('../models/Activity_Chronometer');
 const { Op } = require("sequelize");
-const moment = require('moment')
+const moment = require('moment');
 
 class ChronometerRepository {
 

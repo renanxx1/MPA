@@ -2,7 +2,7 @@ const Activity = require('../models/Activity');
 const Process = require('../models/Process');
 const Group = require('../models/Group');
 const Activity_Chronometer = require('../models/Activity_Chronometer');
-const moment = require('moment')
+const moment = require('moment');
 const groupPrefix = 'G_';
 const { Op } = require("sequelize");
 
@@ -21,7 +21,6 @@ class ActivityRepository {
                 }
             });
     }
-
 
 
     async findGroupByName(activity_name) {

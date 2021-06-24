@@ -188,7 +188,6 @@ class AdminRepository {
         }
     }
 
-
     async deleteAdmin(id) {
         return await
             Admin.destroy({
