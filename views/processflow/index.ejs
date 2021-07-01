@@ -116,78 +116,102 @@
   <div class="footer-section"></div>
 </body>
 
-<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-  aria-hidden="true">
+<div class="modal fade " id="myModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Adicionar Cartão</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="container-modal modal-content">
+      <a id="close" class="active" onclick="closeModal()"> <i class="fa fa-2x fa-times"></i></a>
+
+      <div class="leftbox">
+        <nav>
+          <a id="profile" class="active"><i class="fa fa-user"></i></a>
+          <a id="payment"><i class="fa fa-comments"></i></a>
+          <a id="subscription"><i class="fas fa-tachometer-alt"></i></a>
+          <a id="privacy"><i class="fa fa-tasks"></i></a>
+          <a id="settings"><i class="fa fa-cog"></i></a>
+        </nav>
       </div>
-      <div class="modal-body">
-        <li class="list-group-item list-group-item-info clearfix">
+      
+      <div class="rightbox">
+        <div class="profile">
+          <h1>Dados do Cartão</h1>
+          <h2>Titulo do Cartão</h2>
+          <h2>
+            <textarea class="form-control"></textarea>
+          </h2>
+          <h2>Birthday</h2>
+          <p>July 21</p>
+          <h2>Gender</h2>
+          <p>Female</p>
+          <h2>Email</h2>
+          <p>example@example.com <button class="btn">update</button></p>
+          <h2>Password </h2>
+          <p>••••••• <button class="btn">Change</button></p>
+        </div>
 
-          <ul class="list-group-item-text list-inline clearfix">
-            <li class="mar-bottom">
-              <h4 class="">Responsavel</h4>
+        <div class="payment noshow">
+          <h1>Payment Info</h1>
+          <h2>Payment Method</h2>
+          <p>Mastercard •••• •••• •••• 0000 <button class="btn">update</button></p>
+          <h2>Billing Address</h2>
+          <p>1234 Example Ave | Seattle, WA <button class="btn">change</button></p>
+          <h2>Zipcode</h2>
+          <p>999000</p>
+          <h2>Billing History</h2>
+          <p>2018<button class="btn">view</button></p>
+          <h2>Redeem Gift Subscription </h2>
+          <p><input type="text" placeholder="Enter Gift Code"></input> <button class="btn">Redeem</button></p>
+        </div>
 
-              <ul class="list-inline clearfix" id="js-card-users-list-175">
-                <li id="js-card-user-add-container" class="no-print">
-                  <div class="dropdown js-member-dropdown">
+        <div class="subscription noshow">
+          <h1>Your Subscription</h1>
+          <h2>Payment Date</h2>
+          <p>05-15-2018 <button class="btn">pay now</button></p>
+          <h2>Your Next Charge</h2>
+          <p>$8.48<span> includes tax</span></p>
+          <h2>Hulu Base Plan</h2>
+          <p>Limited Commercials <button class="btn">change plan</button></p>
+          <h2>Add-ons</h2>
+          <p>None <button class="btn">manage</button></p>
+          <h2>Monthly Recurring Total </h2>
+          <p>$7.99/month</p>
+        </div>
 
-                    <a class="dropdown-toggle js-show-add-member-form btn btn-default" role="button"
-                      data-toggle="dropdown" title="Adicionar Membro" href="#"> <i class="icon-plus"></i> </a>
-
-                  </div>
-                </li>
-              </ul>
-
-            </li>
-
-
-            <li class="after-start-date-175 mar-bottom">
-            </li>
-
-            <li id="js-custom-fields-listing-175" class="js-custom-fields-list-added-175 hide"></li>
-
-
-            <li class="mar-bottom" id="js-modal-duedate-show-175"></li>
-
-          </ul>
-          <div class="list-group-item-text clearfix github-markdown">
-
-            <form class="js-card-edit-form" name="cardDescriptionEditForm" id="cardDescriptionEditForm">
-              <ul class="nav nav-tabs no-bor h3">
-                <li class="active js-show-description show-description-175 cur" data-id="175"><a>Escrever</a></li>
-              </ul>
-              <div class="well-sm"></div>
-              <div class="form-group required">
-                <textarea rows="4" data-edit_mode="2" id="inputCarddescriptions" name="description"
-                  class="form-control js-card-input"></textarea>
-                <div class="panel js-card-desc-edit-panel hide no-mar">
-                  <div class="panel-body js-card-desc-edit-preview github-markdown"></div>
-                </div>
-              </div>
-              <div class="submit">
-                <input type="submit" value="Salvar" id="submitCardDescriptionEditForm" class="btn btn-primary">
-                <a class="js-cancel-card-description-edit"><i class="icon-remove btn btn-link"></i></a>
-              </div>
-            </form>
-
-          </div>
-
+        <div class="privacy noshow">
+          <h1>Privacy Settings</h1>
+          <h2>Manage Email Notifications<button class="btn">manage</button></h2>
+          <p></p>
+          <h2>Manage Privacy Settings<button class="btn">manage</button></h2>
+          <p></p>
+          <h2>View Terms of Use <button class="btn">view</button></h2>
+          <p></p>
+          <h2>Personalize Ad Experience <button class="btn">update</button></h2>
+          <p></p>
+          <h2>Protect Your Account <button class="btn">protect</button></h2>
+          <p></p>
+        </div>
+        <div class="settings noshow">
+          <h1>Account Settings</h1>
+          <h2>Sync Watchlist to My Stuff<button class="btn">sync</button></h2>
+          <p></p>
+          <h2>Hold Your Subscription<button class="btn">hold</button></h2>
+          <p></p>
+          <h2>Cancel Your Subscription <button class="btn">cancel</button></h2>
+          <p></p>
+          <h2>Your Devices <button class="btn">Manage Devices</button></h2>
+          <p></p>
+          <h2>Referrals <button class="btn">get $10</button></h2>
+          <p></p>
+        </div>
 
       </div>
-
-
     </div>
   </div>
 </div>
 
 
 
-<div id="modalPassword" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+<!-- <div id="modalPassword" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
   aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -209,7 +233,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
@@ -370,8 +394,44 @@
 
 
   function addCard() {
-    /*  $('#myModal').modal('show') */
+    $('#myModal').modal('show');
   }
+
+  function closeModal() {
+    $('#myModal').modal('hide');
+  }
+
+
+
+  /*active button class onclick*/
+  $('nav a').click(function (e) {
+    e.preventDefault();
+    $('nav a').removeClass('active');
+    $(this).addClass('active');
+    if (this.id === !'payment') {
+      $('.payment').addClass('noshow');
+    }
+    else if (this.id === 'payment') {
+      $('.payment').removeClass('noshow');
+      $('.rightbox').children().not('.payment').addClass('noshow');
+    }
+    else if (this.id === 'profile') {
+      $('.profile').removeClass('noshow');
+      $('.rightbox').children().not('.profile').addClass('noshow');
+    }
+    else if (this.id === 'subscription') {
+      $('.subscription').removeClass('noshow');
+      $('.rightbox').children().not('.subscription').addClass('noshow');
+    }
+    else if (this.id === 'privacy') {
+      $('.privacy').removeClass('noshow');
+      $('.rightbox').children().not('.privacy').addClass('noshow');
+    }
+    else if (this.id === 'settings') {
+      $('.settings').removeClass('noshow');
+      $('.rightbox').children().not('.settings').addClass('noshow');
+    }
+  });
 
 </script>
 
