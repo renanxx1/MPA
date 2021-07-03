@@ -838,9 +838,8 @@ label {
 .label-color {
 	font-size: 10px;
 	padding: 3px 20px 3px 20px;
-	background-color: black;
+	background-color: whitesmoke;
 	color: #fff;
 	display: inline-block;
 	border-radius: 10px;
-	margin-bottom: 2%;
 }
