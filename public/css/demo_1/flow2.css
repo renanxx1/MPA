@@ -576,7 +576,7 @@ nav a:first-child {
 }
 
 
-p {
+p{
 	border-width: 1px;
 	border-style: solid;
 	border-image: linear-gradient(to right, #3fb6a8, rgba(126, 211, 134, 0.5)) 1 0%;
@@ -587,6 +587,22 @@ p {
 	padding: 7px 0;
 	color: #070707;
 }
+
+
+h5{
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to right, #3fb6a8, rgba(126, 211, 134, 0.5)) 1 0%;
+	border-top: 0;
+	width: 80%;
+	font-family: "Montserrat", sans-serif;
+	font-size: 0.9em;
+	padding: 7px 0;
+	color: #070707;
+}
+
+
+
 
 span {
 	font-size: 0.5em;
@@ -682,6 +698,8 @@ h2:not(.process_name) {
 	letter-spacing: 1px;
 	margin-left: 2px;
 }
+
+
 
 .CTA {
 	width: 80px;
@@ -814,5 +832,6 @@ input[type="date"]::before {
 
   .collaborator-check{
 	float: right;
-	margin-top: 13%;
+	margin-top: 11%;
+	margin-right: -8.5%;
 }
