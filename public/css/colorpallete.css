@@ -1,11 +1,10 @@
 .bootstrap-colorpalette {
     padding-left: 4px;
     padding-right: 4px;
+
     white-space: normal;
     line-height: 1;
     background-color: white;
-    border-style: solid;
-    border-color: whitesmoke;
 }
 
 .bootstrap-colorpalette div {

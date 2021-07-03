@@ -49,40 +49,40 @@
     <!-- <div class="jobs-list-wrapper"> -->
     <%processes.forEach(process=>{%>
 
-    <div class="jobs-list" id="<%=process.id%>">
-      <i class="fas fa-ellipsis-h"></i>
-      <div class="column__title--wrapper">
-        <h2 class="jobs-list-heading process_name">
-          <%=process.process_name%>
-        </h2>
-      </div>
-      <div class="jobs-list-body" id="process_<%=process.id%>">
-        <ul class="list-items" id="process_list_<%=process.id%>">
-          <li>
-            <div class="item job-block mx-auto">
-              <div class="item job-name-block">
-                <div class="item job-name">Corporate Logo</div>
-                <div class="item job-edit"><img class="edit-job-icon"
-                    src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
+      <div class="jobs-list" id="<%=process.id%>">
+        <i class="fas fa-ellipsis-h"></i>
+        <div class="column__title--wrapper">
+          <h2 class="jobs-list-heading process_name">
+            <%=process.process_name%>
+          </h2>
+        </div>
+        <div class="jobs-list-body" id="process_<%=process.id%>">
+          <ul class="list-items" id="process_list_<%=process.id%>">
+            <li>
+              <div class="item job-block mx-auto">
+                <div class="item job-name-block">
+                  <div class="item job-name">Corporate Logo</div>
+                  <div class="item job-edit"><img class="edit-job-icon"
+                      src="https://image.flaticon.com/icons/svg/61/61456.svg"></div>
+                </div>
+                <div class="item job-info-block">
+                  <div class="job-date">21 Apr</div>
+                  <div class="item user-email">test@gmail.com</div>
+                </div>
               </div>
-              <div class="item job-info-block">
-                <div class="job-date">21 Apr</div>
-                <div class="item user-email">test@gmail.com</div>
-              </div>
-            </div>
-          </li>
+            </li>
 
-        </ul>
+          </ul>
 
+        </div>
+        <div class="jobs-list-footer">
+          <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
+        </div>
       </div>
-      <div class="jobs-list-footer">
-        <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
-      </div>
-    </div>
-    <%})%>
+      <%})%>
 
-    <!-- </div> -->
-    <!-- 
+        <!-- </div> -->
+        <!-- 
     <button class="add-card-button">Add a card...</button> -->
 
   </section>
@@ -218,18 +218,14 @@
           <div class="media-body">
             <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
 
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="javascript:void(0);">Etiquetas</a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <h3 class="btn dropdown-item">Etiquetas</h3>
+              <ul>
+                <li id="colorpalette1" class="text-center">
+                </li>
             </div>
 
-            <div class="btn-group">
-              <input id="selected-color1">
-              <a class="btn" data-toggle="dropdown">Color</a>
-              <ul class="dropdown-menu">
-                <li id="colorpalette1">
-               </li>
-              </ul>
-            </div>
+            <div class="label-color" style="display:none;"></div>
 
             <div class="collaborator-check">
 
@@ -237,7 +233,8 @@
               <label for="get-up-6"></label>
             </div>
 
-            <h2 class="pmd-list-title">Auditoria</h2>
+
+            <h2 class="pmd-list-title" style="margin-bottom: -0.5%;">Auditoria</h2>
             <h5>Renan de Souza Nogueira</h5>
 
           </div>
@@ -270,7 +267,7 @@
             <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="javascript:void(0);">Etiquetas</a>
+              <a class="dropdown-item">Etiquetas</a>
             </div>
 
             <div class="collaborator-check">
@@ -284,15 +281,13 @@
 
           </div>
         </li>
-        
+
       </ul>
 
       <div class="modal-footer text-right pmd-modal-border">
-        <button data-dismiss="modal" class="btn"
-          type="button">Cancelar</button>
+        <button data-dismiss="modal" class="btn" type="button">Cancelar</button>
 
-          <button data-dismiss="modal" class="btn"
-          type="button">Confirmar</button>
+        <button data-dismiss="modal" class="btn" type="button">Confirmar</button>
       </div>
     </div>
   </div>
@@ -522,12 +517,20 @@
 
 
 <script>
+
+  //Conversor de RGB para HEX color
+  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
   $('#button-collaborator').on('click', function () {
     $('#modal-collaborators').modal('show');
   })
 
-console.log( $('#colorpalette1').colorPalette())
-  $('#colorpalette1').colorPalette().on('selectColor', function(e) {
-    $('#selected-color1').val(e.color);
+  $('#colorpalette1').colorPalette().on('selectColor', function (e) {
+    if (e.color == rgb2hex($('.label-color').css('background-color'))) {
+      $('.label-color').hide();/*  */
+    } else {
+      $('.label-color').show();
+      $('.label-color').css('background-color', e.color);
+    }
   });
 </script>
