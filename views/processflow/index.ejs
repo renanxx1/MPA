@@ -526,8 +526,8 @@
   })
 
   $('#colorpalette1').colorPalette().on('selectColor', function (e) {
-    if (e.color == rgb2hex($('.label-color').css('background-color'))) {
-      $('.label-color').hide();/*  */
+    if (e.color == rgb2hex($('.label-color').css('background-color')).toUpperCase()) {
+      $('.label-color').hide();
     } else {
       $('.label-color').show();
       $('.label-color').css('background-color', e.color);
