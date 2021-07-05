@@ -8,14 +8,12 @@
   <link rel="icon" href="/img/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="/css/demo_1/flow2.css">
-  <link rel="stylesheet" href="/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="/css/colorpallete.css">
   <title>MPA - MONITORADOR DE PROCESSOS E ATIVIDADES</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <!--   <script src="/js/bootstrap-datepicker.min.js"></script>
-  <script src="/js/bootstrap-datepicker.pt-BR.min.js"></script> -->
+
 
 </head>
 
@@ -132,9 +130,6 @@
           </div>
 
 
-
-
-
           <!--           <h2>Gender</h2>
           <p>Female</p>
           <h2>Email</h2>
@@ -213,80 +208,44 @@
 
       <ul class="list-group pmd-list pmd-modal-list pmd-list-avatar">
 
-        <li class="list-group-item ">
+        <%collaborators.forEach(collaborator=>{ %>
 
-          <div class="media-body">
-            <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
+          <li class="list-group-item ">
 
-            <div class="dropdown-menu dropdown-menu-right">
-              <h3 class="btn dropdown-item">Etiquetas</h3>
-              <ul>
-                <li id="colorpalette1" class="text-center">
-                </li>
+            <div class="media-body">
+              <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
+
+              <div class="dropdown-menu dropdown-menu-right">
+                <h3 class="btn dropdown-item">Etiquetas</h3>
+                <ul>
+                  <li id="colorpalette-<%=collaborator.id%>" class="text-center collorpalette">
+                  </li>
+              </div>
+
+              <div id="label-color-<%=collaborator.id%>" class="label-color" style="display:none;"></div>
+
+              <div class="collaborator-check">
+                <input class="checkbox-effect checkbox-effect-6 collaborator-checkbox-<%=collaborator.id%>"
+                  id="collaborator-checkbox-<%=collaborator.id%>" type="checkbox" />
+                <label for="collaborator-checkbox-<%=collaborator.id%>"></label>
+              </div>
+
+              <h2 class="pmd-list-title" style="margin-bottom: -0.5%; margin-top:2.5%">
+                <%=collaborator.process.process_name%>
+              </h2>
+              <h5>
+                <%=collaborator.collaborator_name%>
+              </h5>
+
             </div>
+          </li>
 
-            <div class="label-color" style="display:none;"></div>
-
-            <div class="collaborator-check">
-
-              <input class="checkbox-effect checkbox-effect-6 " id="get-up-6" type="checkbox" />
-              <label for="get-up-6"></label>
-            </div>
-
-
-            <h2 class="pmd-list-title" style="margin-bottom: -0.5%; margin-top:2.5%">Auditoria</h2>
-            <h5>Renan de Souza Nogueira</h5>
-
-          </div>
-        </li>
-
-        <li class="list-group-item ">
-
-          <div class="media-body">
-            <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="javascript:void(0);">Etiquetas</a>
-            </div>
-
-            <div class="collaborator-check">
-
-              <input class="checkbox-effect checkbox-effect-6 " id="get-up-6" type="checkbox" />
-              <label for="get-up-6"></label>
-            </div>
-
-            <h2 class="pmd-list-title">Vendas</h2>
-            <h5>Patria Milagres da Silva</h5>
-
-          </div>
-        </li>
-
-        <li class="list-group-item ">
-
-          <div class="media-body">
-            <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item">Etiquetas</a>
-            </div>
-
-            <div class="collaborator-check">
-
-              <input class="checkbox-effect checkbox-effect-6 " id="get-up-6" type="checkbox" />
-              <label for="get-up-6"></label>
-            </div>
-
-            <h2 class="pmd-list-title">Vendas</h2>
-            <h5>Mauricio Carreiro</h5>
-
-          </div>
-        </li>
+          <%})%>
 
       </ul>
 
       <div class="modal-footer text-right pmd-modal-border">
         <button data-dismiss="modal" class="btn" type="button">Cancelar</button>
-
         <button data-dismiss="modal" class="btn" type="button">Confirmar</button>
       </div>
     </div>
@@ -525,12 +484,14 @@
     $('#modal-collaborators').modal('show');
   })
 
-  $('#colorpalette1').colorPalette().on('selectColor', function (e) {
-    if (e.color == rgb2hex($('.label-color').css('background-color')).toUpperCase()) {
-      $('.label-color').hide();
+  $('.collorpalette').colorPalette().on('selectColor', function (e) {
+    var colorId = $(this).attr('id').split('-');
+
+    if (e.color == rgb2hex($('#label-color-' + colorId[1]).css('background-color')).toUpperCase()) {
+      $('#label-color-' + colorId[1]).hide();
     } else {
-      $('.label-color').show();
-      $('.label-color').css('background-color', e.color);
+      $('#label-color-' + colorId[1]).show();
+      $('#label-color-' + colorId[1]).css('background-color', e.color);
     }
   });
 </script>

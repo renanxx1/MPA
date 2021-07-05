@@ -1,6 +1,20 @@
+const Collaborator = require('../models/Collaborator');
 const Process = require('../models/Process');
-const { Op } = require("sequelize");
 class ProcessFlowRepository {
+
+    async findAllCollaborators() {
+        return await
+            Collaborator.findAll({
+                raw: true,
+                nest: true,
+                order: [
+                    ['process_id', 'DESC']
+                  ],
+                include: [{
+                    model: Process,
+                }],
+            })
+    }
 
     async findAllProcesses() {
         return await
@@ -10,7 +24,6 @@ class ProcessFlowRepository {
                 }
             })
     }
-
 
 }
 

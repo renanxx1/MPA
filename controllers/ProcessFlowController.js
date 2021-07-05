@@ -11,9 +11,10 @@ class ProcessFlowController {
 
 
 async function renderIndex(req, res, code) {
-    var processes = await ProcessFlowService.getIndex();
+    var get = await ProcessFlowService.getIndex();
     res.status(code).render('processflow/index', {
-        processes: processes
+        collaborators: get.collaborators,
+        processes: get.processes
     });
 }
 
