@@ -619,7 +619,7 @@ span {
 	color: #3fb6a8;
 }
 
-.btn:hover {
+.btn:hover :not(.btn-label) {
 	text-decoration: underline;
 	font-weight: 900;
 }
@@ -845,7 +845,7 @@ label {
 
 
 .pmd-list-avatar {
-    max-height: calc(70vh - 120px);
+	max-height: calc(70vh - 120px);
 	overflow: auto;
 	overflow-x: hidden;
 }
