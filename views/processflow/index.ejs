@@ -74,7 +74,7 @@
 
         </div>
         <div class="jobs-list-footer">
-          <button class="add-card-btn btn" onclick="addCard()" id="addBtn">+ Adicionar Cartão</button>
+          <button class="add-card-btn btn" onclick="addCard('<%=process.id%>')" id="addBtn">+ Adicionar Cartão</button>
         </div>
       </div>
       <%})%>
@@ -88,6 +88,7 @@
 </body>
 
 <div class="modal fade " id="modal-card" tabindex="-1">
+  <input type="hidden" id="id_process">
   <div class="modal-dialog modal-lg">
 
     <div class="container-modal modal-content">
@@ -106,17 +107,17 @@
       <div class="rightbox">
         <div class="profile">
           <h1>Dados do Cartão</h1>
-          <h2>Titulo do Cartão</h2>
+          <h2>Titulo do Cartão *</h2>
           <h2>
             <textarea class="form-control" style="resize: none;"></textarea>
           </h2>
           <br>
           <h2>Responsavel</h2>
 
-          <p>Mauricio Carreiro
-            <button type="button" id="button-collaborator" class="btn " data-toggle="popover" title="Colaboradores"
-              data-content='<a>link</a>'>Alterar</button>
-
+          <p class="p_collaborator">
+            ㅤ
+            <button type="button" val="" class="btn button-collaborator" data-toggle="popover" title="Colaboradores"
+              onclick="buttonChangeCollaborator()">Alterar</button>
           </p>
 
 
@@ -129,12 +130,6 @@
             </p>
           </div>
 
-
-          <!--           <h2>Gender</h2>
-          <p>Female</p>
-          <h2>Email</h2>
-          <p>example@example.com <button class="btn">update</button></p>
-          <h2>Password </h2> -->
         </div>
 
         <div class="payment noshow">
@@ -192,6 +187,12 @@
           <p></p>
         </div>
 
+
+      </div>
+
+      <div class="modal-footer pmd-modal-border">
+        <!--    <button data-dismiss="modal" class="btn" type="button">Cancelar</button> -->
+        <button data-dismiss="modal" class="btn" type="button">Confirmar</button>
       </div>
     </div>
   </div>
@@ -206,11 +207,11 @@
         <a id="close" class="active" onclick="closeModal(1)"> <i class="fa  fa-times"></i></a>
       </div>
 
-      <ul class="list-group pmd-list pmd-modal-list pmd-list-avatar">
+      <ul id="ul_collaborators" class="list-group pmd-list pmd-modal-list pmd-list-avatar">
 
         <%collaborators.forEach(collaborator=>{ %>
 
-          <li class="list-group-item ">
+          <li class="list-group-item">
 
             <div class="media-body">
               <i class="fa fa-ellipsis-h open-label" data-toggle="dropdown" aria-hidden="true"></i>
@@ -225,7 +226,8 @@
               <div id="label-color-<%=collaborator.id%>" class="label-color" style="display:none;"></div>
 
               <div class="collaborator-check">
-                <input class="checkbox-effect checkbox-effect-6 collaborator-checkbox-<%=collaborator.id%>"
+                <input
+                  class="collaborator-checkbox-<%=collaborator.collaborator_name%> check_box checkbox-effect checkbox-effect-6"
                   id="collaborator-checkbox-<%=collaborator.id%>" type="checkbox" />
                 <label for="collaborator-checkbox-<%=collaborator.id%>"></label>
               </div>
@@ -241,12 +243,11 @@
           </li>
 
           <%})%>
-
       </ul>
 
       <div class="modal-footer text-right pmd-modal-border">
         <button data-dismiss="modal" class="btn" type="button">Cancelar</button>
-        <button data-dismiss="modal" class="btn" type="button">Confirmar</button>
+        <button id="confirm_collaborator" data-dismiss="modal" class="btn" type="button">Confirmar</button>
       </div>
     </div>
   </div>
@@ -435,7 +436,8 @@
   });
 
 
-  function addCard() {
+  function addCard(id) {
+    $('#id_process').val(id);
     $('#modal-card').modal('show');
   }
 
@@ -480,9 +482,10 @@
   //Conversor de RGB para HEX color
   const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
-  $('#button-collaborator').on('click', function () {
+
+  function buttonChangeCollaborator() {
     $('#modal-collaborators').modal('show');
-  })
+  }
 
   $('.collorpalette').colorPalette().on('selectColor', function (e) {
     var colorId = $(this).attr('id').split('-');
@@ -494,5 +497,29 @@
     }
   });
 
-  
+
+</script>
+
+<script>
+  $('#confirm_collaborator').on('click', function () {
+    var id = []
+    var collaborator_name = []
+
+    $('.check_box').each(function () {
+      if (this.checked) {
+        id.push($(this).attr('id').replace("collaborator-checkbox-", ""));
+        collaborator_name.push(' ' + $(this).attr('class').replace(" check_box checkbox-effect checkbox-effect-6", "").replace("collaborator-checkbox-", ""));
+
+      }
+    });
+
+    if (collaborator_name.length == 0) {
+      $('.p_collaborator').html('<button type="button" val="" class="btn button-collaborator" data-toggle="popover" title="Colaboradores" onclick="buttonChangeCollaborator()" >Alterar</button>' + 'ㅤㅤ ');
+    } else {
+      $('.p_collaborator').html(collaborator_name + '<button type="button" val="" class="btn button-collaborator" data-toggle="popover" title="Colaboradores" onclick="buttonChangeCollaborator()" >Alterar</button>');
+
+    }
+
+  })
+
 </script>

@@ -39,6 +39,11 @@ const Collaborator_History = connection.define("collaboratorhistory", {
         allowNull: false
     },
 
+    label: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
     session_id: {
         type: Sequelize.STRING,
         allowNull: true

@@ -32,6 +32,11 @@ const Collaborator = connection.define("collaborator", {
         allowNull: false
     },
 
+    label: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
      session_id: {
         type: Sequelize.STRING,
         allowNull: true
